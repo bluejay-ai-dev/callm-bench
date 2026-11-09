@@ -1,0 +1,2 @@
+nemo-gym==0.7.0
+httpx

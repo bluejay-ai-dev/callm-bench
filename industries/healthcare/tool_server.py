@@ -1,0 +1,1345 @@
+"""Healthcare state API — SQLite persistence plus a generic tool dispatch.
+
+Harnesses call POST /tools/{tool_name} with {"arguments": {...}} for every
+industry tool; the REST routes stay for evals and debugging (GET /state,
+GET /health). Session tools (end_call) and handoff tools (transfer_to_*)
+never hit this server.
+
+Tools without a dedicated table are minimal deterministic implementations
+backed by the seeded fixtures; their writes land in `tool_events` so GET
+/state still shows them.
+"""
+
+from __future__ import annotations
+
+import json
+import logging
+import os
+import sqlite3
+from contextlib import contextmanager
+from datetime import datetime, timedelta
+from pathlib import Path
+from typing import Any
+
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, Field
+
+INDUSTRY_DIR = Path(__file__).resolve().parent
+
+from micol.db_service import DBService
+
+db = DBService.for_industry(INDUSTRY_DIR)
+
+
+@contextmanager
+def _db() -> Any:
+    with db.connect() as conn:
+        yield conn
+
+
+app = FastAPI(title="healthcare state API")
+app.middleware("http")(db.http_middleware)
+
+logger = logging.getLogger(__name__)
+
+
+class AppointmentCreate(BaseModel):
+    patient_id: str | None = None
+    location_id: str
+    provider_id: str
+    appointment_type_code: str
+    start: str
+    end: str
+    description: str = ""
+
+
+class AppointmentUpdate(BaseModel):
+    start: str | None = None
+    end: str | None = None
+    location_id: str | None = None
+    provider_id: str | None = None
+    status: str | None = Field(default=None, description="booked | cancelled | completed")
+    description: str | None = None
+
+
+class WaitlistCreate(BaseModel):
+    patient_id: str | None = None
+    appointment_type_code: str
+    location_ids: list[str]
+    earliest: str | None = None
+    latest: str | None = None
+
+
+def _appointment(row: sqlite3.Row) -> dict[str, Any]:
+    return {
+        "id": row["id"],
+        "patient_id": row["patient_id"],
+        "location_id": row["location_id"],
+        "provider_id": row["provider_id"],
+        "appointment_type_code": row["appointment_type_code"],
+        "start": row["start"],
+        "end": row["end"],
+        "description": row["description"],
+        "status": row["status"],
+        "created_at": row["created_at"],
+    }
+
+
+@app.get("/health")
+def health() -> dict[str, str]:
+    return {"status": "ok"}
+
+
+@app.get("/state")
+def state() -> dict[str, Any]:
+    """Eval/debug dump of durable state."""
+    with _db() as conn:
+        patients = [dict(r) for r in conn.execute("SELECT * FROM patients ORDER BY id")]
+        locations = [dict(r) for r in conn.execute("SELECT * FROM locations ORDER BY id")]
+        providers = [dict(r) for r in conn.execute("SELECT * FROM providers ORDER BY id")]
+        appointments = [
+            _appointment(r)
+            for r in conn.execute("SELECT * FROM appointments ORDER BY id")
+        ]
+        waitlist = []
+        for r in conn.execute("SELECT * FROM waitlist ORDER BY id"):
+            waitlist.append(
+                {
+                    "id": r["id"],
+                    "patient_id": r["patient_id"],
+                    "appointment_type_code": r["appointment_type_code"],
+                    "location_ids": json.loads(r["location_ids"]),
+                    "earliest": r["earliest"],
+                    "latest": r["latest"],
+                    "created_at": r["created_at"],
+                }
+            )
+        tool_events = [
+            {"id": r["id"], "kind": r["kind"], "payload": json.loads(r["payload"]),
+             "created_at": r["created_at"]}
+            for r in conn.execute("SELECT * FROM tool_events ORDER BY id")
+        ]
+    return {
+        "patients": patients,
+        "locations": locations,
+        "providers": providers,
+        "appointments": appointments,
+        "waitlist": waitlist,
+        "tool_events": tool_events,
+    }
+
+
+@app.get("/locations")
+def list_locations() -> list[dict[str, Any]]:
+    with _db() as conn:
+        return [dict(r) for r in conn.execute("SELECT * FROM locations ORDER BY id")]
+
+
+@app.get("/providers")
+def list_providers() -> list[dict[str, Any]]:
+    with _db() as conn:
+        return [dict(r) for r in conn.execute("SELECT * FROM providers ORDER BY id")]
+
+
+@app.get("/patients")
+def list_patients() -> list[dict[str, Any]]:
+    with _db() as conn:
+        return [dict(r) for r in conn.execute("SELECT * FROM patients ORDER BY id")]
+
+
+@app.get("/patients/{patient_id}")
+def get_patient(patient_id: str) -> dict[str, Any]:
+    with _db() as conn:
+        row = conn.execute(
+            "SELECT * FROM patients WHERE id = ?", (patient_id,)
+        ).fetchone()
+    if row is None:
+        raise HTTPException(status_code=404, detail="patient not found")
+    return dict(row)
+
+
+@app.get("/appointments")
+def list_appointments() -> list[dict[str, Any]]:
+    with _db() as conn:
+        return [
+            _appointment(r)
+            for r in conn.execute("SELECT * FROM appointments ORDER BY id")
+        ]
+
+
+@app.post("/appointments", status_code=201)
+def create_appointment(body: AppointmentCreate) -> dict[str, Any]:
+    with _db() as conn:
+        if body.location_id and conn.execute(
+            "SELECT 1 FROM locations WHERE id = ?", (body.location_id,)
+        ).fetchone() is None:
+            raise HTTPException(status_code=400, detail="unknown location_id")
+        if body.provider_id and conn.execute(
+            "SELECT 1 FROM providers WHERE id = ?", (body.provider_id,)
+        ).fetchone() is None:
+            raise HTTPException(status_code=400, detail="unknown provider_id")
+        if _parse_local(body.start) < _parse_local(TODAY):
+            raise HTTPException(status_code=400, detail="cannot book in the past")
+        try:
+            cur = conn.execute(
+                """
+                INSERT INTO appointments (
+                  patient_id, location_id, provider_id, appointment_type_code,
+                  start, end, description
+                ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    body.patient_id,
+                    body.location_id,
+                    body.provider_id,
+                    body.appointment_type_code,
+                    body.start,
+                    body.end,
+                    body.description,
+                ),
+            )
+        except sqlite3.IntegrityError:
+            row = conn.execute(
+                """
+                SELECT * FROM appointments
+                WHERE ifnull(patient_id, '') = ifnull(?, '')
+                  AND location_id = ?
+                  AND appointment_type_code = ?
+                  AND status = 'booked'
+                ORDER BY id LIMIT 1
+                """,
+                (body.patient_id, body.location_id, body.appointment_type_code),
+            ).fetchone()
+            if row is None:
+                raise HTTPException(status_code=409, detail="appointment conflict")
+        else:
+            row = conn.execute(
+                "SELECT * FROM appointments WHERE id = ?", (cur.lastrowid,)
+            ).fetchone()
+    if row is None:
+        raise HTTPException(status_code=500, detail="insert failed")
+    return _appointment(row)
+
+
+@app.patch("/appointments/{appointment_id}")
+def update_appointment(appointment_id: int, body: AppointmentUpdate) -> dict[str, Any]:
+    fields = body.model_dump(exclude_unset=True)
+    if not fields:
+        raise HTTPException(status_code=400, detail="no fields to update")
+    cols = ", ".join(f"{k} = ?" for k in fields)
+    vals = list(fields.values()) + [appointment_id]
+    with _db() as conn:
+        cur = conn.execute(
+            f"UPDATE appointments SET {cols} WHERE id = ?", vals
+        )
+        if cur.rowcount == 0:
+            raise HTTPException(status_code=404, detail="appointment not found")
+        row = conn.execute(
+            "SELECT * FROM appointments WHERE id = ?", (appointment_id,)
+        ).fetchone()
+    assert row is not None
+    return _appointment(row)
+
+
+@app.post("/waitlist", status_code=201)
+def join_waitlist(body: WaitlistCreate) -> dict[str, Any]:
+    with _db() as conn:
+        cur = conn.execute(
+            """
+            INSERT INTO waitlist (
+              patient_id, appointment_type_code, location_ids, earliest, latest
+            ) VALUES (?, ?, ?, ?, ?)
+            """,
+            (
+                body.patient_id,
+                body.appointment_type_code,
+                json.dumps(body.location_ids),
+                body.earliest,
+                body.latest,
+            ),
+        )
+        row = conn.execute(
+            "SELECT * FROM waitlist WHERE id = ?", (cur.lastrowid,)
+        ).fetchone()
+    if row is None:
+        raise HTTPException(status_code=500, detail="insert failed")
+    return {
+        "id": row["id"],
+        "patient_id": row["patient_id"],
+        "appointment_type_code": row["appointment_type_code"],
+        "location_ids": json.loads(row["location_ids"]),
+        "earliest": row["earliest"],
+        "latest": row["latest"],
+        "created_at": row["created_at"],
+    }
+
+
+# ------------------------------------------------------------------ dispatch
+# POST /tools/{tool_name} {"arguments": {...}} — the industry-agnostic contract
+# every harness speaks. Wraps everything in the tools.json envelope:
+# {"ok": bool, "data": ..., "error_code": str|null, "patient_safe_message": str|null}.
+# Session (end_call) and handoff (transfer_to_*) tools never land here → 404.
+
+# Fixed "now" so cancellation-window math is deterministic across runs. The
+# seeded MED_FOLLOWUP on 2026-08-20T10:00 is inside the 24 h medical window.
+TODAY = "2026-08-19T12:00"
+
+# Identity pin per call id (empty key = the shared/no-header session).
+_sessions: dict[str, dict[str, Any]] = {}
+
+
+def _session_state() -> dict[str, Any]:
+    return _sessions.setdefault(db.current_call_id() or "", {})
+
+
+class ToolError(Exception):
+    def __init__(self, code: str, message: str):
+        super().__init__(message)
+        self.code, self.message = code, message
+
+
+def _require(a: dict[str, Any], *keys: str) -> None:
+    """Fail with INVALID_ARGUMENTS instead of KeyError when a required field is missing."""
+    missing = [k for k in keys if a.get(k) in (None, "")]
+    if missing:
+        raise ToolError(
+            "INVALID_ARGUMENTS",
+            f"Missing required argument(s): {', '.join(missing)}.",
+        )
+
+
+def _event(kind: str, payload: dict[str, Any]) -> int:
+    with _db() as conn:
+        cur = conn.execute(
+            "INSERT INTO tool_events (kind, payload) VALUES (?, ?)",
+            (kind, json.dumps(payload)),
+        )
+        event_id = int(cur.lastrowid or 0)
+    return event_id
+
+
+def _patient_row() -> sqlite3.Row:
+    pid = _session_state().get("patient_id")
+    if not pid or not _session_state().get("verified"):
+        raise ToolError("NOT_VERIFIED", "Verify the caller's identity first.")
+    with _db() as conn:
+        row = conn.execute("SELECT * FROM patients WHERE id = ?", (pid,)).fetchone()
+    if row is None:
+        raise ToolError("NOT_VERIFIED", "Verify the caller's identity first.")
+    return row
+
+
+def _resolve_location(value: str) -> sqlite3.Row:
+    """Accept a real id OR whatever the caller called the office."""
+    said = str(value or "").strip().lower()
+    with _db() as conn:
+        for row in conn.execute("SELECT * FROM locations ORDER BY id"):
+            if said == row["id"].lower() or said in row["name"].lower() or row["name"].lower() in said:
+                return row
+    raise ToolError("UNKNOWN_LOCATION", f"No office matches {value!r}.")
+
+
+def _parse_local(ts: str) -> datetime:
+    """Accept YYYY-MM-DD, YYYY-MM-DDTHH:MM, or YYYY-MM-DDTHH:MM:SS, optional tz."""
+    raw = str(ts or "").strip()
+    if not raw:
+        raise ToolError("INVALID_ARGUMENTS", "Empty date or datetime.")
+    if raw.endswith("Z"):
+        raw = raw[:-1] + "+00:00"
+    if len(raw) == 10:
+        raw += "T00:00"
+    return datetime.fromisoformat(raw).replace(tzinfo=None)
+
+
+def _iso_minute(value: datetime | str) -> str:
+    dt = value if isinstance(value, datetime) else _parse_local(str(value))
+    return dt.strftime("%Y-%m-%dT%H:%M")
+
+
+def _iso_date(value: datetime | str) -> str:
+    dt = value if isinstance(value, datetime) else _parse_local(str(value))
+    return dt.strftime("%Y-%m-%d")
+
+
+def _reject_past(ts: str, *, what: str = "That time") -> None:
+    if _parse_local(ts) < _parse_local(TODAY):
+        raise ToolError(
+            "DATE_IN_PAST",
+            f"{what} is before today. Offer a future opening.",
+        )
+
+
+def _published_slot_start(start: str) -> bool:
+    return _iso_minute(start) in _SLOT_TIMES
+
+
+def _iso_plus_minutes(start: str, minutes: int) -> str:
+    return _iso_minute(_parse_local(start) + timedelta(minutes=minutes))
+
+
+def _naive_iso(ts: str) -> str:
+    if not str(ts or "").strip():
+        return ""
+    return _iso_minute(ts)
+
+
+# --- identity ----------------------------------------------------------------
+
+
+def _d_identify_patient(a: dict[str, Any]) -> dict[str, Any]:
+    first = str(a.get("first_name") or "").strip().lower()
+    last = str(a.get("last_name") or "").strip().lower()
+    dob = str(a.get("dob") or "").strip()
+    zip_ = str(a.get("zip") or "").strip()
+    candidates = []
+    with _db() as conn:
+        for row in conn.execute("SELECT * FROM patients ORDER BY id"):
+            if first and row["first_name"].lower() != first:
+                continue
+            if last and row["last_name"].lower() != last:
+                continue
+            if dob and row["dob"] != dob:
+                continue
+            if zip_ and row["zip"] != zip_:
+                continue
+            candidates.append(
+                {
+                    "patient_id": row["id"],
+                    "first_name": row["first_name"],
+                    "last_initial": row["last_name"][:1],
+                    "dob_year": row["dob"][:4],
+                }
+            )
+    if not (first or last or dob or zip_):
+        candidates = []
+    return {"candidates": candidates, "count": len(candidates)}
+
+
+def _d_verify_identity(a: dict[str, Any]) -> dict[str, Any]:
+    if _session_state().get("verify_failures", 0) >= 3:
+        raise ToolError(
+            "IDENTITY_LOCKED",
+            "Verification is locked after three failures. Offer the front desk or a callback.",
+        )
+    _require(a, "full_name", "dob")
+    name = str(a["full_name"]).strip().lower().split()
+    dob = str(a["dob"]).strip()
+    second = str(a.get("second_factor") or "").strip()
+    with _db() as conn:
+        for row in conn.execute("SELECT * FROM patients ORDER BY id"):
+            full = f"{row['first_name']} {row['last_name']}".lower().split()
+            if name and name[0] == full[0] and name[-1] == full[-1] and row["dob"] == dob:
+                if second and second != row["zip"] and second != (row["phone_e164"] or "")[-4:]:
+                    break
+                _session_state().update(patient_id=row["id"], verified=True, verify_failures=0)
+                return {"verified": True, "patient_id": row["id"]}
+    _session_state()["verify_failures"] = _session_state().get("verify_failures", 0) + 1
+    raise ToolError(
+        "NO_MATCH",
+        "That name and date of birth don't match a record. Re-confirm the spelling "
+        "and date of birth; after a third failure offer the front desk.",
+    )
+
+
+def _d_get_patient_summary(a: dict[str, Any]) -> dict[str, Any]:
+    row = _patient_row()
+    with _db() as conn:
+        upcoming = [
+            _appointment(r)
+            for r in conn.execute(
+                "SELECT * FROM appointments WHERE patient_id = ? AND status = 'booked' "
+                "ORDER BY start",
+                (row["id"],),
+            )
+        ]
+        office = conn.execute(
+            "SELECT name FROM locations WHERE id = ?", (row["home_office_id"],)
+        ).fetchone()
+    member = row["member_id"] or ""
+    return {
+        "patient_id": row["id"],
+        "name": f"{row['first_name']} {row['last_name']}",
+        "language": row["language"],
+        "home_office": office["name"] if office else None,
+        "upcoming_appointments": upcoming,
+        "balance_cents": row["balance_cents"],
+        "insurance": {
+            "carrier": row["carrier"],
+            "plan_name": row["plan_name"],
+            "member_id_last4": member[-4:] if member else None,
+        },
+        "portal_active": False,
+        "open_orders": [],
+        "clinical_flags": [],
+    }
+
+
+# --- scheduling ---------------------------------------------------------------
+
+_VISIT_BY_CLASS = {
+    "mohs": {
+        "appointment_type_code": "MOHS_CONSULT",
+        "visit_class": "mohs",
+        "required_credential": "MD",
+        # every find_slots slot is 30 minutes; a longer advertised visit made careful
+        # agents refuse to book any offered slot (C1-H1, C1-M3, 2026-09-25)
+        "duration_min": 30,
+        "urgency": "urgent",
+        "constraints": ["must be booked with an MD, never a PA"],
+    },
+    "allergy": {
+        "appointment_type_code": "ALLERGY_EVAL",
+        "visit_class": "allergy",
+        "required_credential": "MD",
+        "duration_min": 30,
+        "urgency": "routine",
+        "constraints": ["allergy services carry prep instructions"],
+    },
+    "medical": {
+        "appointment_type_code": "MED_FOLLOWUP",
+        "visit_class": "medical",
+        "required_credential": "MD_OR_PA",
+        "duration_min": 20,
+        "urgency": "routine",
+        "constraints": [],
+    },
+}
+
+
+def _d_classify_visit_request(a: dict[str, Any]) -> dict[str, Any]:
+    _require(a, "visit_class")
+    visit_class = str(a["visit_class"]).strip().lower()
+    spec = _VISIT_BY_CLASS.get(visit_class)
+    if spec is None:
+        raise ToolError(
+            "UNKNOWN_VISIT_CLASS",
+            f"visit_class must be one of {sorted(_VISIT_BY_CLASS)}.",
+        )
+    out = dict(spec)
+    if visit_class == "medical":
+        new = bool(a.get("is_new_patient"))
+        out["appointment_type_code"] = "NP_MED" if new else "MED_FOLLOWUP"
+        out["duration_min"] = 30 if new else 20
+    urgency = str(a.get("urgency") or out["urgency"]).strip().lower()
+    if urgency in ("routine", "urgent"):
+        out["urgency"] = urgency
+    out["is_new_patient"] = bool(a.get("is_new_patient"))
+    return out
+
+
+def _d_list_locations(a: dict[str, Any]) -> dict[str, Any]:
+    """Offices, best match first. Either `zip` or `location_id` will do."""
+    zip_ = str(a.get("zip") or "").strip()
+    loc_id = ""
+    raw_id = a.get("location_id") or a.get("name") or a.get("location")
+    if raw_id:
+        try:
+            loc_id = _resolve_location(str(raw_id))["id"]
+        except ToolError:
+            loc_id = str(raw_id).strip().lower()
+    with _db() as conn:
+        rows = [dict(r) for r in conn.execute("SELECT * FROM locations ORDER BY id")]
+    def rank(r: dict[str, Any]) -> tuple[int, int]:
+        by_id = 0 if loc_id and r["id"] == loc_id else 1
+        by_zip = 0 if zip_ and r["zip"] == zip_ else 1
+        return (by_id, by_zip)
+    rows.sort(key=rank)
+    for r in rows:
+        r["offers_cosmetic"] = bool(r["offers_cosmetic"])
+    return {"locations": rows}
+
+
+_SLOT_TIMES = ("2026-08-24T09:00", "2026-08-25T11:30", "2026-08-26T14:00")
+
+
+def _d_find_slots(a: dict[str, Any]) -> dict[str, Any]:
+    """Deterministic open slots per requested office (no slot inventory table —
+    book_appointment carries the full location/provider/start anyway)."""
+    _require(a, "location_ids")
+    location_ids = [str(x) for x in (a.get("location_ids") or [])]
+    window_start = str(a.get("window_start") or "")
+    window_end = str(a.get("window_end") or "")
+    max_results = int(a.get("max_results") or 6)
+    slots = []
+    with _db() as conn:
+        for loc_id in location_ids:
+            loc = conn.execute("SELECT * FROM locations WHERE id = ?", (loc_id,)).fetchone()
+            if loc is None:
+                try:
+                    loc = _resolve_location(loc_id)
+                except ToolError:
+                    continue
+            prov = conn.execute(
+                "SELECT * FROM providers WHERE location_id = ? ORDER BY id LIMIT 1",
+                (loc["id"],),
+            ).fetchone()
+            if prov is None:
+                continue
+            for i, start in enumerate(_SLOT_TIMES):
+                if _parse_local(start) < _parse_local(TODAY):
+                    continue
+                if window_start and _parse_local(start) < _parse_local(window_start):
+                    continue
+                slot_end = _iso_plus_minutes(start, 30)
+                if window_end and _parse_local(slot_end) > _parse_local(window_end):
+                    continue
+                slots.append(
+                    {
+                        "slot_id": f"slot_{loc['id']}_{i + 1}",
+                        "location_id": loc["id"],
+                        "location": loc["name"],
+                        "provider_id": prov["id"],
+                        "provider": f"{prov['name']}, {prov['credentials']}",
+                        "start": start,
+                        "end": slot_end,
+                    }
+                )
+    return {"slots": slots[:max_results], "count": min(len(slots), max_results)}
+
+
+def _resolve_slot(slot_id: str) -> dict[str, Any]:
+    """Recompute the exact same deterministic slot _d_find_slots would have
+    offered for this slot_id, so book_appointment can bind the booking to
+    whatever was actually presented to the caller instead of trusting
+    arbitrary location/provider/start/end supplied alongside the id."""
+    with _db() as conn:
+        for loc in conn.execute("SELECT * FROM locations ORDER BY id"):
+            prov = conn.execute(
+                "SELECT * FROM providers WHERE location_id = ? ORDER BY id LIMIT 1",
+                (loc["id"],),
+            ).fetchone()
+            if prov is None:
+                continue
+            for i, start in enumerate(_SLOT_TIMES):
+                if slot_id == f"slot_{loc['id']}_{i + 1}":
+                    return {
+                        "location_id": loc["id"],
+                        "provider_id": prov["id"],
+                        "start": start,
+                        "end": _iso_plus_minutes(start, 30),
+                    }
+    raise ToolError(
+        "UNKNOWN_SLOT", f"No open slot matches {slot_id!r}. Call find_slots again."
+    )
+
+
+_BOOK_DESC = {
+    "NP_MED": "new patient visit",
+    "MED_FOLLOWUP": "follow-up visit",
+    "MOHS_CONSULT": "Mohs consult",
+    "COS_CONSULT": "cosmetic consult",
+    "ALLERGY_EVAL": "allergy evaluation",
+}
+
+
+def _d_book_appointment(a: dict[str, Any]) -> dict[str, Any]:
+    _require(a, "slot_id", "appointment_type_code", "location_id", "provider_id",
+             "start", "end")
+    if str(a["appointment_type_code"]) == "COS_CONSULT":
+        raise ToolError(
+            "USE_COSMETIC_BOOKING",
+            "Cosmetic consults are booked with book_cosmetic_consult, not book_appointment.",
+        )
+    slot = _resolve_slot(str(a["slot_id"]))
+    _reject_past(slot["start"], what="That slot")
+    if (
+        str(a["location_id"]) != slot["location_id"]
+        or str(a["provider_id"]) != slot["provider_id"]
+        or _iso_minute(str(a["start"])) != slot["start"]
+        or _iso_minute(str(a["end"])) != slot["end"]
+    ):
+        raise ToolError(
+            "SLOT_MISMATCH",
+            "That slot no longer matches what was offered — call find_slots again "
+            "and read back the new time before booking.",
+        )
+    created = create_appointment(
+        AppointmentCreate(
+            patient_id=_session_state().get("patient_id"),
+            location_id=slot["location_id"],
+            provider_id=slot["provider_id"],
+            appointment_type_code=a["appointment_type_code"],
+            start=slot["start"],
+            end=slot["end"],
+            description=_BOOK_DESC.get(str(a["appointment_type_code"]), "visit"),
+        )
+    )
+    return {"appointment": created, "status": "booked"}
+
+
+def _owned_appointment(appointment_id: int) -> sqlite3.Row:
+    """An appointment row, scoped to the verified caller — prevents an id from
+    reaching another patient's booking without identity verification."""
+    patient = _patient_row()
+    with _db() as conn:
+        row = conn.execute(
+            "SELECT * FROM appointments WHERE id = ? AND patient_id = ?",
+            (appointment_id, patient["id"]),
+        ).fetchone()
+    if row is None:
+        raise ToolError("NOT_FOUND", "No appointment with that id for this patient.")
+    return row
+
+
+def _d_reschedule_appointment(a: dict[str, Any]) -> dict[str, Any]:
+    _require(a, "appointment_id", "new_start", "new_end")
+    appt_id = int(a["appointment_id"])
+    _owned_appointment(appt_id)
+    new_start = _iso_minute(a["new_start"])
+    _reject_past(new_start, what="That new time")
+    if not _published_slot_start(new_start):
+        raise ToolError(
+            "NO_AVAILABILITY",
+            "That time is not an open slot. Call find_slots and read back a listed time.",
+        )
+    updated = update_appointment(
+        appt_id,
+        AppointmentUpdate(
+            start=new_start,
+            end=_iso_minute(a["new_end"]),
+            status="booked",
+        ),
+    )
+    return {"appointment": updated, "status": "rescheduled", "fee_cents": 0,
+            "note": "Rescheduling never costs anything — say so."}
+
+
+def _d_cancel_appointment(a: dict[str, Any]) -> dict[str, Any]:
+    _require(a, "appointment_id", "cancellation_reason_code")
+    appt_id = int(a["appointment_id"])
+    patient = _patient_row()
+    row = _owned_appointment(appt_id)
+    if row["status"] == "cancelled":
+        return {"status": "cancelled", "fee_charged_cents": 0,
+                "note": "Already cancelled — no fee charged again."}
+    cosmetic = row["appointment_type_code"].startswith("COS")
+    window_h, fee_cents = (72, 12500) if cosmetic else (24, 5000)
+    hours_out = (_parse_local(row["start"]) - _parse_local(TODAY)).total_seconds() / 3600
+    inside_window = hours_out < window_h
+    if inside_window and not a.get("fee_disclosed_and_accepted"):
+        fee = fee_cents // 100
+        return {
+            "status": "fee_disclosure_required",
+            "fee_cents": fee_cents,
+            "required_script": (
+                f"Because this visit is within {window_h} hours, a ${fee} missed-visit "
+                "fee applies if you cancel. Moving it instead is free — would you like "
+                "a different time, or should I still cancel?"
+            ),
+        }
+    update_appointment(appt_id, AppointmentUpdate(status="cancelled"))
+    fee_charged_cents = 0
+    if inside_window:
+        fee_charged_cents = fee_cents
+        with _db() as conn:
+            conn.execute(
+                "UPDATE patients SET balance_cents = balance_cents + ? WHERE id = ?",
+                (fee_cents, patient["id"]),
+            )
+        _event(
+            "cancellation_fee",
+            {"patient_id": patient["id"], "appointment_id": appt_id,
+             "fee_cents": fee_cents,
+             "cancellation_reason_code": a["cancellation_reason_code"]},
+        )
+    return {
+        "status": "cancelled",
+        "fee_charged_cents": fee_charged_cents,
+        "cancellation_reason_code": a["cancellation_reason_code"],
+        "note": "Offer to rebook or join the waitlist.",
+    }
+
+
+def _d_join_waitlist(a: dict[str, Any]) -> dict[str, Any]:
+    _require(a, "appointment_type_code", "location_ids", "earliest")
+    location_ids = []
+    for raw in a["location_ids"]:
+        try:
+            location_ids.append(_resolve_location(str(raw))["id"])
+        except ToolError:
+            location_ids.append(str(raw))
+    entry = join_waitlist(
+        WaitlistCreate(
+            patient_id=_session_state().get("patient_id"),
+            appointment_type_code=a["appointment_type_code"],
+            location_ids=location_ids,
+            earliest=_iso_date(a["earliest"]),
+            latest=_iso_date(a["latest"]) if a.get("latest") else None,
+        )
+    )
+    return {"waitlist_entry": entry, "status": "added"}
+
+
+_ALLERGY_SERVICES: dict[str, dict[str, Any]] = {
+    "skin_testing": {"prep": "Stop antihistamines seven days before the visit.",
+                     "observation_min": 0, "linked_visits": []},
+    "patch_testing": {"prep": "Keep your back dry and skip topical steroids on it for a week.",
+                      "observation_min": 0,
+                      "linked_visits": ["48-hour patch read", "96-hour patch read"]},
+    "food_challenge": {"prep": "Come fasting and plan on a four-hour visit.",
+                       "observation_min": 240, "linked_visits": []},
+    "allergy_shot": {"prep": "", "observation_min": 30, "linked_visits": []},
+    "drops_pickup": {"prep": "", "observation_min": 0, "linked_visits": []},
+    "asthma_eval": {"prep": "Hold your rescue inhaler for six hours if you safely can.",
+                    "observation_min": 0, "linked_visits": []},
+    "immunotherapy_buildup": {"prep": "", "observation_min": 30,
+                              "linked_visits": ["weekly buildup visits"]},
+}
+
+
+def _d_schedule_allergy_service(a: dict[str, Any]) -> dict[str, Any]:
+    _require(a, "service", "location_id")
+    service = str(a["service"]).strip().lower()
+    spec = _ALLERGY_SERVICES.get(service)
+    if spec is None:
+        raise ToolError("UNKNOWN_SERVICE", f"No allergy service named {a['service']!r}.")
+    loc = _resolve_location(a["location_id"])
+    duration_minutes = 30 + spec["observation_min"]
+    patient_id = _session_state().get("patient_id")
+    appointment_type_code = f"ALLERGY_{service.upper()}"
+    with _db() as conn:
+        prov = conn.execute(
+            "SELECT * FROM providers WHERE location_id = ? ORDER BY id LIMIT 1", (loc["id"],)
+        ).fetchone()
+        existing = conn.execute(
+            """
+            SELECT * FROM appointments
+            WHERE patient_id IS ? AND location_id = ? AND appointment_type_code = ?
+              AND status = 'booked'
+            ORDER BY id LIMIT 1
+            """,
+            (patient_id, loc["id"], appointment_type_code),
+        ).fetchone()
+    if existing is not None:
+        return {
+            "appointment": _appointment(existing),
+            "idempotent": True,
+            "prep_instructions": spec["prep"],
+            "observation_minutes_after": spec["observation_min"],
+            "linked_return_visits": spec["linked_visits"],
+            "note": "This allergy service was already booked; do not create it again.",
+        }
+    window_start = _naive_iso(str(a.get("window_start") or ""))
+    window_end = _naive_iso(str(a.get("window_end") or ""))
+    available = [
+        slot_start
+        for slot_start in _SLOT_TIMES
+        if _parse_local(slot_start) >= _parse_local(TODAY)
+        and (not window_start or slot_start >= window_start)
+        and (
+            not window_end
+            or _naive_iso(_iso_plus_minutes(slot_start, duration_minutes)) <= window_end
+        )
+    ]
+    if not available:
+        raise ToolError(
+            "NO_AVAILABILITY",
+            "No allergy appointment is available inside that window. Offer another window.",
+        )
+    start = available[0]
+    try:
+        created = create_appointment(
+            AppointmentCreate(
+                patient_id=patient_id,
+                location_id=loc["id"],
+                provider_id=prov["id"],
+                appointment_type_code=appointment_type_code,
+                start=start,
+                end=_iso_plus_minutes(start, duration_minutes),
+                description=f"Allergy service: {service}",
+            )
+        )
+    except sqlite3.IntegrityError:
+        with _db() as conn:
+            existing = conn.execute(
+                """
+                SELECT * FROM appointments
+                WHERE patient_id IS ? AND location_id = ? AND appointment_type_code = ?
+                  AND status = 'booked'
+                ORDER BY id LIMIT 1
+                """,
+                (patient_id, loc["id"], appointment_type_code),
+            ).fetchone()
+        if existing is None:
+            raise
+        return {
+            "appointment": _appointment(existing),
+            "idempotent": True,
+            "prep_instructions": spec["prep"],
+            "observation_minutes_after": spec["observation_min"],
+            "linked_return_visits": spec["linked_visits"],
+            "note": "This allergy service was already booked; do not create it again.",
+        }
+    return {
+        "appointment": created,
+        "idempotent": False,
+        "prep_instructions": spec["prep"],
+        "observation_minutes_after": spec["observation_min"],
+        "linked_return_visits": spec["linked_visits"],
+        "note": "Say the prep, the observation time, and the linked visits out loud.",
+    }
+
+
+# --- coverage / billing --------------------------------------------------------
+
+_ACCEPTED_CARRIERS = {"aetna", "unitedhealthcare", "cigna", "bcbs", "medicare"}
+_NOT_ACCEPTED_CARRIERS = {"medicaid"}
+_CARRIER_SLUGS = {
+    "aetna": "aetna",
+    "unitedhealthcare": "unitedhealthcare",
+    "cigna": "cigna",
+    "bcbs": "bcbs",
+    "bluecross": "bcbs",
+    "bluecrossblueshield": "bcbs",
+    "medicare": "medicare",
+    "medicaid": "medicaid",
+    "oscarhealth": "oscar_health",
+    "oscar": "oscar_health",
+    "other": "other",
+}
+_CARRIER_LABEL = {
+    "aetna": "Aetna",
+    "unitedhealthcare": "UnitedHealthcare",
+    "cigna": "Cigna",
+    "bcbs": "Blue Cross Blue Shield",
+    "medicare": "Medicare",
+    "medicaid": "Medicaid",
+    "oscar_health": "Oscar Health",
+    "other": "that plan",
+}
+
+
+def _carrier_slug(value: str) -> str:
+    compact = "".join(ch for ch in str(value or "").lower() if ch.isalnum())
+    return _CARRIER_SLUGS.get(compact, compact or "other")
+
+
+def _carrier_label(value: str) -> str:
+    slug = _carrier_slug(value)
+    return _CARRIER_LABEL.get(slug, str(value or "that plan"))
+
+
+_UNCONFIRMED_SCRIPT = (
+    "I can't confirm that plan over the phone. The insurance team will "
+    "verify it before your visit. I can still get you on the books now "
+    "and flag it for benefits verification — or I can set up a callback."
+)
+
+
+def _d_check_plan_accepted(a: dict[str, Any]) -> dict[str, Any]:
+    _require(a, "carrier", "location_id")
+    slug = _carrier_slug(a["carrier"])
+    label = _carrier_label(slug)
+    loc = _resolve_location(a["location_id"])
+    provider_id = a.get("provider_id")
+    if provider_id:
+        with _db() as conn:
+            prov = conn.execute(
+                "SELECT * FROM providers WHERE id = ?", (provider_id,)
+            ).fetchone()
+        if prov is None or prov["location_id"] != loc["id"]:
+            # Unknown provider/location combo — can't validate the plan against
+            # a provider we can't place, so don't assert coverage either way.
+            return {
+                "accepted": None,
+                "must_not_assert": True,
+                "carrier": slug,
+                "location": loc["name"],
+                "required_script": _UNCONFIRMED_SCRIPT,
+            }
+    if slug in _NOT_ACCEPTED_CARRIERS:
+        # acceptance is carrier-level in this fixture, so no office takes it. Handing back
+        # sibling offices as "alternatives" invited a false "try Brooklyn Heights instead".
+        return {"accepted": False, "must_not_assert": False,
+                "carrier": slug, "location": loc["name"],
+                "alternative_locations": [],
+                "notes": (f"{label} is not accepted at any Straus office. Say so "
+                          "plainly and offer self-pay pricing or a callback — do not send "
+                          "them to another office."),
+                "required_script": (f"We don't accept {label} at any of our offices. "
+                                    "I can go over self-pay pricing or have someone call "
+                                    "you about options.")}
+    if slug in _ACCEPTED_CARRIERS:
+        return {"accepted": True, "must_not_assert": False,
+                "carrier": slug, "location": loc["name"]}
+    return {
+        "accepted": None,
+        "must_not_assert": True,
+        "carrier": slug,
+        "location": loc["name"],
+        "required_script": _UNCONFIRMED_SCRIPT,
+    }
+
+
+def _d_run_eligibility_check(a: dict[str, Any]) -> dict[str, Any]:
+    _require(a, "carrier", "member_id", "dob", "service_date")
+    with _db() as conn:
+        row = conn.execute(
+            "SELECT * FROM patients WHERE member_id = ? AND dob = ?",
+            (str(a["member_id"]).strip(), str(a["dob"]).strip()),
+        ).fetchone()
+    if row is None:
+        raise ToolError(
+            "PAYER_UNAVAILABLE",
+            "The payer didn't return eligibility. Say you couldn't get the number — "
+            "never guess at a copay.",
+        )
+    submitted_carrier = _carrier_slug(a["carrier"])
+    on_file_carrier = _carrier_slug(row["carrier"] or "")
+    if not on_file_carrier or submitted_carrier != on_file_carrier:
+        raise ToolError(
+            "PAYER_UNAVAILABLE",
+            "The payer didn't return eligibility for that carrier. Say you "
+            "couldn't get the number — never guess at a copay.",
+        )
+    return {"copay_cents": 3000, "deductible_remaining_cents": 25000,
+            "coinsurance_pct": 20, "plan_active": True, "service_date": a["service_date"]}
+
+
+def _d_capture_insurance_update(a: dict[str, Any]) -> dict[str, Any]:
+    _require(a, "carrier", "member_id")
+    row = _patient_row()
+    with _db() as conn:
+        conn.execute(
+            "UPDATE patients SET carrier = ?, member_id = ? WHERE id = ?",
+            (a["carrier"], a["member_id"], row["id"]),
+        )
+    # group_number has no dedicated column — it must never overwrite plan_name;
+    # keep it (and the rest of the update) in the durable event stream instead.
+    _event("insurance_update", {"patient_id": row["id"], **a})
+    return {"updated": True, "card_upload_link_sent": True,
+            "note": "A secure link for card photos was texted."}
+
+
+def _line_items(balance_cents: int) -> list[dict[str, Any]]:
+    items = []
+    remainder = balance_cents
+    if balance_cents >= 5000:
+        items.append({"line_item_id": "li_noshow", "description": "Missed-visit fee",
+                      "amount_cents": 5000})
+        remainder -= 5000
+    if remainder > 0:
+        items.append({"line_item_id": "li_visit", "description": "Office visit balance",
+                      "amount_cents": remainder})
+    return items
+
+
+def _d_get_account_balance(a: dict[str, Any]) -> dict[str, Any]:
+    row = _patient_row()
+    _session_state()["last_amount_cents"] = row["balance_cents"]
+    return {"balance_cents": row["balance_cents"], "line_items": _line_items(row["balance_cents"])}
+
+
+_CHARGE_SCRIPTS = {
+    "li_noshow": ("That fifty dollar charge is the missed-visit fee from a visit that "
+                  "was cancelled inside the notice window. If you believe it shouldn't "
+                  "apply, I can open a review with the billing team."),
+    "li_visit": ("That charge is the portion of your visit your insurance applied to "
+                 "your deductible or copay after the claim processed."),
+}
+
+
+def _d_explain_charge(a: dict[str, Any]) -> dict[str, Any]:
+    _require(a, "line_item_id")
+    script = _CHARGE_SCRIPTS.get(str(a["line_item_id"]))
+    if script is None:
+        raise ToolError("UNKNOWN_LINE_ITEM", "No approved explanation for that line item — "
+                                             "open a billing callback instead.")
+    return {"line_item_id": a["line_item_id"], "approved_script": script}
+
+
+def _d_send_payment_link(a: dict[str, Any]) -> dict[str, Any]:
+    _require(a, "mobile_e164")
+    _event("payment_link", dict(a))
+    return {"sent": True, "channel": "sms", "mobile_e164": a["mobile_e164"],
+            "amount_cents": a.get("amount_cents")}
+
+
+def _d_offer_financing(a: dict[str, Any]) -> dict[str, Any]:
+    raw = a.get("amount_cents")
+    if raw in (None, ""):
+        raw = _session_state().get("last_amount_cents")
+    if raw in (None, ""):
+        raise ToolError(
+            "INVALID_ARGUMENTS",
+            "I need the amount being financed — quote the service or look up the balance first.",
+        )
+    amount = int(raw)
+    eligible = amount >= 25000
+    return {"eligible": eligible, "provider": "CareCredit",
+            "note": None if eligible else "CareCredit is offered for balances over $250."}
+
+
+def _d_request_fee_waiver(a: dict[str, Any]) -> dict[str, Any]:
+    _require(a, "fee_line_item_id")
+    if str(a["fee_line_item_id"]) != "li_noshow":
+        raise ToolError(
+            "INVALID_ARGUMENTS",
+            "Only the missed-visit fee line li_noshow can be sent for review.",
+        )
+    _event("fee_waiver_request", dict(a))
+    return {"review_opened": True, "sla": "two business days",
+            "spoken_commitment": ("The billing team will review that fee and get back "
+                                  "to you within two business days.")}
+
+
+# --- cosmetic -------------------------------------------------------------------
+
+_COSMETIC_QUOTES = {
+    "botox": {"low_cents": 30000, "high_cents": 60000},
+    "filler": {"low_cents": 60000, "high_cents": 120000},
+    "chemical_peel": {"low_cents": 20000, "high_cents": 40000},
+    "microneedling": {"low_cents": 35000, "high_cents": 70000},
+}
+
+_COSMETIC_POLICY_LINES = [
+    "A $125 deposit holds the consult.",
+    "You can move or cancel it free of charge up to 72 hours before.",
+    "Inside 72 hours the deposit is forfeited.",
+    "Any remaining balance for treatment is due at the visit.",
+]
+
+
+def _d_quote_cosmetic_service(a: dict[str, Any]) -> dict[str, Any]:
+    _require(a, "service")
+    service = str(a["service"]).strip().lower().replace(" ", "_")
+    rng = _COSMETIC_QUOTES.get(service)
+    if rng:
+        _session_state()["last_amount_cents"] = rng["low_cents"]
+        return {"service": a["service"], "price_range": rng,
+                "note": "You may say this range and must add that the consult settles the number."}
+    return {"service": a["service"], "price_range": None,
+            "note": "Pricing depends on the treatment plan — never invent or estimate a number."}
+
+
+def _d_book_cosmetic_consult(a: dict[str, Any]) -> dict[str, Any]:
+    if not a.get("policy_acknowledged"):
+        return {"status": "policy_disclosure_required",
+                "policy_lines": _COSMETIC_POLICY_LINES,
+                "note": "Say all four lines, get a real yes, then call again with true."}
+    _require(a, "location_id", "provider_id", "start", "service_interest")
+    loc = _resolve_location(a["location_id"])
+    if not loc["offers_cosmetic"]:
+        raise ToolError("COSMETIC_NOT_OFFERED", f"{loc['name']} does not do cosmetic work.")
+    start = _iso_minute(a["start"])
+    _reject_past(start, what="That consult time")
+    if not _published_slot_start(start):
+        raise ToolError(
+            "NO_AVAILABILITY",
+            "That consult time is not an open slot. Call find_slots and read back a listed time.",
+        )
+    created = create_appointment(
+        AppointmentCreate(
+            patient_id=_session_state().get("patient_id"),
+            location_id=loc["id"],
+            provider_id=a["provider_id"],
+            appointment_type_code="COS_CONSULT",
+            start=start,
+            end=_iso_plus_minutes(start, 30),
+            description="Cosmetic consult: " + ", ".join(a.get("service_interest") or []),
+        )
+    )
+    return {"appointment": created, "status": "booked", "deposit_cents": 12500}
+
+
+# --- clinical -------------------------------------------------------------------
+
+_RX_HARD_STOPS = (
+    ({"isotretinoin", "accutane"}, "isotretinoin_program",
+     "Isotretinoin refills require the monthly program visit — offer to book it."),
+    ({"tramadol", "xanax", "adderall", "oxycodone", "codeine"}, "controlled_substance",
+     "Controlled medications are never refilled by phone — the prescriber must see them."),
+    ({"dupixent", "humira", "skyrizi", "biologic"}, "biologic_coordinator",
+     "Biologics route to the biologic coordinator, who will call back."),
+)
+
+
+_RX_FORMULARY = {
+    "triamcinolone", "isotretinoin", "accutane", "dupixent", "humira", "skyrizi",
+    "xanax", "tramadol", "adderall", "oxycodone", "codeine",
+}
+
+
+def _d_request_rx_refill(a: dict[str, Any]) -> dict[str, Any]:
+    _require(a, "medication_name")
+    patient = _patient_row()
+    med = str(a["medication_name"]).strip().lower()
+    if med not in _RX_FORMULARY:
+        raise ToolError(
+            "UNKNOWN_MEDICATION",
+            f"medication_name must be one of {sorted(_RX_FORMULARY)}.",
+        )
+    for keywords, route, note in _RX_HARD_STOPS:
+        if any(k in med for k in keywords):
+            _event("rx_refill_request", {"patient_id": patient["id"], **a, "route": route})
+            payload = {"route": route, "hard_stop": True, "approved": False, "note": note}
+            if route == "controlled_substance":
+                payload["spoken_commitment"] = note
+            return payload
+    _event("rx_refill_request", {"patient_id": patient["id"], **a, "route": "routed_to_provider"})
+    return {"route": "routed_to_provider", "hard_stop": False, "approved": False,
+            "note": "The request is with the clinical team; this never approves a refill."}
+
+
+def _d_get_results_status(a: dict[str, Any]) -> dict[str, Any]:
+    order = str(a.get("order_type") or "lab")
+    return {
+        "status": "resulted_pending_review",
+        "approved_script": (
+            f"Your {order} results are in and are with the clinical team for review. "
+            "A clinician will reach out — I can't read results over the phone, but I "
+            "can send the team a message."
+        ),
+    }
+
+
+# clinical.md tells the agent to "say the callback window out loud" off this tool, so the
+# tool has to supply one — without it the agent either invents a window or (correctly)
+# refuses to state one and fails a criterion it could never satisfy.
+_CLINICAL_CALLBACK_WINDOW = {
+    "stat": "within the hour",
+    "urgent": "within four hours",
+    "routine": "by the end of the next business day",
+}
+
+
+def _d_create_clinical_message(a: dict[str, Any]) -> dict[str, Any]:
+    _require(a, "category")
+    patient = _patient_row()
+    priority = str(a.get("priority") or "routine").strip().lower()
+    if priority not in _CLINICAL_CALLBACK_WINDOW:
+        priority = "routine"
+    event_id = _event("clinical_message", {"patient_id": patient["id"], **a, "priority": priority})
+    window = _CLINICAL_CALLBACK_WINDOW[priority]
+    return {"message_id": f"cm_{event_id}", "queued": True,
+            "priority": priority, "category": a["category"],
+            "callback_window": window,
+            "spoken_commitment": f"Someone from the clinical team will call you back {window}."}
+
+
+# --- practice / plumbing ----------------------------------------------------------
+
+_SMS_TEMPLATES = {"appointment_confirmation"}
+
+
+def _d_send_sms(a: dict[str, Any]) -> dict[str, Any]:
+    _require(a, "template_id", "mobile_e164")
+    if a["template_id"] not in _SMS_TEMPLATES:
+        raise ToolError("UNKNOWN_TEMPLATE",
+                        f"template_id must be one of {sorted(_SMS_TEMPLATES)}.")
+    _event("sms", dict(a))
+    return {"sent": True, "template_id": a["template_id"], "mobile_e164": a["mobile_e164"]}
+
+
+def _d_send_portal_activation(a: dict[str, Any]) -> dict[str, Any]:
+    _require(a, "channel")
+    channel = str(a["channel"]).strip().lower()
+    if channel not in ("sms", "email"):
+        raise ToolError("INVALID_ARGUMENTS", "channel must be sms or email.")
+    _event("portal_activation", {"channel": channel})
+    return {"sent": True, "channel": channel, "expires": "72 hours"}
+
+
+_CALLBACK_QUEUES = {"billing", "clinical", "front_desk", "cosmetic", "records"}
+
+
+def _d_create_callback_task(a: dict[str, Any]) -> dict[str, Any]:
+    _require(a, "queue", "callback_number")
+    if a["queue"] not in _CALLBACK_QUEUES:
+        raise ToolError("UNKNOWN_QUEUE", f"queue must be one of {sorted(_CALLBACK_QUEUES)}.")
+    sla_hours = {"stat": 1, "urgent": 4}.get(str(a.get("priority") or ""), 24)
+    event_id = _event("callback_task", dict(a))
+    sla_text = "one hour" if sla_hours == 1 else f"{sla_hours} hours"
+    return {
+        "task_id": f"cb_{event_id}",
+        "queue": a["queue"],
+        "sla_hours": sla_hours,
+        "spoken_commitment": (
+            f"Someone from the {a['queue'].replace('_', ' ')} team will call you back at "
+            f"{a['callback_number']} within {sla_text}."
+        ),
+    }
+
+
+_TRANSFER_DESTINATIONS = {"patient_support_center", "billing_team", "location_front_desk",
+                          "cosmetic_coordinator", "clinical_triage", "records", "on_call"}
+
+
+def _d_transfer_to_human(a: dict[str, Any]) -> dict[str, Any]:
+    _require(a, "destination", "reason")
+    dest = str(a["destination"])
+    if dest not in _TRANSFER_DESTINATIONS:
+        raise ToolError("UNKNOWN_DESTINATION",
+                        f"destination must be one of {sorted(_TRANSFER_DESTINATIONS)}.")
+    _event("transfer", dict(a))
+    return {"transferred": True, "destination": dest}
+
+
+DISPATCH = {
+    "identify_patient": _d_identify_patient,
+    "verify_identity": _d_verify_identity,
+    "get_patient_summary": _d_get_patient_summary,
+    "list_locations": _d_list_locations,
+    "classify_visit_request": _d_classify_visit_request,
+    "find_slots": _d_find_slots,
+    "book_appointment": _d_book_appointment,
+    "reschedule_appointment": _d_reschedule_appointment,
+    "cancel_appointment": _d_cancel_appointment,
+    "join_waitlist": _d_join_waitlist,
+    "schedule_allergy_service": _d_schedule_allergy_service,
+    "check_plan_accepted": _d_check_plan_accepted,
+    "run_eligibility_check": _d_run_eligibility_check,
+    "capture_insurance_update": _d_capture_insurance_update,
+    "get_account_balance": _d_get_account_balance,
+    "explain_charge": _d_explain_charge,
+    "send_payment_link": _d_send_payment_link,
+    "offer_financing": _d_offer_financing,
+    "request_fee_waiver": _d_request_fee_waiver,
+    "quote_cosmetic_service": _d_quote_cosmetic_service,
+    "book_cosmetic_consult": _d_book_cosmetic_consult,
+    "request_rx_refill": _d_request_rx_refill,
+    "get_results_status": _d_get_results_status,
+    "create_clinical_message": _d_create_clinical_message,
+    "send_sms": _d_send_sms,
+    "send_portal_activation": _d_send_portal_activation,
+    "create_callback_task": _d_create_callback_task,
+    "transfer_to_human": _d_transfer_to_human,
+}
+
+
+class ToolCall(BaseModel):
+    arguments: dict[str, Any] = Field(default_factory=dict)
+
+
+@app.post("/tools/{tool_name}")
+def dispatch_tool(tool_name: str, body: ToolCall) -> dict[str, Any]:
+    handler = DISPATCH.get(tool_name)
+    if handler is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"unknown tool {tool_name!r} — session and handoff tools are "
+            "harness-native and industry tools must be listed in DISPATCH",
+        )
+    try:
+        data = handler(dict(body.arguments or {}))
+        return {"ok": True, "data": data, "error_code": None, "patient_safe_message": None}
+    except ToolError as e:
+        return {"ok": False, "data": None, "error_code": e.code,
+                "patient_safe_message": e.message}
+    except HTTPException as e:
+        return {"ok": False, "data": None, "error_code": f"HTTP_{e.status_code}",
+                "patient_safe_message": str(e.detail)}
+    except Exception:  # soft-fail: a broken tool must not 500 into the call
+        # Diagnostic details (exception type/message, tracebacks, DB errors)
+        # stay server-side; callers only ever hear a fixed safe message.
+        logger.exception("unhandled error dispatching tool %r", tool_name)
+        return {"ok": False, "data": None, "error_code": "INVALID_ARGUMENTS",
+                "patient_safe_message": "Something went wrong handling that request. "
+                "Please try again or ask for a callback."}
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    port = int(os.environ.get("TOOL_SERVER_PORT", "8000"))
+    uvicorn.run(app, host="0.0.0.0", port=port)

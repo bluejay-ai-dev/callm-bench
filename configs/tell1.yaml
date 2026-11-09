@@ -1,0 +1,23 @@
+# Retell Tell-1 as the model under test, through Retell's agent playground API
+# (responses_api_models/retell_playground). Needs RETELL_API_KEY and OPENAI_API_KEY (caller).
+# Retell serves Tell-1 at about 10 QPS today, so requests are capped at 8 in flight.
+# The playground returns no stream and no token usage: Tell-1 gets round-trip latency only.
+config_paths:
+  - resources_servers/micol/configs/micol.yaml
+
+policy_model:
+  responses_api_models:
+    retell_playground:
+      entrypoint: app.py
+      openai_base_url: https://api.retellai.com
+      openai_api_key: ${oc.env:RETELL_API_KEY}
+      openai_model: tell-1
+      max_concurrent_requests: 8
+
+user_model:
+  responses_api_models:
+    openai_model:
+      entrypoint: app.py
+      openai_base_url: https://api.openai.com/v1
+      openai_api_key: ${oc.env:OPENAI_API_KEY}
+      openai_model: gpt-5.2

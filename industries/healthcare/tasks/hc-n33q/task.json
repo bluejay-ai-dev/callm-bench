@@ -1,0 +1,1200 @@
+{
+  "task_id": "hc-n33q",
+  "task_name": "Existing patient Botox after Windermere cannot do cosmetic",
+  "intent": "You are an existing Straus patient in Florida. Answer identity questions once with your name and date of birth, confirm if they read it back, then get to why you called. After they greet you or ask how they can help, your first spoken request is how much Botox costs and whether Windermere does cosmetic work; do not open by saying you still need a consult booked. Ask how much Botox costs, then ask them to look up whether Windermere does cosmetic work. When they say Windermere does not do cosmetic work, ask for a consult at Park Avenue instead. You need the Park Avenue street address, the floor, and the suite before you will take any time; if they skip any of those, ask again. After you hear the Botox price, say that is more than you can pay all at once and ask whether there is a way to spread the treatment cost out. When they explain the deposit and cancellation rules, agree. Ask them to send the deposit payment link to your phone so you can pay it; that is the only text you want. After you have the address, take the first appointment time they offer. Do not ask for a different day, time, or office, and do not suggest any date of your own. Confirm that first time out loud, then thank them and end the call. Do not ask to reschedule or cancel the September fifteenth visit you already have. Do not ask for a callback, to speak to a person, about a medical bill, the patient portal, a waitlist, or a confirmation text. Never ask to speak to a person, a live agent, or the cosmetic team. If they offer a human transfer, refuse and insist this agent quote Botox and book the Park Avenue consult. Do not book anything except this Park Avenue Botox consult. A listed opening is not a booking. Do not thank them, say goodbye, or hang up until they confirm a time is on the calendar, they have looked up financing, and a deposit payment link was sent to your phone. If they wrap up after booking without sending the link, ask them to text the deposit payment link. Do not ask them to text you an appointment confirmation. Once they have said the consult is on the calendar and the deposit payment link was sent to your phone, thank them and end the call right away; do not ask for either again.",
+  "traits": [
+    {
+      "trait_name": "full_name",
+      "value": "Alice Romano"
+    },
+    {
+      "trait_name": "date_of_birth",
+      "value": "1995-09-08"
+    },
+    {
+      "trait_name": "mobile",
+      "value": "407-555-0155"
+    },
+    {
+      "trait_name": "zip",
+      "value": "34786"
+    },
+    {
+      "trait_name": "patient_status",
+      "value": "existing"
+    },
+    {
+      "trait_name": "preferred_office",
+      "value": "Windermere"
+    },
+    {
+      "trait_name": "carrier",
+      "value": "Oscar Health"
+    }
+  ],
+  "exp_handoff_path": [
+    "transfer_to_identity",
+    "transfer_to_cosmetic"
+  ],
+  "exp_tool_calls": [
+    {
+      "name": "transfer_to_identity",
+      "parameters": {
+        "next_intent": "cosmetic"
+      }
+    },
+    {
+      "name": "identify_patient",
+      "parameters": {
+        "first_name": "Alice",
+        "last_name": "Romano",
+        "dob": "1995-09-08"
+      }
+    },
+    {
+      "name": "verify_identity",
+      "parameters": {
+        "full_name": "Alice Romano",
+        "dob": "1995-09-08"
+      },
+      "output": {
+        "ok": true,
+        "data": {
+          "verified": true
+        }
+      }
+    },
+    {
+      "name": "get_patient_summary",
+      "output": {
+        "ok": true
+      }
+    },
+    {
+      "name": "transfer_to_cosmetic"
+    },
+    {
+      "name": "quote_cosmetic_service",
+      "parameters": {
+        "service": "botox"
+      }
+    },
+    {
+      "name": "list_locations",
+      "parameters": {
+        "location_id": "loc_windermere"
+      }
+    },
+    {
+      "name": "find_slots",
+      "parameters": {
+        "location_ids": [
+          "loc_park_ave"
+        ]
+      }
+    },
+    {
+      "name": "book_cosmetic_consult",
+      "parameters": {
+        "slot_id": "slot_loc_park_ave_1",
+        "location_id": "loc_park_ave",
+        "provider_id": "prov_chen",
+        "start": "2026-08-24T09:00",
+        "service_interest": [
+          "botox"
+        ],
+        "policy_acknowledged": true
+      },
+      "output": {
+        "ok": true,
+        "data": {
+          "status": "booked"
+        }
+      }
+    },
+    {
+      "name": "offer_financing",
+      "output": {
+        "ok": true
+      }
+    },
+    {
+      "name": "send_payment_link",
+      "parameters": {
+        "mobile_e164": "+14075550155"
+      },
+      "output": {
+        "ok": true,
+        "data": {
+          "sent": true
+        }
+      }
+    }
+  ],
+  "behaviors": {
+    "creativity": 0
+  },
+  "scripted_responses": [
+    {
+      "match_type": "context",
+      "match_phrase": "asks for a ZIP code, either yours or the office's. NOT when asking for your name, date of birth, or phone number, NOT when reading a ZIP code back to you.",
+      "response_type": "phrase",
+      "response_value": "Three, four, seven, eight, six."
+    },
+    {
+      "match_type": "context",
+      "match_phrase": "greets you, asks how they can help, asks what you need, or says they are listening, before you have asked about Botox or Windermere. NOT when they have just confirmed a booked time, NOT when quoting Botox, NOT when asking for your name or date of birth.",
+      "response_type": "phrase",
+      "response_value": "I'm an existing patient. How much does Botox cost? Can you look up whether Windermere does cosmetic work?"
+    },
+    {
+      "match_type": "context",
+      "match_phrase": "asks for your full name and date of birth, or asks you to confirm who you are, or asks for the patient's name and date of birth. NOT when asking only for a member ID or insurance card, NOT when asking which office or location, NOT when asking for a phone or mobile number, NOT when asking about an appointment day or time, NOT when reading your name and date of birth back to you for confirmation.",
+      "response_type": "phrase",
+      "response_value": "Alice Romano. My date of birth is September eighth, nineteen ninety-five."
+    },
+    {
+      "match_type": "context",
+      "match_phrase": "reads your name and date of birth back to you and asks whether that is right, or asks you to confirm the name and date of birth they just repeated. NOT when first asking for your name and date of birth, NOT when asking for a phone or mobile number. NOT when asking for a ZIP code.",
+      "response_type": "phrase",
+      "response_value": "Yes, that's right."
+    },
+    {
+      "match_type": "context",
+      "match_phrase": "says Windermere does not offer cosmetic work, does not do Botox, or only does medical visits in Florida. NOT when they have already offered Park Avenue.",
+      "response_type": "phrase",
+      "response_value": "Then book the Botox consult at Park Avenue instead. I need the street address, the floor, and the suite first."
+    },
+    {
+      "match_type": "context",
+      "match_phrase": "offers one or more concrete appointment dates or times after saying the Park Avenue street address, floor, and suite, or asks which day or time you want after giving that full address. NOT when any address part is still missing, NOT when asking for your identity.",
+      "response_type": "phrase",
+      "response_value": "Book the first time you offered."
+    },
+    {
+      "match_type": "context",
+      "match_phrase": "offers to transfer you to a human, a person, the cosmetic team, a live agent, or the front desk, or asks if you want to talk to someone. NOT when they are quoting Botox or booking the Park Avenue consult.",
+      "response_type": "phrase",
+      "response_value": "No, I don't want a person or the cosmetic team. Quote Botox and book the Park Avenue consult on this call."
+    },
+    {
+      "match_type": "context",
+      "match_phrase": "offers the waitlist, a later opening, or to add you to a list. NOT when offering a specific appointment time to book now, NOT when asking for your name or date of birth.",
+      "response_type": "phrase",
+      "response_value": "No waitlist. Please just finish what I asked."
+    },
+    {
+      "match_type": "context",
+      "match_phrase": "offers to text you a confirmation, directions, or an appointment SMS. NOT when offering a payment link or deposit link, NOT when asking for a payment-link number, NOT when asking for your mobile number for identity, NOT when sending portal access.",
+      "response_type": "phrase",
+      "response_value": "No thanks, I don't need a confirmation text."
+    },
+    {
+      "match_type": "context",
+      "match_phrase": "offers an appointment time or asks you to confirm a slot, and has NOT yet said the Park Avenue street address, floor, and suite anywhere earlier in the call. NOT when the street, floor, and suite have already been said at any point in the call, NOT when asking for your name, date of birth, ZIP code, or phone number.",
+      "response_type": "phrase",
+      "response_value": "Before I take a time, I need the street address, the floor, and the suite."
+    },
+    {
+      "match_type": "context",
+      "match_phrase": "has already said the cosmetic deposit amount and the cancellation window out loud, and is asking whether you agree to that policy before booking. NOT when asking any other yes-or-no, NOT during identity verification, NOT when quoting a price range, and NOT before they have named both the deposit and the cancellation window. NOT when asking for a phone or mobile number, NOT when they have already booked the consult.",
+      "response_type": "phrase",
+      "response_value": "Yes. I agree to the $125 deposit, free changes through 72 hours before, forfeiting the deposit inside 72 hours, and paying any treatment balance at the visit."
+    },
+    {
+      "match_type": "context",
+      "match_phrase": "thanks you, says goodbye, or asks if you need anything else, and has not yet said a deposit or payment link was sent. NOT when they have said at any point that the payment link or deposit link was sent or texted, NOT when asking for your mobile number, NOT when asking whether you agree to the deposit policy.",
+      "response_type": "phrase",
+      "response_value": "Please text me the deposit payment link before I go."
+    },
+    {
+      "match_type": "context",
+      "match_phrase": "thanks you, says goodbye, wraps up, or asks if you need anything else, and no consult time has been booked yet anywhere in the call. NOT when they have said at any point that a consult is booked, confirmed, or on the calendar, NOT when greeting you at the start of the call, NOT when asking a question.",
+      "response_type": "phrase",
+      "response_value": "I still need the consult booked. Please confirm a time on the calendar before I go."
+    },
+    {
+      "match_type": "context",
+      "match_phrase": "has just said a Botox dollar price range. NOT when they have not yet said a dollar amount for Botox, NOT when talking about an account balance, NOT when they have already answered about CareCredit or financing.",
+      "response_type": "phrase",
+      "response_value": "That is more than I can pay all at once. Is there a way to spread the Botox cost out?"
+    },
+    {
+      "match_type": "context",
+      "match_phrase": "offers to text a payment link or deposit link, asks whether you want the deposit payment link by text, or asks which mobile number should receive the payment link. NOT when offering an appointment confirmation, directions, or another unrelated text, NOT when asking for your mobile number for identity. NOT when they have already said the payment link or deposit link was sent or texted.",
+      "response_type": "phrase",
+      "response_value": "Yes, please text the deposit payment link to 407-555-0155."
+    }
+  ],
+  "customer_name": "Alice Romano",
+  "customer_available_tools": {},
+  "metadata": {
+    "split": "public",
+    "tags": [
+      "mivas-v1"
+    ],
+    "category": "C4",
+    "category_slug": "cosmetic-concierge",
+    "difficulty": "hard",
+    "audio_condition": "perfect"
+  },
+  "exp_db_state": {
+    "patients": [
+      {
+        "id": "pat_aiko_tanaka",
+        "first_name": "Aiko",
+        "last_name": "Tanaka",
+        "dob": "1988-01-09",
+        "zip": "11215",
+        "phone_e164": "+17185550225",
+        "home_office_id": "loc_brooklyn_heights",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "Cigna",
+        "member_id": "C998877665",
+        "plan_name": "Open Access Plus"
+      },
+      {
+        "id": "pat_alice_romano",
+        "first_name": "Alice",
+        "last_name": "Romano",
+        "dob": "1995-09-08",
+        "zip": "34786",
+        "phone_e164": "+14075550155",
+        "home_office_id": "loc_windermere",
+        "language": "en",
+        "balance_cents": 32000,
+        "carrier": "Oscar Health",
+        "member_id": "O778899001",
+        "plan_name": "Circle EPO"
+      },
+      {
+        "id": "pat_amara_okafor",
+        "first_name": "Amara",
+        "last_name": "Okafor",
+        "dob": "1998-09-12",
+        "zip": "11201",
+        "phone_e164": "+17185550252",
+        "home_office_id": "loc_brooklyn_heights",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "UnitedHealthcare",
+        "member_id": "U323334353",
+        "plan_name": "Choice Plus"
+      },
+      {
+        "id": "pat_ben_carter",
+        "first_name": "Ben",
+        "last_name": "Carter",
+        "dob": "1975-09-01",
+        "zip": "10016",
+        "phone_e164": "+12125550236",
+        "home_office_id": "loc_park_ave",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "UnitedHealthcare",
+        "member_id": "U808909010",
+        "plan_name": "Choice Plus"
+      },
+      {
+        "id": "pat_chloe_bennett",
+        "first_name": "Chloe",
+        "last_name": "Bennett",
+        "dob": "1990-10-04",
+        "zip": "10010",
+        "phone_e164": "+12125550231",
+        "home_office_id": "loc_park_ave",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "Aetna",
+        "member_id": "W101202303",
+        "plan_name": "Open Access Elect Choice"
+      },
+      {
+        "id": "pat_daniel_kim_a",
+        "first_name": "Daniel",
+        "last_name": "Kim",
+        "dob": "1979-03-05",
+        "zip": "10022",
+        "phone_e164": "+12125550215",
+        "home_office_id": "loc_park_ave",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "BCBS",
+        "member_id": "XYZ778899001",
+        "plan_name": "Empire Blue PPO"
+      },
+      {
+        "id": "pat_daniel_kim_b",
+        "first_name": "Daniel",
+        "last_name": "Kim",
+        "dob": "2001-10-19",
+        "zip": "11217",
+        "phone_e164": "+17185550216",
+        "home_office_id": "loc_brooklyn_heights",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "Aetna",
+        "member_id": "W667788990",
+        "plan_name": "Open Access Elect Choice"
+      },
+      {
+        "id": "pat_diego_santos",
+        "first_name": "Diego",
+        "last_name": "Santos",
+        "dob": "1997-01-17",
+        "zip": "10010",
+        "phone_e164": "+12125550244",
+        "home_office_id": "loc_park_ave",
+        "language": "en",
+        "balance_cents": 5000,
+        "carrier": "Cigna",
+        "member_id": "C202122232",
+        "plan_name": "Open Access Plus"
+      },
+      {
+        "id": "pat_emily_zhang",
+        "first_name": "Emily",
+        "last_name": "Zhang",
+        "dob": "1992-08-05",
+        "zip": "11215",
+        "phone_e164": "+17185550245",
+        "home_office_id": "loc_brooklyn_heights",
+        "language": "en",
+        "balance_cents": 64000,
+        "carrier": "BCBS",
+        "member_id": "XYZ242526272",
+        "plan_name": "Empire Blue PPO"
+      },
+      {
+        "id": "pat_ethan_brooks",
+        "first_name": "Ethan",
+        "last_name": "Brooks",
+        "dob": "1982-07-19",
+        "zip": "10016",
+        "phone_e164": "+12125550211",
+        "home_office_id": "loc_park_ave",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "Aetna",
+        "member_id": "W210987654",
+        "plan_name": "Open Access Elect Choice"
+      },
+      {
+        "id": "pat_frank_dubois",
+        "first_name": "Frank",
+        "last_name": "Dubois",
+        "dob": "1951-05-30",
+        "zip": "32836",
+        "phone_e164": "+14075550226",
+        "home_office_id": "loc_windermere",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "Medicare",
+        "member_id": "4HK7WH8QN05",
+        "plan_name": "Original Medicare"
+      },
+      {
+        "id": "pat_george_hall",
+        "first_name": "George",
+        "last_name": "Hall",
+        "dob": "1958-03-02",
+        "zip": "32836",
+        "phone_e164": "+14075550246",
+        "home_office_id": "loc_windermere",
+        "language": "en",
+        "balance_cents": 24900,
+        "carrier": "Medicare",
+        "member_id": "6KM9YK0SQ27",
+        "plan_name": "Original Medicare"
+      },
+      {
+        "id": "pat_grace_holloway",
+        "first_name": "Grace",
+        "last_name": "Holloway",
+        "dob": "1968-01-27",
+        "zip": "10010",
+        "phone_e164": "+12125550201",
+        "home_office_id": "loc_park_ave",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "Medicare",
+        "member_id": "1EG4TE5MK72",
+        "plan_name": "Original Medicare"
+      },
+      {
+        "id": "pat_hannah_berg",
+        "first_name": "Hannah",
+        "last_name": "Berg",
+        "dob": "1999-03-30",
+        "zip": "11217",
+        "phone_e164": "+17185550205",
+        "home_office_id": "loc_brooklyn_heights",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "Aetna",
+        "member_id": "W445566778",
+        "plan_name": "Open Access Elect Choice"
+      },
+      {
+        "id": "pat_henry_vance",
+        "first_name": "Henry",
+        "last_name": "Vance",
+        "dob": "1972-10-17",
+        "zip": "10016",
+        "phone_e164": "+12125550256",
+        "home_office_id": "loc_park_ave",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "UnitedHealthcare",
+        "member_id": "U444546474",
+        "plan_name": "Choice Plus"
+      },
+      {
+        "id": "pat_ingrid_larsen",
+        "first_name": "Ingrid",
+        "last_name": "Larsen",
+        "dob": "1962-12-15",
+        "zip": "34787",
+        "phone_e164": "+14075550223",
+        "home_office_id": "loc_windermere",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "UnitedHealthcare",
+        "member_id": "U889900112",
+        "plan_name": "Choice Plus"
+      },
+      {
+        "id": "pat_isabel_cruz",
+        "first_name": "Isabel",
+        "last_name": "Cruz",
+        "dob": "1986-03-18",
+        "zip": "11201",
+        "phone_e164": "+17185550232",
+        "home_office_id": "loc_brooklyn_heights",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "UnitedHealthcare",
+        "member_id": "U404505606",
+        "plan_name": "Choice Plus"
+      },
+      {
+        "id": "pat_jasmine_ford",
+        "first_name": "Jasmine",
+        "last_name": "Ford",
+        "dob": "1994-12-22",
+        "zip": "11217",
+        "phone_e164": "+17185550234",
+        "home_office_id": "loc_brooklyn_heights",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "BCBS",
+        "member_id": "XYZ010203040",
+        "plan_name": "Empire Blue PPO"
+      },
+      {
+        "id": "pat_jordan_lee",
+        "first_name": "Jordan",
+        "last_name": "Lee",
+        "dob": "1990-04-12",
+        "zip": "10016",
+        "phone_e164": "+12125550100",
+        "home_office_id": "loc_park_ave",
+        "language": "en",
+        "balance_cents": 12500,
+        "carrier": "Aetna",
+        "member_id": "W123456789",
+        "plan_name": "Open Access Elect Choice"
+      },
+      {
+        "id": "pat_karen_walsh",
+        "first_name": "Karen",
+        "last_name": "Walsh",
+        "dob": "1965-11-29",
+        "zip": "34787",
+        "phone_e164": "+14075550243",
+        "home_office_id": "loc_windermere",
+        "language": "en",
+        "balance_cents": 112000,
+        "carrier": "Medicare",
+        "member_id": "5JL8XJ9RP16",
+        "plan_name": "Original Medicare"
+      },
+      {
+        "id": "pat_kwame_mensah",
+        "first_name": "Kwame",
+        "last_name": "Mensah",
+        "dob": "1977-04-08",
+        "zip": "11201",
+        "phone_e164": "+17185550222",
+        "home_office_id": "loc_brooklyn_heights",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "BCBS",
+        "member_id": "XYZ334455667",
+        "plan_name": "Empire Blue PPO"
+      },
+      {
+        "id": "pat_leo_park",
+        "first_name": "Leo",
+        "last_name": "Park",
+        "dob": "2016-03-22",
+        "zip": "11201",
+        "phone_e164": "+17185550166",
+        "home_office_id": "loc_brooklyn_heights",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "Aetna",
+        "member_id": "W998877665",
+        "plan_name": "Open Access Elect Choice"
+      },
+      {
+        "id": "pat_linda_morales",
+        "first_name": "Linda",
+        "last_name": "Morales",
+        "dob": "1970-04-26",
+        "zip": "10003",
+        "phone_e164": "+12125550241",
+        "home_office_id": "loc_park_ave",
+        "language": "en",
+        "balance_cents": 8500,
+        "carrier": "Aetna",
+        "member_id": "W112131415",
+        "plan_name": "Open Access Elect Choice"
+      },
+      {
+        "id": "pat_lucia_moreno",
+        "first_name": "Lucia",
+        "last_name": "Moreno",
+        "dob": "1991-02-25",
+        "zip": "11201",
+        "phone_e164": "+17185550212",
+        "home_office_id": "loc_brooklyn_heights",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "UnitedHealthcare",
+        "member_id": "U321098765",
+        "plan_name": "Choice Plus"
+      },
+      {
+        "id": "pat_marcus_webb",
+        "first_name": "Marcus",
+        "last_name": "Webb",
+        "dob": "1995-08-27",
+        "zip": "10003",
+        "phone_e164": "+12125550224",
+        "home_office_id": "loc_park_ave",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "Oscar Health",
+        "member_id": "O112233445",
+        "plan_name": "Circle EPO"
+      },
+      {
+        "id": "pat_maria_alvarez",
+        "first_name": "Maria",
+        "last_name": "Alvarez",
+        "dob": "1972-06-30",
+        "zip": "10016",
+        "phone_e164": "+12125550133",
+        "home_office_id": "loc_park_ave",
+        "language": "en",
+        "balance_cents": 48000,
+        "carrier": "Cigna",
+        "member_id": "C445566778",
+        "plan_name": "Open Access Plus"
+      },
+      {
+        "id": "pat_mia_costa",
+        "first_name": "Mia",
+        "last_name": "Costa",
+        "dob": "2014-06-28",
+        "zip": "10010",
+        "phone_e164": "+12125550254",
+        "home_office_id": "loc_park_ave",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "Cigna",
+        "member_id": "C363738394",
+        "plan_name": "Open Access Plus"
+      },
+      {
+        "id": "pat_nadia_petrova",
+        "first_name": "Nadia",
+        "last_name": "Petrova",
+        "dob": "1979-07-07",
+        "zip": "10022",
+        "phone_e164": "+12125550233",
+        "home_office_id": "loc_park_ave",
+        "language": "en",
+        "balance_cents": 31000,
+        "carrier": "Cigna",
+        "member_id": "C707808909",
+        "plan_name": "Open Access Plus"
+      },
+      {
+        "id": "pat_noah_fischer",
+        "first_name": "Noah",
+        "last_name": "Fischer",
+        "dob": "2009-11-14",
+        "zip": "11215",
+        "phone_e164": "+17185550213",
+        "home_office_id": "loc_brooklyn_heights",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "Cigna",
+        "member_id": "C654321987",
+        "plan_name": "Open Access Plus"
+      },
+      {
+        "id": "pat_olivia_shaw",
+        "first_name": "Olivia",
+        "last_name": "Shaw",
+        "dob": "1983-02-11",
+        "zip": "34786",
+        "phone_e164": "+14075550235",
+        "home_office_id": "loc_windermere",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "Aetna",
+        "member_id": "W505606707",
+        "plan_name": "Open Access Elect Choice"
+      },
+      {
+        "id": "pat_omar_haddad",
+        "first_name": "Omar",
+        "last_name": "Haddad",
+        "dob": "1993-05-16",
+        "zip": "11215",
+        "phone_e164": "+17185550202",
+        "home_office_id": "loc_brooklyn_heights",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "BCBS",
+        "member_id": "XYZ512334890",
+        "plan_name": "Empire Blue PPO"
+      },
+      {
+        "id": "pat_priya_raman",
+        "first_name": "Priya",
+        "last_name": "Raman",
+        "dob": "1987-12-02",
+        "zip": "34787",
+        "phone_e164": "+14075550203",
+        "home_office_id": "loc_windermere",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "Cigna",
+        "member_id": "C112233445",
+        "plan_name": "Open Access Plus"
+      },
+      {
+        "id": "pat_raj_iyer",
+        "first_name": "Raj",
+        "last_name": "Iyer",
+        "dob": "1989-06-13",
+        "zip": "11201",
+        "phone_e164": "+17185550242",
+        "home_office_id": "loc_brooklyn_heights",
+        "language": "en",
+        "balance_cents": 27500,
+        "carrier": "UnitedHealthcare",
+        "member_id": "U161718192",
+        "plan_name": "Choice Plus"
+      },
+      {
+        "id": "pat_ruth_adeyemi",
+        "first_name": "Ruth",
+        "last_name": "Adeyemi",
+        "dob": "1949-06-03",
+        "zip": "34786",
+        "phone_e164": "+14075550214",
+        "home_office_id": "loc_windermere",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "Medicare",
+        "member_id": "3GJ6VG7PM94",
+        "plan_name": "Original Medicare"
+      },
+      {
+        "id": "pat_sam_nguyen",
+        "first_name": "Sam",
+        "last_name": "Nguyen",
+        "dob": "1985-11-03",
+        "zip": "11201",
+        "phone_e164": "+17185550122",
+        "home_office_id": "loc_brooklyn_heights",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "UnitedHealthcare",
+        "member_id": "U987654321",
+        "plan_name": "Choice Plus"
+      },
+      {
+        "id": "pat_selena_ortiz",
+        "first_name": "Selena",
+        "last_name": "Ortiz",
+        "dob": "1990-12-31",
+        "zip": "11217",
+        "phone_e164": "+17185550255",
+        "home_office_id": "loc_brooklyn_heights",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "BCBS",
+        "member_id": "XYZ404142434",
+        "plan_name": "Empire Blue PPO"
+      },
+      {
+        "id": "pat_sofia_greco",
+        "first_name": "Sofia",
+        "last_name": "Greco",
+        "dob": "1984-09-21",
+        "zip": "10016",
+        "phone_e164": "+12125550221",
+        "home_office_id": "loc_park_ave",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "Medicaid",
+        "member_id": "MCD44556677",
+        "plan_name": "NY Medicaid"
+      },
+      {
+        "id": "pat_theo_nakamura",
+        "first_name": "Theo",
+        "last_name": "Nakamura",
+        "dob": "1985-05-24",
+        "zip": "10022",
+        "phone_e164": "+12125550251",
+        "home_office_id": "loc_park_ave",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "Aetna",
+        "member_id": "W282930313",
+        "plan_name": "Open Access Elect Choice"
+      },
+      {
+        "id": "pat_tomas_rivera",
+        "first_name": "Tomas",
+        "last_name": "Rivera",
+        "dob": "2012-08-09",
+        "zip": "10003",
+        "phone_e164": "+12125550204",
+        "home_office_id": "loc_park_ave",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "UnitedHealthcare",
+        "member_id": "U556677889",
+        "plan_name": "Choice Plus"
+      },
+      {
+        "id": "pat_victor_osei",
+        "first_name": "Victor",
+        "last_name": "Osei",
+        "dob": "1956-10-11",
+        "zip": "32836",
+        "phone_e164": "+14075550206",
+        "home_office_id": "loc_windermere",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "Medicare",
+        "member_id": "2FH5UF6NL83",
+        "plan_name": "Original Medicare"
+      },
+      {
+        "id": "pat_walter_price",
+        "first_name": "Walter",
+        "last_name": "Price",
+        "dob": "1944-02-06",
+        "zip": "34786",
+        "phone_e164": "+14075550253",
+        "home_office_id": "loc_windermere",
+        "language": "en",
+        "balance_cents": 0,
+        "carrier": "Medicare",
+        "member_id": "7LN0ZL1TR38",
+        "plan_name": "Original Medicare"
+      }
+    ],
+    "locations": [
+      {
+        "id": "loc_brooklyn_heights",
+        "name": "Brooklyn Heights",
+        "zip": "11201",
+        "offers_cosmetic": 1,
+        "address": "142 Montague Street, Brooklyn, NY 11201",
+        "floor": "2nd floor",
+        "suite": "Suite 2B",
+        "hours": "Mon-Fri 8am-5pm",
+        "services": "medical, surgical, cosmetic, allergy",
+        "transit": "Two blocks from Borough Hall",
+        "parking": "Street parking; garage on Clinton Street"
+      },
+      {
+        "id": "loc_park_ave",
+        "name": "Park Avenue",
+        "zip": "10016",
+        "offers_cosmetic": 1,
+        "address": "386 Park Avenue South, New York, NY 10016",
+        "floor": "4th floor",
+        "suite": "Suite 410",
+        "hours": "Mon-Fri 8am-5pm, Sat 9am-1pm",
+        "services": "medical, surgical, cosmetic, allergy",
+        "transit": "One block from the 6 train at 33rd Street",
+        "parking": "Garage next door on East 27th"
+      },
+      {
+        "id": "loc_windermere",
+        "name": "Windermere",
+        "zip": "34786",
+        "offers_cosmetic": 0,
+        "address": "7600 Conroy Windermere Road, Windermere, FL 34786",
+        "floor": "Ground floor",
+        "suite": "Suite 100",
+        "hours": "Mon-Fri 8am-5pm",
+        "services": "medical, surgical, allergy",
+        "transit": "No transit nearby",
+        "parking": "Free surface lot"
+      }
+    ],
+    "providers": [
+      {
+        "id": "prov_chen",
+        "name": "Dr. Amy Chen",
+        "credentials": "MD, FAAD",
+        "location_id": "loc_park_ave"
+      },
+      {
+        "id": "prov_patel",
+        "name": "Dr. Neha Patel",
+        "credentials": "DO",
+        "location_id": "loc_windermere"
+      },
+      {
+        "id": "prov_ruiz",
+        "name": "Dr. Luis Ruiz",
+        "credentials": "MD",
+        "location_id": "loc_brooklyn_heights"
+      }
+    ],
+    "appointments": [
+      {
+        "id": 1,
+        "patient_id": "pat_jordan_lee",
+        "location_id": "loc_park_ave",
+        "provider_id": "prov_chen",
+        "appointment_type_code": "MED_FOLLOWUP",
+        "start": "2026-08-20T10:00",
+        "end": "2026-08-20T10:20",
+        "description": "Follow-up acne check",
+        "status": "booked"
+      },
+      {
+        "id": 2,
+        "patient_id": "pat_maria_alvarez",
+        "location_id": "loc_park_ave",
+        "provider_id": "prov_chen",
+        "appointment_type_code": "COS_CONSULT",
+        "start": "2026-08-21T15:00",
+        "end": "2026-08-21T15:30",
+        "description": "Botox consult",
+        "status": "booked"
+      },
+      {
+        "id": 3,
+        "patient_id": "pat_alice_romano",
+        "location_id": "loc_windermere",
+        "provider_id": "prov_patel",
+        "appointment_type_code": "MED_FOLLOWUP",
+        "start": "2026-09-15T09:00",
+        "end": "2026-09-15T09:20",
+        "description": "Eczema follow-up",
+        "status": "booked"
+      },
+      {
+        "id": 4,
+        "patient_id": "pat_ethan_brooks",
+        "location_id": "loc_park_ave",
+        "provider_id": "prov_chen",
+        "appointment_type_code": "MED_FOLLOWUP",
+        "start": "2026-08-20T08:40",
+        "end": "2026-08-20T09:00",
+        "description": "Follow-up psoriasis check",
+        "status": "booked"
+      },
+      {
+        "id": 5,
+        "patient_id": "pat_ethan_brooks",
+        "location_id": "loc_park_ave",
+        "provider_id": "prov_chen",
+        "appointment_type_code": "MED_FOLLOWUP",
+        "start": "2026-10-06T10:20",
+        "end": "2026-10-06T10:40",
+        "description": "Six-month skin check",
+        "status": "booked"
+      },
+      {
+        "id": 6,
+        "patient_id": "pat_lucia_moreno",
+        "location_id": "loc_brooklyn_heights",
+        "provider_id": "prov_ruiz",
+        "appointment_type_code": "MED_FOLLOWUP",
+        "start": "2026-08-27T13:00",
+        "end": "2026-08-27T13:20",
+        "description": "Rosacea follow-up",
+        "status": "booked"
+      },
+      {
+        "id": 7,
+        "patient_id": "pat_noah_fischer",
+        "location_id": "loc_brooklyn_heights",
+        "provider_id": "prov_ruiz",
+        "appointment_type_code": "ALLERGY_ALLERGY_SHOT",
+        "start": "2026-08-21T16:00",
+        "end": "2026-08-21T16:15",
+        "description": "Allergy shot",
+        "status": "booked"
+      },
+      {
+        "id": 8,
+        "patient_id": "pat_ruth_adeyemi",
+        "location_id": "loc_windermere",
+        "provider_id": "prov_patel",
+        "appointment_type_code": "MOHS_CONSULT",
+        "start": "2026-08-20T09:30",
+        "end": "2026-08-20T10:15",
+        "description": "Mohs consult, left temple",
+        "status": "booked"
+      },
+      {
+        "id": 9,
+        "patient_id": "pat_ruth_adeyemi",
+        "location_id": "loc_windermere",
+        "provider_id": "prov_patel",
+        "appointment_type_code": "MED_FOLLOWUP",
+        "start": "2026-09-22T11:00",
+        "end": "2026-09-22T11:20",
+        "description": "Post-Mohs wound check",
+        "status": "booked"
+      },
+      {
+        "id": 10,
+        "patient_id": "pat_daniel_kim_a",
+        "location_id": "loc_park_ave",
+        "provider_id": "prov_chen",
+        "appointment_type_code": "MED_FOLLOWUP",
+        "start": "2026-09-03T14:40",
+        "end": "2026-09-03T15:00",
+        "description": "Mole check",
+        "status": "booked"
+      },
+      {
+        "id": 11,
+        "patient_id": "pat_daniel_kim_b",
+        "location_id": "loc_brooklyn_heights",
+        "provider_id": "prov_ruiz",
+        "appointment_type_code": "MED_FOLLOWUP",
+        "start": "2026-08-20T11:20",
+        "end": "2026-08-20T11:40",
+        "description": "Acne follow-up",
+        "status": "booked"
+      },
+      {
+        "id": 12,
+        "patient_id": "pat_kwame_mensah",
+        "location_id": "loc_brooklyn_heights",
+        "provider_id": "prov_ruiz",
+        "appointment_type_code": "MED_FOLLOWUP",
+        "start": "2026-09-10T10:00",
+        "end": "2026-09-10T10:20",
+        "description": "Eczema follow-up",
+        "status": "booked"
+      },
+      {
+        "id": 13,
+        "patient_id": "pat_ingrid_larsen",
+        "location_id": "loc_windermere",
+        "provider_id": "prov_patel",
+        "appointment_type_code": "MED_FOLLOWUP",
+        "start": "2026-08-31T09:40",
+        "end": "2026-08-31T10:00",
+        "description": "Actinic keratosis follow-up",
+        "status": "booked"
+      },
+      {
+        "id": 14,
+        "patient_id": "pat_chloe_bennett",
+        "location_id": "loc_park_ave",
+        "provider_id": "prov_chen",
+        "appointment_type_code": "COS_CONSULT",
+        "start": "2026-08-21T11:00",
+        "end": "2026-08-21T11:30",
+        "description": "Filler consult",
+        "status": "booked"
+      },
+      {
+        "id": 15,
+        "patient_id": "pat_isabel_cruz",
+        "location_id": "loc_brooklyn_heights",
+        "provider_id": "prov_ruiz",
+        "appointment_type_code": "COS_CONSULT",
+        "start": "2026-09-08T15:30",
+        "end": "2026-09-08T16:00",
+        "description": "Chemical peel consult",
+        "status": "booked"
+      },
+      {
+        "id": 16,
+        "patient_id": "pat_jasmine_ford",
+        "location_id": "loc_brooklyn_heights",
+        "provider_id": "prov_ruiz",
+        "appointment_type_code": "COS_CONSULT",
+        "start": "2026-08-21T10:00",
+        "end": "2026-08-21T10:30",
+        "description": "Microneedling consult",
+        "status": "booked"
+      },
+      {
+        "id": 17,
+        "patient_id": "pat_ben_carter",
+        "location_id": "loc_park_ave",
+        "provider_id": "prov_chen",
+        "appointment_type_code": "MED_FOLLOWUP",
+        "start": "2026-08-28T08:00",
+        "end": "2026-08-28T08:20",
+        "description": "Wart treatment follow-up",
+        "status": "booked"
+      },
+      {
+        "id": 18,
+        "patient_id": "pat_linda_morales",
+        "location_id": "loc_park_ave",
+        "provider_id": "prov_chen",
+        "appointment_type_code": "MED_FOLLOWUP",
+        "start": "2026-09-15T09:00",
+        "end": "2026-09-15T09:20",
+        "description": "Dermatitis follow-up",
+        "status": "booked"
+      },
+      {
+        "id": 19,
+        "patient_id": "pat_raj_iyer",
+        "location_id": "loc_brooklyn_heights",
+        "provider_id": "prov_ruiz",
+        "appointment_type_code": "MED_FOLLOWUP",
+        "start": "2026-08-20T15:00",
+        "end": "2026-08-20T15:20",
+        "description": "Psoriasis biologic check",
+        "status": "booked"
+      },
+      {
+        "id": 20,
+        "patient_id": "pat_karen_walsh",
+        "location_id": "loc_windermere",
+        "provider_id": "prov_patel",
+        "appointment_type_code": "MOHS_CONSULT",
+        "start": "2026-09-01T13:30",
+        "end": "2026-09-01T14:15",
+        "description": "Mohs consult, nose",
+        "status": "booked"
+      },
+      {
+        "id": 21,
+        "patient_id": "pat_emily_zhang",
+        "location_id": "loc_brooklyn_heights",
+        "provider_id": "prov_ruiz",
+        "appointment_type_code": "COS_CONSULT",
+        "start": "2026-09-11T12:00",
+        "end": "2026-09-11T12:30",
+        "description": "Botox consult",
+        "status": "booked"
+      },
+      {
+        "id": 22,
+        "patient_id": "pat_theo_nakamura",
+        "location_id": "loc_park_ave",
+        "provider_id": "prov_chen",
+        "appointment_type_code": "MED_FOLLOWUP",
+        "start": "2026-09-02T10:40",
+        "end": "2026-09-02T11:00",
+        "description": "Biopsy results review",
+        "status": "booked"
+      },
+      {
+        "id": 23,
+        "patient_id": "pat_amara_okafor",
+        "location_id": "loc_brooklyn_heights",
+        "provider_id": "prov_ruiz",
+        "appointment_type_code": "MED_FOLLOWUP",
+        "start": "2026-08-26T09:20",
+        "end": "2026-08-26T09:40",
+        "description": "Acne isotretinoin check",
+        "status": "booked"
+      },
+      {
+        "id": 24,
+        "patient_id": "pat_walter_price",
+        "location_id": "loc_windermere",
+        "provider_id": "prov_patel",
+        "appointment_type_code": "MED_FOLLOWUP",
+        "start": "2026-08-20T14:20",
+        "end": "2026-08-20T14:40",
+        "description": "Skin cancer surveillance",
+        "status": "booked"
+      },
+      {
+        "id": 25,
+        "patient_id": "pat_selena_ortiz",
+        "location_id": "loc_brooklyn_heights",
+        "provider_id": "prov_ruiz",
+        "appointment_type_code": "MED_FOLLOWUP",
+        "start": "2026-09-18T16:20",
+        "end": "2026-09-18T16:40",
+        "description": "Hidradenitis follow-up",
+        "status": "booked"
+      },
+      {
+        "id": 26,
+        "patient_id": "pat_henry_vance",
+        "location_id": "loc_park_ave",
+        "provider_id": "prov_chen",
+        "appointment_type_code": "MED_FOLLOWUP",
+        "start": "2026-08-24T15:40",
+        "end": "2026-08-24T16:00",
+        "description": "Lab review follow-up",
+        "status": "booked"
+      },
+      {
+        "id": 27,
+        "patient_id": "pat_omar_haddad",
+        "location_id": "loc_brooklyn_heights",
+        "provider_id": "prov_ruiz",
+        "appointment_type_code": "MED_FOLLOWUP",
+        "start": "2026-09-29T08:20",
+        "end": "2026-09-29T08:40",
+        "description": "Seborrheic dermatitis follow-up",
+        "status": "booked"
+      },
+      {
+        "id": 28,
+        "patient_id": "pat_alice_romano",
+        "location_id": "loc_park_ave",
+        "provider_id": "prov_chen",
+        "appointment_type_code": "COS_CONSULT",
+        "start": "2026-08-24T09:00",
+        "end": "2026-08-24T09:30",
+        "description": "Cosmetic consult: botox",
+        "status": "booked"
+      }
+    ],
+    "waitlist": [],
+    "tool_events": [
+      {
+        "id": 1,
+        "kind": "payment_link",
+        "payload": {
+          "mobile_e164": "+14075550155"
+        }
+      }
+    ]
+  }
+}

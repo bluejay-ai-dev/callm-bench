@@ -1,0 +1,26 @@
+# Gemini 2.5 Flash (Google, OpenAI-compatible endpoint) as the model under test; caller
+# simulator pinned to gpt-5.2. Needs GEMINI_API_KEY and OPENAI_API_KEY.
+#   gym env start "+config_paths=[configs/gemini-flash.yaml]"
+# The policy goes through responses_api_models/chat_passthrough: Gemini 3 tool calls carry a
+# thought_signature that must be sent back on the next turn, which Gym's openai_model strips.
+config_paths:
+  - resources_servers/micol/configs/micol.yaml
+
+policy_model:
+  responses_api_models:
+    chat_passthrough:
+      entrypoint: app.py
+      openai_base_url: https://generativelanguage.googleapis.com/v1beta/openai
+      openai_api_key: ${oc.env:GEMINI_API_KEY}
+      openai_model: gemini-2.5-flash
+      max_concurrent_requests: 16
+      # Gemini needs a non-system turn; the agent speaks first, so mark the call connecting.
+      opening_user_message: "(The call has connected. The caller is on the line and has not spoken yet.)"
+
+user_model:
+  responses_api_models:
+    openai_model:
+      entrypoint: app.py
+      openai_base_url: https://api.openai.com/v1
+      openai_api_key: ${oc.env:OPENAI_API_KEY}
+      openai_model: gpt-5.2

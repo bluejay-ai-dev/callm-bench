@@ -1,0 +1,16 @@
+# gpt-6.1-sol as the caller simulator, clean channel: the caller's words reach the agent verbatim.
+# Layer it on any model config:
+#   gym env start "+config_paths=[configs/gpt52.yaml,configs/users/sol.yaml]"
+# It only takes its default temperature, so per-task caller temperatures are not sent.
+user_model:
+  responses_api_models:
+    openai_model:
+      entrypoint: app.py
+      openai_base_url: https://api.openai.com/v1
+      openai_api_key: ${oc.env:OPENAI_API_KEY}
+      openai_model: gpt-6.1-sol
+
+micol_resources_server:
+  resources_servers:
+    micol:
+      user_temperature: false

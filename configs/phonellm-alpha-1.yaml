@@ -1,0 +1,25 @@
+# PhoneLLM Alpha 1 (Pipecat, open weights pipecat-ai/phonellm-alpha-1) as the model under test, served by any
+# OpenAI-compatible endpoint (vLLM). Needs PHONELLM_BASE_URL, PHONELLM_API_KEY and OPENAI_API_KEY (caller). Pipecat runs it at temperature 0, thinking off.
+config_paths:
+  - resources_servers/micol/configs/micol.yaml
+
+policy_model:
+  responses_api_models:
+    chat_passthrough:
+      entrypoint: app.py
+      openai_base_url: ${oc.env:PHONELLM_BASE_URL}
+      openai_api_key: ${oc.env:PHONELLM_API_KEY}
+      openai_model: phonellm-alpha-1
+      max_concurrent_requests: 16  # requests in flight
+      extra_body:
+        temperature: 0
+        chat_template_kwargs:
+          enable_thinking: false
+
+user_model:
+  responses_api_models:
+    openai_model:
+      entrypoint: app.py
+      openai_base_url: https://api.openai.com/v1
+      openai_api_key: ${oc.env:OPENAI_API_KEY}
+      openai_model: gpt-5.2

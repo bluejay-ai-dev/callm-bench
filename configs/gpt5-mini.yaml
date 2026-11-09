@@ -1,0 +1,22 @@
+# gpt-5-mini (OpenAI) as the model under test, reasoning minimal as phone deployments run it.
+# Needs OPENAI_API_KEY. Caller pinned to gpt-5.2 unless a configs/users/ file is layered.
+config_paths:
+  - resources_servers/micol/configs/micol.yaml
+
+policy_model:
+  responses_api_models:
+    openai_model:
+      entrypoint: app.py
+      openai_base_url: https://api.openai.com/v1
+      openai_api_key: ${oc.env:OPENAI_API_KEY}
+      openai_model: gpt-5-mini
+      extra_body:
+        reasoning_effort: minimal
+
+user_model:
+  responses_api_models:
+    openai_model:
+      entrypoint: app.py
+      openai_base_url: https://api.openai.com/v1
+      openai_api_key: ${oc.env:OPENAI_API_KEY}
+      openai_model: gpt-5.2

@@ -1,0 +1,18 @@
+{
+ "source": "asr/data/real_stats.json, phone-stt (5,289 real caller turns)",
+ "rate_exact": 0.7748,
+ "rate_minor": 0.1195,
+ "rate_major": 0.0577,
+ "rate_truncated": 0.0129,
+ "rate_dropped": 0.0352,
+ "rate_split": 0.0624,
+ "wer": 0.0403,
+ "digits_ok": 0.8701,
+ "names_ok": 0.7388,
+ "fmt_lower_only": 0.017,
+ "fmt_numerals": 0.3533,
+ "fmt_digit_words": 0.0104,
+ "fmt_no_terminal": 0.0901,
+ "words_per_seg": 10.3576,
+ "n_utts": 5289
+}

@@ -1,0 +1,38 @@
+[project]
+name = "micol-gym"
+version = "0.2.0"
+description = "MICOL Bench as a NeMo Gym environment: multi-agent front desks, scripted caller, deterministic verifier"
+requires-python = ">=3.13.14"
+dependencies = [
+    "httpx>=0.27",
+    "openai>=1.40",
+    "fastapi>=0.110",
+    "uvicorn>=0.29",
+    "pydantic>=2.6",
+    "pyyaml>=6.0.3",
+]
+
+[project.scripts]
+micol = "micol.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8"]
+gym = ["nemo-gym==0.7.0"]
+
+[tool.uv]
+default-groups = ["dev", "gym"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/micol"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.basedpyright]
+venvPath = "."
+venv = ".venv"
+include = ["src", "industries", "tests", "resources_servers/micol/app.py", "responses_api_agents/micol/app.py", "responses_api_models/chat_passthrough/app.py"]

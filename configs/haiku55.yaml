@@ -1,0 +1,23 @@
+# Claude Haiku 5.5 (Anthropic, OpenAI-compatible endpoint) as the model under test.
+# Needs ANTHROPIC_API_KEY and OPENAI_API_KEY (caller).
+config_paths:
+  - resources_servers/micol/configs/micol.yaml
+
+policy_model:
+  responses_api_models:
+    chat_passthrough:
+      entrypoint: app.py
+      openai_base_url: https://api.anthropic.com/v1
+      openai_api_key: ${oc.env:ANTHROPIC_API_KEY}
+      openai_model: claude-haiku-5-5
+      max_concurrent_requests: 16
+      # Anthropic needs a user turn; the agent speaks first, so mark the call connecting.
+      opening_user_message: "(The call has connected. The caller is on the line and has not spoken yet.)"
+
+user_model:
+  responses_api_models:
+    openai_model:
+      entrypoint: app.py
+      openai_base_url: https://api.openai.com/v1
+      openai_api_key: ${oc.env:OPENAI_API_KEY}
+      openai_model: gpt-5.2

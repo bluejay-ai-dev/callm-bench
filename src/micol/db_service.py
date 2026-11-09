@@ -1,0 +1,198 @@
+"""Per-call SQLite files for industry tool servers.
+
+Handlers keep `with db.connect() as conn: conn.execute(...)`. This module is
+the only place that chooses a file: first touch of a call id copies schema.sql
+then seed.sql into `{data_dir}/calls/{id}.db`; later touches reuse it.
+
+Reuse is what a real call wants (many HTTP requests, one call id, one evolving
+DB). A repeatable check wants the opposite, so it says so at the call site:
+`with db.scope("selfcheck", fresh=True):` rebuilds the fixture from schema+seed
+before yielding.
+"""
+
+from __future__ import annotations
+
+import os
+import re
+import sqlite3
+import threading
+from contextlib import contextmanager
+from contextvars import ContextVar
+from pathlib import Path
+from typing import Iterator
+
+_CALL_ID_OK = re.compile(r"^[A-Za-z0-9_-]{1,64}$")
+_call_id: ContextVar[str] = ContextVar("micol_call_id", default="")
+
+
+class CallIdError(ValueError):
+    """Empty, missing, or path-escaping conversation id."""
+
+
+class DBService:
+    def __init__(
+        self,
+        schema_path: Path,
+        seed_path: Path,
+        data_dir: Path,
+        *,
+        shared: bool = False,
+    ) -> None:
+        self.schema_path = Path(schema_path)
+        self.seed_path = Path(seed_path)
+        self.data_dir = Path(data_dir)
+        self.calls_dir = self.data_dir / "calls"
+        self.shared = shared
+        self.shared_path = self.data_dir / "runtime.db"
+        self._create_lock = threading.Lock()
+
+    @classmethod
+    def for_industry(
+        cls,
+        industry_dir: Path | str,
+        *,
+        shared: bool | None = None,
+    ) -> DBService:
+        """Wire schema/seed from an industry pack and data_dir from MICOL_DB_PATH."""
+        industry_dir = Path(industry_dir)
+        db_dir = industry_dir / "db"
+        overlay = os.environ.get("MICOL_VARIANT_DIR", "").strip()
+        seed_path = Path(overlay) / "db" / "seed.sql" if overlay else db_dir / "seed.sql"
+        if not seed_path.is_file():
+            seed_path = db_dir / "seed.sql"
+        env_path = os.environ.get("MICOL_DB_PATH", "").strip()
+        data_dir = Path(env_path).parent if env_path else db_dir
+        if shared is None:
+            shared = os.environ.get("MICOL_DB_SHARED", "").strip().lower() in {
+                "1",
+                "true",
+                "yes",
+            }
+        return cls(
+            schema_path=db_dir / "schema.sql",
+            seed_path=seed_path,
+            data_dir=data_dir,
+            shared=shared,
+        )
+
+
+    def ensure(self, call_id: str) -> Path:
+        safe = normalise_call_id(call_id)
+        path = self.calls_dir / f"{safe}.db"
+        if path.exists():
+            return path
+        with self._create_lock:
+            if path.exists():
+                return path
+            self.calls_dir.mkdir(parents=True, exist_ok=True)
+            # Build to a tmp then os.replace: sqlite creates the file before the
+            # schema script runs, so an in-place build lets the un-locked fast
+            # path above (and other processes) read a half-built DB.
+            tmp = path.with_name(f"{path.name}.{os.getpid()}.tmp")
+            unlink_db(tmp)
+            _write_fixture_db(tmp, self.schema_path, self.seed_path)
+            os.replace(tmp, path)
+        return path
+
+    def _recreate(self, path: Path) -> Path:
+        """Replace path with a pristine fixture DB, atomically."""
+        with self._create_lock:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            # pid-unique so concurrent processes never share a half-built file;
+            # threads are serialised by _create_lock.
+            tmp = path.with_name(f"{path.name}.{os.getpid()}.tmp")
+            unlink_db(tmp)
+            _write_fixture_db(tmp, self.schema_path, self.seed_path)
+            # Drop the old -wal/-shm first: a stale journal beside a new main
+            # file is the one combination sqlite would try to replay.
+            for suffix in ("-wal", "-shm"):
+                path.with_name(path.name + suffix).unlink(missing_ok=True)
+            os.replace(tmp, path)
+        return path
+
+    @contextmanager
+    def scope(self, call_id: str, *, fresh: bool = False) -> Iterator[str]:
+        """Bind call_id for this context. fresh=True rebuilds its fixture DB first."""
+        safe = normalise_call_id(call_id)
+        if fresh:
+            self._recreate(self.calls_dir / f"{safe}.db")
+        token = _call_id.set(safe)
+        try:
+            yield safe
+        finally:
+            _call_id.reset(token)
+
+    def _active_path(self, call_id: str | None) -> Path:
+        cid = (call_id if call_id is not None else _call_id.get()) or ""
+        if cid:
+            return self.ensure(cid)
+        if self.shared:
+            return self._ensure_shared()
+        raise CallIdError("missing call id")
+
+    def _ensure_shared(self) -> Path:
+        path = self.shared_path
+        if path.exists():
+            return path
+        with self._create_lock:
+            if path.exists():
+                return path
+            path.parent.mkdir(parents=True, exist_ok=True)
+            _write_fixture_db(path, self.schema_path, self.seed_path)
+        return path
+
+    @contextmanager
+    def connect(self, call_id: str | None = None) -> Iterator[sqlite3.Connection]:
+        path = self._active_path(call_id)
+        conn = sqlite3.connect(path)
+        conn.row_factory = sqlite3.Row
+        try:
+            yield conn
+            conn.commit()
+        finally:
+            conn.close()
+
+    async def http_middleware(self, request, call_next):
+        """Scope X-Micol-Call-Id (or ?call_id=) for the request. /health is global."""
+        from starlette.responses import JSONResponse
+
+        if request.url.path.rstrip("/") == "/health":
+            return await call_next(request)
+        raw = request.headers.get("x-micol-call-id") or request.query_params.get("call_id")
+        if not raw:
+            if self.shared:
+                return await call_next(request)
+            return JSONResponse({"detail": "missing X-Micol-Call-Id"}, status_code=400)
+        try:
+            with self.scope(raw):
+                return await call_next(request)
+        except CallIdError as e:
+            return JSONResponse({"detail": str(e)}, status_code=400)
+
+    def current_call_id(self) -> str:
+        return _call_id.get()
+
+
+def normalise_call_id(raw: str | None) -> str:
+    value = str(raw or "").strip()
+    if not _CALL_ID_OK.fullmatch(value):
+        raise CallIdError(f"invalid call id {raw!r}")
+    return value
+
+
+def unlink_db(path: Path) -> None:
+    """Remove a sqlite file and its -wal/-shm sidecars."""
+    for p in (path, path.with_name(path.name + "-wal"), path.with_name(path.name + "-shm")):
+        p.unlink(missing_ok=True)
+
+
+def _write_fixture_db(path: Path, schema_path: Path, seed_path: Path) -> None:
+    conn = sqlite3.connect(path)
+    try:
+        conn.executescript(schema_path.read_text())
+        seed = seed_path.read_text().strip()
+        if seed:
+            conn.executescript(seed)
+        conn.commit()
+    finally:
+        conn.close()

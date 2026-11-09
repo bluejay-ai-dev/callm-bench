@@ -1,0 +1,59 @@
+# MICOL environment: the resources server plus the agent that drives the model
+# under test through it. Compose with a model config from configs/ that defines
+# `policy_model` (trained / evaluated) and `user_model` (pinned caller simulator).
+micol_resources_server:
+  resources_servers:
+    micol:
+      entrypoint: app.py
+      domain: agent
+      verified: false
+      description: MICOL Bench text episodes - multi-agent industry front desks with a scripted caller
+      value: Multi-agent routing, scoped tool use, and stateful writes, graded deterministically (tools AND handoffs AND final DB)
+      user_model_server:
+        type: responses_api_models
+        name: user_model
+      industries: [healthcare, legal, customer-support]
+      reward: conjunctive  # or `shaped` for the partial-credit RL signal; both are reported either way
+
+micol_agent:
+  responses_api_agents:
+    micol:
+      entrypoint: app.py
+      resources_server:
+        type: resources_servers
+        name: micol_resources_server
+      model_server:
+        type: responses_api_models
+        name: policy_model
+      max_exchanges: 30
+      max_tool_rounds: 8
+      datasets:
+      - name: example
+        type: example
+        jsonl_fpath: resources_servers/micol/data/example.jsonl
+      - name: micol_healthcare
+        type: validation
+        jsonl_fpath: resources_servers/micol/data/healthcare.jsonl
+        license: MIT
+      - name: micol_legal
+        type: validation
+        jsonl_fpath: resources_servers/micol/data/legal.jsonl
+        license: MIT
+      - name: micol_customer_support
+        type: validation
+        jsonl_fpath: resources_servers/micol/data/customer-support.jsonl
+        license: MIT
+
+# Rollout collection reaches an agent through an environment server; a
+# legacy_agent relays /run to the agent unchanged.
+micol_environment_server:
+  environment_servers:
+    legacy_agent:
+      entrypoint: app.py
+      agent_server:
+        type: responses_api_agents
+        name: micol_agent
+      max_concurrent_episodes: null
+      queue_timeout_seconds: null
+      default_episode_timeout_seconds: 21600
+      cleanup_timeout_seconds: 180

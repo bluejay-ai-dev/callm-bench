@@ -1,0 +1,28 @@
+# gpt-6.1-sol (OpenAI) as the model under test; caller simulator pinned to gpt-5.2.
+# Needs OPENAI_API_KEY.
+#   gym env start "+config_paths=[configs/gpt61sol.yaml]"
+# gpt-6.1-sol takes function tools on chat completions only with reasoning off, so the
+# agent calls it through the Responses API instead.
+config_paths:
+  - resources_servers/micol/configs/micol.yaml
+
+micol_agent:
+  responses_api_agents:
+    micol:
+      policy_api: responses
+
+policy_model:
+  responses_api_models:
+    openai_model:
+      entrypoint: app.py
+      openai_base_url: https://api.openai.com/v1
+      openai_api_key: ${oc.env:OPENAI_API_KEY}
+      openai_model: gpt-6.1-sol
+
+user_model:
+  responses_api_models:
+    openai_model:
+      entrypoint: app.py
+      openai_base_url: https://api.openai.com/v1
+      openai_api_key: ${oc.env:OPENAI_API_KEY}
+      openai_model: gpt-5.2
