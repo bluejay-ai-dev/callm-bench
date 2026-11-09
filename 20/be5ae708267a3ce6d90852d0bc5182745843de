@@ -1,0 +1,1143 @@
+README.md
+  s_c5c43ca3782c7b::t_17f39725d91e26 1-10
+industries/README.md
+  s_c5c43ca3782c7b::t_ff38a18201205a 1-45
+industries/control-industry/README.md
+  s_c5c43ca3782c7b::t_c80e3ed8e5edd7 1-45
+industries/control-industry/agent_blueprint.json
+  s_c5c43ca3782c7b::t_7fafce51edc4a1 1-32
+industries/control-industry/agent_blueprint.mmd
+  s_c5c43ca3782c7b::t_696135ce94052a 1-4
+industries/control-industry/db/schema.sql
+  s_c5c43ca3782c7b::t_94a6d0132fda9d 1-5
+industries/control-industry/db/seed.sql
+  s_c5c43ca3782c7b::t_0a3b922abd13a3 1-2
+industries/control-industry/requirements.txt
+  s_c5c43ca3782c7b::t_f78acff04a8509 1-4
+industries/control-industry/system-prompts/receptionist.md
+  s_c5c43ca3782c7b::t_4d056f290139db 1-15
+industries/control-industry/system-prompts/scheduler.md
+  s_c5c43ca3782c7b::t_ce7d8eb3eb5837 1-18
+industries/control-industry/tool_server.py
+  s_c5c43ca3782c7b::t_886aba76a19e63 1-137
+industries/control-industry/tools.json
+  s_c5c43ca3782c7b::t_9cf3476c0de71f 1-85
+industries/customer-support/README.md
+  s_c5c43ca3782c7b::t_86c0da43d70e06 1-149
+industries/customer-support/agent_blueprint.json
+  s_c5c43ca3782c7b::t_f01174a35f46fd 1-122
+industries/customer-support/agent_blueprint.mmd
+  s_c5c43ca3782c7b::t_652c866a8b6f6f 1-37
+industries/customer-support/db/schema.sql
+  s_c5c43ca3782c7b::t_05ba9fe1cf2a5a 1-230
+industries/customer-support/db/seed.sql
+  s_c5c43ca3782c7b::t_6983ce50c0b86d 1-180
+industries/customer-support/requirements.txt
+  s_c5c43ca3782c7b::t_312e37e1706643 1-4
+industries/customer-support/system-prompts/fraud.md
+  s_c5c43ca3782c7b::t_e50565498e9a87 1-238
+industries/customer-support/system-prompts/membership.md
+  s_c5c43ca3782c7b::t_1f77188c286b03 1-207
+industries/customer-support/system-prompts/orders.md
+  s_c5c43ca3782c7b::t_474c857f355de6 1-221
+industries/customer-support/system-prompts/reception.md
+  s_c5c43ca3782c7b::t_cebcb357bde99a 1-217
+industries/customer-support/system-prompts/returns.md
+  s_c5c43ca3782c7b::t_e6e253b4bff06b 1-224
+industries/customer-support/system-prompts/service.md
+  s_c5c43ca3782c7b::t_6c5758e6aa6112 1-225
+industries/customer-support/system-prompts/verification.md
+  s_c5c43ca3782c7b::t_1e84f215111c9d 1-219
+industries/customer-support/tasks/R-E1-BG/solution/oracle.json
+  s_c5c43ca3782c7b::t_3aea634d0ad79c 1-13
+industries/customer-support/tasks/R-E1-BG/task.json
+  s_c5c43ca3782c7b::t_59e809b17b347a 1-716
+industries/customer-support/tasks/R-E1-SIG/solution/oracle.json
+  s_c5c43ca3782c7b::t_16b2e8dbf3f1d2 1-13
+industries/customer-support/tasks/R-E1-SIG/task.json
+  s_c5c43ca3782c7b::t_a1aad9688a8ad4 1-723
+industries/customer-support/tasks/R-E1/solution/oracle.json
+  s_c5c43ca3782c7b::t_50bc232ce336aa 1-13
+industries/customer-support/tasks/R-E1/task.json
+  s_c5c43ca3782c7b::t_ffef763ffd26e3 1-723
+industries/customer-support/tasks/R-E2/solution/oracle.json
+  s_c5c43ca3782c7b::t_44571cc9740442 1-13
+industries/customer-support/tasks/R-E2/task.json
+  s_c5c43ca3782c7b::t_b14c55ffbf45a2 1-716
+industries/customer-support/tasks/R-H1/solution/oracle.json
+  s_c5c43ca3782c7b::t_71138d01c8fe03 1-45
+industries/customer-support/tasks/R-H1/task.json
+  s_c5c43ca3782c7b::t_a61d69db88c4d4 1-787
+industries/customer-support/tasks/R-H2/solution/oracle.json
+  s_c5c43ca3782c7b::t_6c74771f9888e1 1-43
+industries/customer-support/tasks/R-H2/task.json
+  s_c5c43ca3782c7b::t_011f2c42db325b 1-796
+industries/customer-support/tasks/R-H3/solution/oracle.json
+  s_c5c43ca3782c7b::t_d368a70743d6b4 1-68
+industries/customer-support/tasks/R-H3/task.json
+  s_c5c43ca3782c7b::t_53ee91bb2e7ca5 1-849
+industries/customer-support/tasks/R-H4/solution/oracle.json
+  s_c5c43ca3782c7b::t_bbe14821bafaee 1-67
+industries/customer-support/tasks/R-H4/task.json
+  s_c5c43ca3782c7b::t_02aad4128a6c65 1-869
+industries/customer-support/tasks/R-M1/solution/oracle.json
+  s_c5c43ca3782c7b::t_b302ef97f2f29d 1-40
+industries/customer-support/tasks/R-M1/task.json
+  s_c5c43ca3782c7b::t_e4c6335ac6af44 1-761
+industries/customer-support/tasks/R-M2/solution/oracle.json
+  s_c5c43ca3782c7b::t_358a7d4056ba82 1-13
+industries/customer-support/tasks/R-M2/task.json
+  s_c5c43ca3782c7b::t_a2c4c9817b77f9 1-735
+industries/customer-support/tasks/R-M3/solution/oracle.json
+  s_c5c43ca3782c7b::t_af9e256727211f 1-39
+industries/customer-support/tasks/R-M3/task.json
+  s_c5c43ca3782c7b::t_d40115771a44cd 1-787
+industries/customer-support/tasks/R-M4/solution/oracle.json
+  s_c5c43ca3782c7b::t_f6dd7dab8c2734 1-35
+industries/customer-support/tasks/R-M4/task.json
+  s_c5c43ca3782c7b::t_1458fef920b441 1-784
+industries/customer-support/tasks/T1-E1-BG/solution/oracle.json
+  s_c5c43ca3782c7b::t_565d236ba018fc 1-13
+industries/customer-support/tasks/T1-E1-BG/task.json
+  s_c5c43ca3782c7b::t_77160624769428 1-716
+industries/customer-support/tasks/T1-E1-SIG/solution/oracle.json
+  s_c5c43ca3782c7b::t_4851c6a451dcfd 1-13
+industries/customer-support/tasks/T1-E1-SIG/task.json
+  s_c5c43ca3782c7b::t_d791618a5c20af 1-716
+industries/customer-support/tasks/T1-E1/solution/oracle.json
+  s_c5c43ca3782c7b::t_1e29fbffbd8c8a 1-13
+industries/customer-support/tasks/T1-E1/task.json
+  s_c5c43ca3782c7b::t_4cfad620759f76 1-716
+industries/customer-support/tasks/T1-E2/solution/oracle.json
+  s_c5c43ca3782c7b::t_43f6bc44a2e47f 1-13
+industries/customer-support/tasks/T1-E2/task.json
+  s_c5c43ca3782c7b::t_e64e7b7ac0c153 1-709
+industries/customer-support/tasks/T1-H1/solution/oracle.json
+  s_c5c43ca3782c7b::t_a88b2e2dc735fb 1-44
+industries/customer-support/tasks/T1-H1/task.json
+  s_c5c43ca3782c7b::t_d5c4c56a9f9a3d 1-805
+industries/customer-support/tasks/T1-H2/solution/oracle.json
+  s_c5c43ca3782c7b::t_011da21e69a40c 1-44
+industries/customer-support/tasks/T1-H2/task.json
+  s_c5c43ca3782c7b::t_cd23fd566857f4 1-813
+industries/customer-support/tasks/T1-H3/solution/oracle.json
+  s_c5c43ca3782c7b::t_23d950930bdc86 1-44
+industries/customer-support/tasks/T1-H3/task.json
+  s_c5c43ca3782c7b::t_2258556d4d521c 1-812
+industries/customer-support/tasks/T1-H4/solution/oracle.json
+  s_c5c43ca3782c7b::t_e1589657c5b8fc 1-39
+industries/customer-support/tasks/T1-H4/task.json
+  s_c5c43ca3782c7b::t_19f85881d54695 1-776
+industries/customer-support/tasks/T1-M1/solution/oracle.json
+  s_c5c43ca3782c7b::t_8b20de0ace08f8 1-39
+industries/customer-support/tasks/T1-M1/task.json
+  s_c5c43ca3782c7b::t_2de41b97a27906 1-785
+industries/customer-support/tasks/T1-M2/solution/oracle.json
+  s_c5c43ca3782c7b::t_86de32d3fb2af8 1-39
+industries/customer-support/tasks/T1-M2/task.json
+  s_c5c43ca3782c7b::t_2efb4c75480729 1-790
+industries/customer-support/tasks/T1-M3/solution/oracle.json
+  s_c5c43ca3782c7b::t_1ef7f2b7b3093f 1-40
+industries/customer-support/tasks/T1-M3/task.json
+  s_c5c43ca3782c7b::t_372dd1047821b0 1-786
+industries/customer-support/tasks/T1-M4/solution/oracle.json
+  s_c5c43ca3782c7b::t_676665738cbb5e 1-40
+industries/customer-support/tasks/T1-M4/task.json
+  s_c5c43ca3782c7b::t_fd254f7f5a843e 1-793
+industries/customer-support/tasks/T2-E1-BG/solution/oracle.json
+  s_c5c43ca3782c7b::t_a582a1c1595b5b 1-13
+industries/customer-support/tasks/T2-E1-BG/task.json
+  s_c5c43ca3782c7b::t_e7b254cf5ed662 1-716
+industries/customer-support/tasks/T2-E1-SIG/solution/oracle.json
+  s_c5c43ca3782c7b::t_bd160c8a660864 1-13
+industries/customer-support/tasks/T2-E1-SIG/task.json
+  s_c5c43ca3782c7b::t_afcb597eda5323 1-716
+industries/customer-support/tasks/T2-E1/solution/oracle.json
+  s_c5c43ca3782c7b::t_474b6970504c36 1-13
+industries/customer-support/tasks/T2-E1/task.json
+  s_c5c43ca3782c7b::t_636a67fdb9a630 1-716
+industries/customer-support/tasks/T2-E2/solution/oracle.json
+  s_c5c43ca3782c7b::t_18ce7f6d57dcc3 1-13
+industries/customer-support/tasks/T2-E2/task.json
+  s_c5c43ca3782c7b::t_76f74a01fd31f3 1-709
+industries/customer-support/tasks/T2-H1/solution/oracle.json
+  s_c5c43ca3782c7b::t_a03764a8e05c8d 1-57
+industries/customer-support/tasks/T2-H1/task.json
+  s_c5c43ca3782c7b::t_16f887f67d4cb3 1-828
+industries/customer-support/tasks/T2-H2/solution/oracle.json
+  s_c5c43ca3782c7b::t_dbf34f12f4ccfd 1-57
+industries/customer-support/tasks/T2-H2/task.json
+  s_c5c43ca3782c7b::t_5f15c7c3fd0cc8 1-842
+industries/customer-support/tasks/T2-H3/solution/oracle.json
+  s_c5c43ca3782c7b::t_34073a97f00475 1-46
+industries/customer-support/tasks/T2-H3/task.json
+  s_c5c43ca3782c7b::t_7fc50af56e09d9 1-817
+industries/customer-support/tasks/T2-H4/solution/oracle.json
+  s_c5c43ca3782c7b::t_842624c4b80bb8 1-62
+industries/customer-support/tasks/T2-H4/task.json
+  s_c5c43ca3782c7b::t_77f70581323f62 1-863
+industries/customer-support/tasks/T2-M1/solution/oracle.json
+  s_c5c43ca3782c7b::t_44fcb0d27cd62d 1-39
+industries/customer-support/tasks/T2-M1/task.json
+  s_c5c43ca3782c7b::t_1efa1e34010cd8 1-776
+industries/customer-support/tasks/T2-M2/solution/oracle.json
+  s_c5c43ca3782c7b::t_eb93fdfc23e704 1-39
+industries/customer-support/tasks/T2-M2/task.json
+  s_c5c43ca3782c7b::t_c8e295a0ab12f7 1-804
+industries/customer-support/tasks/T2-M3/solution/oracle.json
+  s_c5c43ca3782c7b::t_74f5414c60c3f8 1-39
+industries/customer-support/tasks/T2-M3/task.json
+  s_c5c43ca3782c7b::t_791f89a2fba1d5 1-784
+industries/customer-support/tasks/T2-M4/solution/oracle.json
+  s_c5c43ca3782c7b::t_8a70238de9babf 1-40
+industries/customer-support/tasks/T2-M4/task.json
+  s_c5c43ca3782c7b::t_88ec7167bb2ada 1-789
+industries/customer-support/tasks/T3-E1-BG/solution/oracle.json
+  s_c5c43ca3782c7b::t_6b4c7bd0d0c3fe 1-6
+industries/customer-support/tasks/T3-E1-BG/task.json
+  s_c5c43ca3782c7b::t_744e4a23c3a654 1-702
+industries/customer-support/tasks/T3-E1-SIG/solution/oracle.json
+  s_c5c43ca3782c7b::t_e5664755745009 1-6
+industries/customer-support/tasks/T3-E1-SIG/task.json
+  s_c5c43ca3782c7b::t_26da732d4e7280 1-702
+industries/customer-support/tasks/T3-E1/solution/oracle.json
+  s_c5c43ca3782c7b::t_94e23d5b910abc 1-6
+industries/customer-support/tasks/T3-E1/task.json
+  s_c5c43ca3782c7b::t_6080d396adc4b6 1-702
+industries/customer-support/tasks/T3-E2/solution/oracle.json
+  s_c5c43ca3782c7b::t_2fe1be8223345e 1-13
+industries/customer-support/tasks/T3-E2/task.json
+  s_c5c43ca3782c7b::t_2d535ad9bec4b9 1-709
+industries/customer-support/tasks/T3-H1/solution/oracle.json
+  s_c5c43ca3782c7b::t_ea692e5de1cf1c 1-54
+industries/customer-support/tasks/T3-H1/task.json
+  s_c5c43ca3782c7b::t_36d6658af80d75 1-825
+industries/customer-support/tasks/T3-H2/solution/oracle.json
+  s_c5c43ca3782c7b::t_d7618fcc2fafde 1-13
+industries/customer-support/tasks/T3-H2/task.json
+  s_c5c43ca3782c7b::t_bc25fbdb487694 1-757
+industries/customer-support/tasks/T3-H3/solution/oracle.json
+  s_c5c43ca3782c7b::t_0fc94d7b0704f8 1-58
+industries/customer-support/tasks/T3-H3/task.json
+  s_c5c43ca3782c7b::t_fbbb846604c817 1-849
+industries/customer-support/tasks/T3-H4/solution/oracle.json
+  s_c5c43ca3782c7b::t_5870043f43e5a2 1-62
+industries/customer-support/tasks/T3-H4/task.json
+  s_c5c43ca3782c7b::t_b21377be29d537 1-844
+industries/customer-support/tasks/T3-M1/solution/oracle.json
+  s_c5c43ca3782c7b::t_c10ba6e4c64ce8 1-40
+industries/customer-support/tasks/T3-M1/task.json
+  s_c5c43ca3782c7b::t_0f0d18c0649b5b 1-777
+industries/customer-support/tasks/T3-M2/solution/oracle.json
+  s_c5c43ca3782c7b::t_1e0a2828359519 1-40
+industries/customer-support/tasks/T3-M2/task.json
+  s_c5c43ca3782c7b::t_be472786a56064 1-796
+industries/customer-support/tasks/T3-M3/solution/oracle.json
+  s_c5c43ca3782c7b::t_6807fe6adca51a 1-40
+industries/customer-support/tasks/T3-M3/task.json
+  s_c5c43ca3782c7b::t_056bd03cfcabf1 1-784
+industries/customer-support/tasks/T3-M4/solution/oracle.json
+  s_c5c43ca3782c7b::t_77b0128f76b2c6 1-37
+industries/customer-support/tasks/T3-M4/task.json
+  s_c5c43ca3782c7b::t_80af1703637472 1-766
+industries/customer-support/tasks/T4-E1-BG/solution/oracle.json
+  s_c5c43ca3782c7b::t_c3d8be5f38f754 1-19
+industries/customer-support/tasks/T4-E1-BG/task.json
+  s_c5c43ca3782c7b::t_61a3d65beae597 1-715
+industries/customer-support/tasks/T4-E1-SIG/solution/oracle.json
+  s_c5c43ca3782c7b::t_29c84e4d70eaf7 1-19
+industries/customer-support/tasks/T4-E1-SIG/task.json
+  s_c5c43ca3782c7b::t_36d7445aad7a63 1-715
+industries/customer-support/tasks/T4-E1/solution/oracle.json
+  s_c5c43ca3782c7b::t_df7dc0820844b7 1-19
+industries/customer-support/tasks/T4-E1/task.json
+  s_c5c43ca3782c7b::t_2174237f7dfcdc 1-715
+industries/customer-support/tasks/T4-E2/solution/oracle.json
+  s_c5c43ca3782c7b::t_088652e563087b 1-13
+industries/customer-support/tasks/T4-E2/task.json
+  s_c5c43ca3782c7b::t_d90b29a413bd96 1-709
+industries/customer-support/tasks/T4-H1/solution/oracle.json
+  s_c5c43ca3782c7b::t_f86bfde354eae2 1-43
+industries/customer-support/tasks/T4-H1/task.json
+  s_c5c43ca3782c7b::t_e011763206ab10 1-805
+industries/customer-support/tasks/T4-H2/solution/oracle.json
+  s_c5c43ca3782c7b::t_103931b3f25247 1-41
+industries/customer-support/tasks/T4-H2/task.json
+  s_c5c43ca3782c7b::t_16b7baf81d540c 1-809
+industries/customer-support/tasks/T4-H3/solution/oracle.json
+  s_c5c43ca3782c7b::t_670da033661bc1 1-43
+industries/customer-support/tasks/T4-H3/task.json
+  s_c5c43ca3782c7b::t_f78cada73b993f 1-805
+industries/customer-support/tasks/T4-H4/solution/oracle.json
+  s_c5c43ca3782c7b::t_70805e9ee0743f 1-43
+industries/customer-support/tasks/T4-H4/task.json
+  s_c5c43ca3782c7b::t_f72824c20800e2 1-812
+industries/customer-support/tasks/T4-M1/solution/oracle.json
+  s_c5c43ca3782c7b::t_a26407a0f1cfdd 1-37
+industries/customer-support/tasks/T4-M1/task.json
+  s_c5c43ca3782c7b::t_bb0e739451d353 1-773
+industries/customer-support/tasks/T4-M2/solution/oracle.json
+  s_c5c43ca3782c7b::t_2c424cdfea9c2e 1-33
+industries/customer-support/tasks/T4-M2/task.json
+  s_c5c43ca3782c7b::t_6b9fb2bfc1757f 1-763
+industries/customer-support/tasks/T4-M3/solution/oracle.json
+  s_c5c43ca3782c7b::t_8f3a65afda5641 1-33
+industries/customer-support/tasks/T4-M3/task.json
+  s_c5c43ca3782c7b::t_64b8638c25d19f 1-770
+industries/customer-support/tasks/T4-M4/solution/oracle.json
+  s_c5c43ca3782c7b::t_6b8f9f825c18e3 1-37
+industries/customer-support/tasks/T4-M4/task.json
+  s_c5c43ca3782c7b::t_ebf6c5105908f7 1-796
+industries/customer-support/tasks/T5-E1-BG/solution/oracle.json
+  s_c5c43ca3782c7b::t_9d8e2b5a822010 1-13
+industries/customer-support/tasks/T5-E1-BG/task.json
+  s_c5c43ca3782c7b::t_db26c470106f60 1-709
+industries/customer-support/tasks/T5-E1-SIG/solution/oracle.json
+  s_c5c43ca3782c7b::t_e4f12ae2b37978 1-13
+industries/customer-support/tasks/T5-E1-SIG/task.json
+  s_c5c43ca3782c7b::t_58c6ba7fef3d46 1-709
+industries/customer-support/tasks/T5-E1/solution/oracle.json
+  s_c5c43ca3782c7b::t_b64299b0c1a240 1-13
+industries/customer-support/tasks/T5-E1/task.json
+  s_c5c43ca3782c7b::t_8b1a33226dd8f2 1-709
+industries/customer-support/tasks/T5-E2/solution/oracle.json
+  s_c5c43ca3782c7b::t_21b410adfe5f0b 1-13
+industries/customer-support/tasks/T5-E2/task.json
+  s_c5c43ca3782c7b::t_f138883e7341bd 1-709
+industries/customer-support/tasks/T5-H1/solution/oracle.json
+  s_c5c43ca3782c7b::t_8c57bd96c72d54 1-46
+industries/customer-support/tasks/T5-H1/task.json
+  s_c5c43ca3782c7b::t_63bad4880e3407 1-821
+industries/customer-support/tasks/T5-H2/solution/oracle.json
+  s_c5c43ca3782c7b::t_6921571cce8ebf 1-45
+industries/customer-support/tasks/T5-H2/task.json
+  s_c5c43ca3782c7b::t_45302e2a407788 1-814
+industries/customer-support/tasks/T5-H3/solution/oracle.json
+  s_c5c43ca3782c7b::t_97619667c019d3 1-62
+industries/customer-support/tasks/T5-H3/task.json
+  s_c5c43ca3782c7b::t_529f3f316407c1 1-874
+industries/customer-support/tasks/T5-H4/solution/oracle.json
+  s_c5c43ca3782c7b::t_df1ecb736ab5b4 1-52
+industries/customer-support/tasks/T5-H4/task.json
+  s_c5c43ca3782c7b::t_61f06869dc426a 1-845
+industries/customer-support/tasks/T5-M1/solution/oracle.json
+  s_c5c43ca3782c7b::t_d2a931929f1fae 1-39
+industries/customer-support/tasks/T5-M1/task.json
+  s_c5c43ca3782c7b::t_24187aa1448a82 1-795
+industries/customer-support/tasks/T5-M2/solution/oracle.json
+  s_c5c43ca3782c7b::t_b7fa3067c0e56e 1-42
+industries/customer-support/tasks/T5-M2/task.json
+  s_c5c43ca3782c7b::t_45aeb59c6ae03f 1-826
+industries/customer-support/tasks/T5-M3/solution/oracle.json
+  s_c5c43ca3782c7b::t_c8e346a813a95e 1-43
+industries/customer-support/tasks/T5-M3/task.json
+  s_c5c43ca3782c7b::t_6c4282f662fbe6 1-813
+industries/customer-support/tasks/T5-M4/solution/oracle.json
+  s_c5c43ca3782c7b::t_af7f1b2f71fac9 1-43
+industries/customer-support/tasks/T5-M4/task.json
+  s_c5c43ca3782c7b::t_78e14e6f6153f4 1-798
+industries/customer-support/tool_server.py
+  s_c5c43ca3782c7b::t_5a203fd8e9ef05 1-1831
+industries/customer-support/tools.json
+  s_c5c43ca3782c7b::t_913ce30e6c04ba 1-1428
+industries/healthcare/README.md
+  s_c5c43ca3782c7b::t_8b94628851fa55 1-59
+industries/healthcare/agent_blueprint.json
+  s_c5c43ca3782c7b::t_efc93a27e118e6 1-326
+industries/healthcare/agent_blueprint.mmd
+  s_c5c43ca3782c7b::t_d15b1d973d146c 1-28
+industries/healthcare/db/schema.sql
+  s_c5c43ca3782c7b::t_1fc9e148d5881e 1-79
+industries/healthcare/db/seed.sql
+  s_c5c43ca3782c7b::t_fc954a8e6b7a1d 1-80
+industries/healthcare/requirements.txt
+  s_c5c43ca3782c7b::t_12f259e6df3232 1-4
+industries/healthcare/system-prompts/billing.md
+  s_c5c43ca3782c7b::t_74c4542aeddc3c 1-170
+industries/healthcare/system-prompts/clinical.md
+  s_c5c43ca3782c7b::t_40995bef215176 1-196
+industries/healthcare/system-prompts/cosmetic.md
+  s_c5c43ca3782c7b::t_5a4edad76bf9a5 1-184
+industries/healthcare/system-prompts/coverage.md
+  s_c5c43ca3782c7b::t_985082b254053c 1-181
+industries/healthcare/system-prompts/identity.md
+  s_c5c43ca3782c7b::t_a5bfd217b4ff5e 1-177
+industries/healthcare/system-prompts/reception.md
+  s_c5c43ca3782c7b::t_d0b8265ef10f92 1-185
+industries/healthcare/system-prompts/scheduling.md
+  s_c5c43ca3782c7b::t_193c5359cde18e 1-227
+industries/healthcare/tasks/C1-E1-BG/exp_db_state.json
+  s_c5c43ca3782c7b::t_3a2a7c2b5146ed 1-172
+industries/healthcare/tasks/C1-E1-BG/solution/oracle.json
+  s_c5c43ca3782c7b::t_a2d37775a594ea 1-18
+industries/healthcare/tasks/C1-E1-BG/task.json
+  s_c5c43ca3782c7b::t_d8025ed7ceaf52 1-274
+industries/healthcare/tasks/C1-E1-SIG/exp_db_state.json
+  s_c5c43ca3782c7b::t_a8c2d6c12360f9 1-172
+industries/healthcare/tasks/C1-E1-SIG/solution/oracle.json
+  s_c5c43ca3782c7b::t_2c20b1b4721a2c 1-18
+industries/healthcare/tasks/C1-E1-SIG/task.json
+  s_c5c43ca3782c7b::t_c306a8106be723 1-274
+industries/healthcare/tasks/C1-E1/exp_db_state.json
+  s_c5c43ca3782c7b::t_2a5cd2161a72eb 1-172
+industries/healthcare/tasks/C1-E1/solution/oracle.json
+  s_c5c43ca3782c7b::t_becd0de3665e18 1-18
+industries/healthcare/tasks/C1-E1/task.json
+  s_c5c43ca3782c7b::t_b2c025ec6d0da6 1-274
+industries/healthcare/tasks/C1-E3/exp_db_state.json
+  s_c5c43ca3782c7b::t_505ae8d2c7aab1 1-172
+industries/healthcare/tasks/C1-E3/solution/oracle.json
+  s_c5c43ca3782c7b::t_405e4a7cacdd39 1-18
+industries/healthcare/tasks/C1-E3/task.json
+  s_c5c43ca3782c7b::t_2d335d5dcb69d2 1-282
+industries/healthcare/tasks/C1-H1/exp_db_state.json
+  s_c5c43ca3782c7b::t_c1d3a1df7e1abf 1-203
+industries/healthcare/tasks/C1-H1/solution/oracle.json
+  s_c5c43ca3782c7b::t_ba36c581809d84 1-79
+industries/healthcare/tasks/C1-H1/task.json
+  s_c5c43ca3782c7b::t_af9872c1588d60 1-464
+industries/healthcare/tasks/C1-H2/exp_db_state.json
+  s_c5c43ca3782c7b::t_4109c99bf581d6 1-183
+industries/healthcare/tasks/C1-H2/solution/oracle.json
+  s_c5c43ca3782c7b::t_b64e2511182e20 1-55
+industries/healthcare/tasks/C1-H2/task.json
+  s_c5c43ca3782c7b::t_2141431aa192af 1-438
+industries/healthcare/tasks/C1-H3/exp_db_state.json
+  s_c5c43ca3782c7b::t_a2a24c0ec3ee9f 1-194
+industries/healthcare/tasks/C1-H3/solution/oracle.json
+  s_c5c43ca3782c7b::t_1a137269cc73cd 1-65
+industries/healthcare/tasks/C1-H3/task.json
+  s_c5c43ca3782c7b::t_06c38c10d1c73b 1-449
+industries/healthcare/tasks/C1-H4/exp_db_state.json
+  s_c5c43ca3782c7b::t_44f90e0ab6d2ed 1-203
+industries/healthcare/tasks/C1-H4/solution/oracle.json
+  s_c5c43ca3782c7b::t_a77d6f5d1e1539 1-72
+industries/healthcare/tasks/C1-H4/task.json
+  s_c5c43ca3782c7b::t_5ec3826b2c2745 1-527
+industries/healthcare/tasks/C1-M1/exp_db_state.json
+  s_c5c43ca3782c7b::t_0378b54c78ad5c 1-192
+industries/healthcare/tasks/C1-M1/solution/oracle.json
+  s_c5c43ca3782c7b::t_14901246b14641 1-44
+industries/healthcare/tasks/C1-M1/task.json
+  s_c5c43ca3782c7b::t_a1941313ba28a2 1-402
+industries/healthcare/tasks/C1-M2/exp_db_state.json
+  s_c5c43ca3782c7b::t_bd248de418836e 1-183
+industries/healthcare/tasks/C1-M2/solution/oracle.json
+  s_c5c43ca3782c7b::t_163f330e313544 1-48
+industries/healthcare/tasks/C1-M2/task.json
+  s_c5c43ca3782c7b::t_0ef72c23aa5fb2 1-399
+industries/healthcare/tasks/C1-M3/exp_db_state.json
+  s_c5c43ca3782c7b::t_f937d3f0f23e24 1-183
+industries/healthcare/tasks/C1-M3/solution/oracle.json
+  s_c5c43ca3782c7b::t_653b2bfd6196d8 1-18
+industries/healthcare/tasks/C1-M3/task.json
+  s_c5c43ca3782c7b::t_cf511bdb471906 1-325
+industries/healthcare/tasks/C1-M4/exp_db_state.json
+  s_c5c43ca3782c7b::t_02b3743e588848 1-183
+industries/healthcare/tasks/C1-M4/solution/oracle.json
+  s_c5c43ca3782c7b::t_2f67b0f5d4427b 1-38
+industries/healthcare/tasks/C1-M4/task.json
+  s_c5c43ca3782c7b::t_35b728bacf4f9d 1-362
+industries/healthcare/tasks/C2-E1-BG/exp_db_state.json
+  s_c5c43ca3782c7b::t_5d59db120e35f6 1-172
+industries/healthcare/tasks/C2-E1-BG/solution/oracle.json
+  s_c5c43ca3782c7b::t_a6d56da6d73ff2 1-6
+industries/healthcare/tasks/C2-E1-BG/task.json
+  s_c5c43ca3782c7b::t_2d0590a457c270 1-215
+industries/healthcare/tasks/C2-E1-SIG/exp_db_state.json
+  s_c5c43ca3782c7b::t_5b877b8d7b4e89 1-172
+industries/healthcare/tasks/C2-E1-SIG/solution/oracle.json
+  s_c5c43ca3782c7b::t_9ca112e23c25fd 1-6
+industries/healthcare/tasks/C2-E1-SIG/task.json
+  s_c5c43ca3782c7b::t_3eedd820b2ab4c 1-215
+industries/healthcare/tasks/C2-E1/exp_db_state.json
+  s_c5c43ca3782c7b::t_f065187caeda52 1-172
+industries/healthcare/tasks/C2-E1/solution/oracle.json
+  s_c5c43ca3782c7b::t_b8b12a0287e662 1-6
+industries/healthcare/tasks/C2-E1/task.json
+  s_c5c43ca3782c7b::t_b5b0f5750db028 1-215
+industries/healthcare/tasks/C2-E3/exp_db_state.json
+  s_c5c43ca3782c7b::t_e8a45913203b0f 1-172
+industries/healthcare/tasks/C2-E3/solution/oracle.json
+  s_c5c43ca3782c7b::t_6d7fdd04b9aeaa 1-6
+industries/healthcare/tasks/C2-E3/task.json
+  s_c5c43ca3782c7b::t_7a112770f50cf1 1-215
+industries/healthcare/tasks/C2-H1/exp_db_state.json
+  s_c5c43ca3782c7b::t_6127db53ca0ff9 1-194
+industries/healthcare/tasks/C2-H1/solution/oracle.json
+  s_c5c43ca3782c7b::t_1167f49a88152a 1-54
+industries/healthcare/tasks/C2-H1/task.json
+  s_c5c43ca3782c7b::t_1ac76b3e5a8a93 1-406
+industries/healthcare/tasks/C2-H2/exp_db_state.json
+  s_c5c43ca3782c7b::t_1d00be1fda74a1 1-183
+industries/healthcare/tasks/C2-H2/solution/oracle.json
+  s_c5c43ca3782c7b::t_b5a50ef967f84a 1-60
+industries/healthcare/tasks/C2-H2/task.json
+  s_c5c43ca3782c7b::t_8f0a3c097e11a8 1-423
+industries/healthcare/tasks/C2-H3/exp_db_state.json
+  s_c5c43ca3782c7b::t_2b61168e258fb5 1-183
+industries/healthcare/tasks/C2-H3/solution/oracle.json
+  s_c5c43ca3782c7b::t_c432c3d24ab933 1-65
+industries/healthcare/tasks/C2-H3/task.json
+  s_c5c43ca3782c7b::t_2b3e353d6faa93 1-401
+industries/healthcare/tasks/C2-H4/exp_db_state.json
+  s_c5c43ca3782c7b::t_3f2a723ee10e58 1-194
+industries/healthcare/tasks/C2-H4/solution/oracle.json
+  s_c5c43ca3782c7b::t_dea24e86e6d6ba 1-62
+industries/healthcare/tasks/C2-H4/task.json
+  s_c5c43ca3782c7b::t_060cc9101f391b 1-415
+industries/healthcare/tasks/C2-M1/exp_db_state.json
+  s_c5c43ca3782c7b::t_ddc674c3395ed9 1-181
+industries/healthcare/tasks/C2-M1/solution/oracle.json
+  s_c5c43ca3782c7b::t_2001377e39abdc 1-47
+industries/healthcare/tasks/C2-M1/task.json
+  s_c5c43ca3782c7b::t_ba223c4d3aa445 1-387
+industries/healthcare/tasks/C2-M2/exp_db_state.json
+  s_c5c43ca3782c7b::t_b064b2d7efd8b0 1-172
+industries/healthcare/tasks/C2-M2/solution/oracle.json
+  s_c5c43ca3782c7b::t_1dc4418531ec76 1-31
+industries/healthcare/tasks/C2-M2/task.json
+  s_c5c43ca3782c7b::t_4606d624a8b65d 1-291
+industries/healthcare/tasks/C2-M3/exp_db_state.json
+  s_c5c43ca3782c7b::t_28c5a9e5281c69 1-183
+industries/healthcare/tasks/C2-M3/solution/oracle.json
+  s_c5c43ca3782c7b::t_b18241d1ec3cae 1-43
+industries/healthcare/tasks/C2-M3/task.json
+  s_c5c43ca3782c7b::t_91733c49917573 1-369
+industries/healthcare/tasks/C2-M4/exp_db_state.json
+  s_c5c43ca3782c7b::t_c1a29d5c1f730e 1-172
+industries/healthcare/tasks/C2-M4/solution/oracle.json
+  s_c5c43ca3782c7b::t_ee79da4b42dfbb 1-40
+industries/healthcare/tasks/C2-M4/task.json
+  s_c5c43ca3782c7b::t_90e030fd9af09c 1-317
+industries/healthcare/tasks/C3-E1-BG/exp_db_state.json
+  s_c5c43ca3782c7b::t_501922f6c5e0d1 1-172
+industries/healthcare/tasks/C3-E1-BG/solution/oracle.json
+  s_c5c43ca3782c7b::t_bc87c43913e23f 1-18
+industries/healthcare/tasks/C3-E1-BG/task.json
+  s_c5c43ca3782c7b::t_b1d8c66a115c62 1-260
+industries/healthcare/tasks/C3-E1-SIG/exp_db_state.json
+  s_c5c43ca3782c7b::t_8a7110a66d157e 1-172
+industries/healthcare/tasks/C3-E1-SIG/solution/oracle.json
+  s_c5c43ca3782c7b::t_9f027af002ef1e 1-18
+industries/healthcare/tasks/C3-E1-SIG/task.json
+  s_c5c43ca3782c7b::t_7a513b83ec2e9c 1-266
+industries/healthcare/tasks/C3-E1/exp_db_state.json
+  s_c5c43ca3782c7b::t_7c47625ad62827 1-172
+industries/healthcare/tasks/C3-E1/solution/oracle.json
+  s_c5c43ca3782c7b::t_1bc20062214d04 1-18
+industries/healthcare/tasks/C3-E1/task.json
+  s_c5c43ca3782c7b::t_89ca99d38a7cc5 1-266
+industries/healthcare/tasks/C3-E3/exp_db_state.json
+  s_c5c43ca3782c7b::t_7e3055ed274081 1-172
+industries/healthcare/tasks/C3-E3/solution/oracle.json
+  s_c5c43ca3782c7b::t_4b0d4fdc39d350 1-18
+industries/healthcare/tasks/C3-E3/task.json
+  s_c5c43ca3782c7b::t_3e9fb5fd6e2e66 1-272
+industries/healthcare/tasks/C3-H1/exp_db_state.json
+  s_c5c43ca3782c7b::t_09e23fcb96823a 1-194
+industries/healthcare/tasks/C3-H1/solution/oracle.json
+  s_c5c43ca3782c7b::t_65e6971256faa8 1-65
+industries/healthcare/tasks/C3-H1/task.json
+  s_c5c43ca3782c7b::t_4710764d45f4af 1-411
+industries/healthcare/tasks/C3-H2/exp_db_state.json
+  s_c5c43ca3782c7b::t_8ce3d9cbfb8b2f 1-194
+industries/healthcare/tasks/C3-H2/solution/oracle.json
+  s_c5c43ca3782c7b::t_62d86d0ed97c89 1-65
+industries/healthcare/tasks/C3-H2/task.json
+  s_c5c43ca3782c7b::t_59ce303f808432 1-423
+industries/healthcare/tasks/C3-H3/exp_db_state.json
+  s_c5c43ca3782c7b::t_136cf7b1022a60 1-193
+industries/healthcare/tasks/C3-H3/solution/oracle.json
+  s_c5c43ca3782c7b::t_50ab1986a9cd1b 1-60
+industries/healthcare/tasks/C3-H3/task.json
+  s_c5c43ca3782c7b::t_84aac6f61f3438 1-431
+industries/healthcare/tasks/C3-H4/exp_db_state.json
+  s_c5c43ca3782c7b::t_618d78c05946bc 1-183
+industries/healthcare/tasks/C3-H4/solution/oracle.json
+  s_c5c43ca3782c7b::t_a990eabc60cea6 1-63
+industries/healthcare/tasks/C3-H4/task.json
+  s_c5c43ca3782c7b::t_343a4b58767cf7 1-432
+industries/healthcare/tasks/C3-M1/exp_db_state.json
+  s_c5c43ca3782c7b::t_2956817a4c8266 1-172
+industries/healthcare/tasks/C3-M1/solution/oracle.json
+  s_c5c43ca3782c7b::t_cbf3af75df22f6 1-20
+industries/healthcare/tasks/C3-M1/task.json
+  s_c5c43ca3782c7b::t_fe76f3677b319d 1-294
+industries/healthcare/tasks/C3-M2/exp_db_state.json
+  s_c5c43ca3782c7b::t_cb9211837bdb10 1-182
+industries/healthcare/tasks/C3-M2/solution/oracle.json
+  s_c5c43ca3782c7b::t_c72a30294345d9 1-31
+industries/healthcare/tasks/C3-M2/task.json
+  s_c5c43ca3782c7b::t_e6e3c68babfb52 1-355
+industries/healthcare/tasks/C3-M3/exp_db_state.json
+  s_c5c43ca3782c7b::t_ddf20b093de730 1-183
+industries/healthcare/tasks/C3-M3/solution/oracle.json
+  s_c5c43ca3782c7b::t_9e8da49b643d3c 1-48
+industries/healthcare/tasks/C3-M3/task.json
+  s_c5c43ca3782c7b::t_623976b061d481 1-383
+industries/healthcare/tasks/C3-M4/exp_db_state.json
+  s_c5c43ca3782c7b::t_2f55d3ec321691 1-172
+industries/healthcare/tasks/C3-M4/solution/oracle.json
+  s_c5c43ca3782c7b::t_f9a5dd694bcdd2 1-18
+industries/healthcare/tasks/C3-M4/task.json
+  s_c5c43ca3782c7b::t_367e344b7182a0 1-288
+industries/healthcare/tasks/C4-E1-BG/exp_db_state.json
+  s_c5c43ca3782c7b::t_10f7edfd3446df 1-172
+industries/healthcare/tasks/C4-E1-BG/solution/oracle.json
+  s_c5c43ca3782c7b::t_fed65c73c140a2 1-17
+industries/healthcare/tasks/C4-E1-BG/task.json
+  s_c5c43ca3782c7b::t_4bd5e0744ff431 1-244
+industries/healthcare/tasks/C4-E1-SIG/exp_db_state.json
+  s_c5c43ca3782c7b::t_fdb954819daf73 1-172
+industries/healthcare/tasks/C4-E1-SIG/solution/oracle.json
+  s_c5c43ca3782c7b::t_09ccf07c459c91 1-17
+industries/healthcare/tasks/C4-E1-SIG/task.json
+  s_c5c43ca3782c7b::t_09eac55422c118 1-244
+industries/healthcare/tasks/C4-E1/exp_db_state.json
+  s_c5c43ca3782c7b::t_21cd25b9477fd1 1-172
+industries/healthcare/tasks/C4-E1/solution/oracle.json
+  s_c5c43ca3782c7b::t_5dde01deba6b47 1-17
+industries/healthcare/tasks/C4-E1/task.json
+  s_c5c43ca3782c7b::t_f665133f6b4f4c 1-244
+industries/healthcare/tasks/C4-E3/exp_db_state.json
+  s_c5c43ca3782c7b::t_1ea1e3bd1ec130 1-172
+industries/healthcare/tasks/C4-E3/solution/oracle.json
+  s_c5c43ca3782c7b::t_bc253479996224 1-11
+industries/healthcare/tasks/C4-E3/task.json
+  s_c5c43ca3782c7b::t_5887d92acc5759 1-239
+industries/healthcare/tasks/C4-H1/exp_db_state.json
+  s_c5c43ca3782c7b::t_f05e7797ce7e19 1-191
+industries/healthcare/tasks/C4-H1/solution/oracle.json
+  s_c5c43ca3782c7b::t_35408ab26855a5 1-60
+industries/healthcare/tasks/C4-H1/task.json
+  s_c5c43ca3782c7b::t_2971588fef4487 1-419
+industries/healthcare/tasks/C4-H2/exp_db_state.json
+  s_c5c43ca3782c7b::t_a90b702474e3b5 1-172
+industries/healthcare/tasks/C4-H2/solution/oracle.json
+  s_c5c43ca3782c7b::t_e08eb2ff538b5f 1-46
+industries/healthcare/tasks/C4-H2/task.json
+  s_c5c43ca3782c7b::t_09755a5c5a3849 1-330
+industries/healthcare/tasks/C4-H3/exp_db_state.json
+  s_c5c43ca3782c7b::t_3e8707b2c0e740 1-191
+industries/healthcare/tasks/C4-H3/solution/oracle.json
+  s_c5c43ca3782c7b::t_bddcf80e281157 1-75
+industries/healthcare/tasks/C4-H3/task.json
+  s_c5c43ca3782c7b::t_4deb7762f60a41 1-442
+industries/healthcare/tasks/C4-H4/exp_db_state.json
+  s_c5c43ca3782c7b::t_d08c4b53ce0bfe 1-191
+industries/healthcare/tasks/C4-H4/solution/oracle.json
+  s_c5c43ca3782c7b::t_14be2f0b6a6e95 1-79
+industries/healthcare/tasks/C4-H4/task.json
+  s_c5c43ca3782c7b::t_656c3943301b07 1-427
+industries/healthcare/tasks/C4-M1/exp_db_state.json
+  s_c5c43ca3782c7b::t_306dd3e997cadd 1-191
+industries/healthcare/tasks/C4-M1/solution/oracle.json
+  s_c5c43ca3782c7b::t_ca634bdd21b0b8 1-48
+industries/healthcare/tasks/C4-M1/task.json
+  s_c5c43ca3782c7b::t_99a736b68c1d19 1-362
+industries/healthcare/tasks/C4-M2/exp_db_state.json
+  s_c5c43ca3782c7b::t_52c553217de934 1-183
+industries/healthcare/tasks/C4-M2/solution/oracle.json
+  s_c5c43ca3782c7b::t_48f5f7db5edbc5 1-42
+industries/healthcare/tasks/C4-M2/task.json
+  s_c5c43ca3782c7b::t_afb4370bb91530 1-336
+industries/healthcare/tasks/C4-M3/exp_db_state.json
+  s_c5c43ca3782c7b::t_4147077a615497 1-181
+industries/healthcare/tasks/C4-M3/solution/oracle.json
+  s_c5c43ca3782c7b::t_761fea54a1e2a2 1-24
+industries/healthcare/tasks/C4-M3/task.json
+  s_c5c43ca3782c7b::t_db073cfca65dcc 1-264
+industries/healthcare/tasks/C4-M4/exp_db_state.json
+  s_c5c43ca3782c7b::t_10b43c76b348d2 1-172
+industries/healthcare/tasks/C4-M4/solution/oracle.json
+  s_c5c43ca3782c7b::t_8c9ae2e55f9ce9 1-21
+industries/healthcare/tasks/C4-M4/task.json
+  s_c5c43ca3782c7b::t_db00bd4533c4ed 1-271
+industries/healthcare/tasks/C5-E1-BG/exp_db_state.json
+  s_c5c43ca3782c7b::t_873b519b8d0788 1-172
+industries/healthcare/tasks/C5-E1-BG/solution/oracle.json
+  s_c5c43ca3782c7b::t_395b5f74cb2c47 1-6
+industries/healthcare/tasks/C5-E1-BG/task.json
+  s_c5c43ca3782c7b::t_2c97876b7ef75e 1-221
+industries/healthcare/tasks/C5-E1-SIG/exp_db_state.json
+  s_c5c43ca3782c7b::t_03d2d2597d1f02 1-172
+industries/healthcare/tasks/C5-E1-SIG/solution/oracle.json
+  s_c5c43ca3782c7b::t_ca07d219cd0e61 1-6
+industries/healthcare/tasks/C5-E1-SIG/task.json
+  s_c5c43ca3782c7b::t_5f340e7a77ac34 1-221
+industries/healthcare/tasks/C5-E1/exp_db_state.json
+  s_c5c43ca3782c7b::t_c72a28ffac6a01 1-172
+industries/healthcare/tasks/C5-E1/solution/oracle.json
+  s_c5c43ca3782c7b::t_79ef092f8f48b2 1-6
+industries/healthcare/tasks/C5-E1/task.json
+  s_c5c43ca3782c7b::t_eb291e17e2c077 1-221
+industries/healthcare/tasks/C5-E3/exp_db_state.json
+  s_c5c43ca3782c7b::t_03251f9051ca18 1-172
+industries/healthcare/tasks/C5-E3/solution/oracle.json
+  s_c5c43ca3782c7b::t_af28a842bc8f0f 1-6
+industries/healthcare/tasks/C5-E3/task.json
+  s_c5c43ca3782c7b::t_d5aa3e19e89f2f 1-215
+industries/healthcare/tasks/C5-H1/exp_db_state.json
+  s_c5c43ca3782c7b::t_f5013fa92cc689 1-180
+industries/healthcare/tasks/C5-H1/solution/oracle.json
+  s_c5c43ca3782c7b::t_fd36b0a9f5cebc 1-76
+industries/healthcare/tasks/C5-H1/task.json
+  s_c5c43ca3782c7b::t_bf2658f9db3be2 1-439
+industries/healthcare/tasks/C5-H2/exp_db_state.json
+  s_c5c43ca3782c7b::t_c6e1355124cb23 1-172
+industries/healthcare/tasks/C5-H2/solution/oracle.json
+  s_c5c43ca3782c7b::t_a198f93f21f562 1-54
+industries/healthcare/tasks/C5-H2/task.json
+  s_c5c43ca3782c7b::t_bb7a9cbdf454d3 1-373
+industries/healthcare/tasks/C5-H3/exp_db_state.json
+  s_c5c43ca3782c7b::t_af0bced45b2572 1-187
+industries/healthcare/tasks/C5-H3/solution/oracle.json
+  s_c5c43ca3782c7b::t_dc6258950765ef 1-64
+industries/healthcare/tasks/C5-H3/task.json
+  s_c5c43ca3782c7b::t_284fe581346ad9 1-426
+industries/healthcare/tasks/C5-H4/exp_db_state.json
+  s_c5c43ca3782c7b::t_6fa87ccc54ba50 1-180
+industries/healthcare/tasks/C5-H4/solution/oracle.json
+  s_c5c43ca3782c7b::t_cfca4570870077 1-48
+industries/healthcare/tasks/C5-H4/task.json
+  s_c5c43ca3782c7b::t_96b227fd70be40 1-391
+industries/healthcare/tasks/C5-M1/exp_db_state.json
+  s_c5c43ca3782c7b::t_37f9098bdee716 1-180
+industries/healthcare/tasks/C5-M1/solution/oracle.json
+  s_c5c43ca3782c7b::t_a96c842f6e7d3f 1-34
+industries/healthcare/tasks/C5-M1/task.json
+  s_c5c43ca3782c7b::t_c43da82a98eaa9 1-334
+industries/healthcare/tasks/C5-M2/exp_db_state.json
+  s_c5c43ca3782c7b::t_43d01787aa2b60 1-180
+industries/healthcare/tasks/C5-M2/solution/oracle.json
+  s_c5c43ca3782c7b::t_374442fc9d8cb9 1-30
+industries/healthcare/tasks/C5-M2/task.json
+  s_c5c43ca3782c7b::t_fe59498287c895 1-304
+industries/healthcare/tasks/C5-M3/exp_db_state.json
+  s_c5c43ca3782c7b::t_29d1b53103f72b 1-172
+industries/healthcare/tasks/C5-M3/solution/oracle.json
+  s_c5c43ca3782c7b::t_5688cdcb05b0c4 1-28
+industries/healthcare/tasks/C5-M3/task.json
+  s_c5c43ca3782c7b::t_abc062bd39f50f 1-328
+industries/healthcare/tasks/C5-M4/exp_db_state.json
+  s_c5c43ca3782c7b::t_1a1af9dcdd4843 1-172
+industries/healthcare/tasks/C5-M4/solution/oracle.json
+  s_c5c43ca3782c7b::t_6a8fdd20db9e93 1-34
+industries/healthcare/tasks/C5-M4/task.json
+  s_c5c43ca3782c7b::t_fe6f202594fb7b 1-305
+industries/healthcare/tasks/R-E1-BG/exp_db_state.json
+  s_c5c43ca3782c7b::t_39345c3b849bf1 1-181
+industries/healthcare/tasks/R-E1-BG/solution/oracle.json
+  s_c5c43ca3782c7b::t_7711c5291de6e3 1-14
+industries/healthcare/tasks/R-E1-BG/task.json
+  s_c5c43ca3782c7b::t_799bdaffb3db2b 1-246
+industries/healthcare/tasks/R-E1-SIG/exp_db_state.json
+  s_c5c43ca3782c7b::t_ae4abb20d1520a 1-181
+industries/healthcare/tasks/R-E1-SIG/solution/oracle.json
+  s_c5c43ca3782c7b::t_8615676c073c38 1-14
+industries/healthcare/tasks/R-E1-SIG/task.json
+  s_c5c43ca3782c7b::t_9b813a32b73d3d 1-246
+industries/healthcare/tasks/R-E1/exp_db_state.json
+  s_c5c43ca3782c7b::t_00d3a12b51d576 1-181
+industries/healthcare/tasks/R-E1/solution/oracle.json
+  s_c5c43ca3782c7b::t_acdfc3214b1a43 1-14
+industries/healthcare/tasks/R-E1/task.json
+  s_c5c43ca3782c7b::t_a3557f7e1409fa 1-246
+industries/healthcare/tasks/R-E2/exp_db_state.json
+  s_c5c43ca3782c7b::t_244a91e7e8552b 1-181
+industries/healthcare/tasks/R-E2/solution/oracle.json
+  s_c5c43ca3782c7b::t_6e18efe25f50d6 1-14
+industries/healthcare/tasks/R-E2/task.json
+  s_c5c43ca3782c7b::t_05749a76a80e49 1-240
+industries/healthcare/tasks/R-H1/exp_db_state.json
+  s_c5c43ca3782c7b::t_233f31169ff183 1-200
+industries/healthcare/tasks/R-H1/solution/oracle.json
+  s_c5c43ca3782c7b::t_4fec1161e3980f 1-77
+industries/healthcare/tasks/R-H1/task.json
+  s_c5c43ca3782c7b::t_063ce3ac32dee9 1-451
+industries/healthcare/tasks/R-H2/exp_db_state.json
+  s_c5c43ca3782c7b::t_029b54c5cbc779 1-193
+industries/healthcare/tasks/R-H2/solution/oracle.json
+  s_c5c43ca3782c7b::t_812c11b5dd9340 1-53
+industries/healthcare/tasks/R-H2/task.json
+  s_c5c43ca3782c7b::t_673cf9941b4bb0 1-403
+industries/healthcare/tasks/R-H3/exp_db_state.json
+  s_c5c43ca3782c7b::t_c1f62891120efe 1-209
+industries/healthcare/tasks/R-H3/solution/oracle.json
+  s_c5c43ca3782c7b::t_fd5206355a0660 1-85
+industries/healthcare/tasks/R-H3/task.json
+  s_c5c43ca3782c7b::t_3dd7c95229d227 1-483
+industries/healthcare/tasks/R-H4/exp_db_state.json
+  s_c5c43ca3782c7b::t_9de62bd7115811 1-191
+industries/healthcare/tasks/R-H4/solution/oracle.json
+  s_c5c43ca3782c7b::t_298851c4cf9f02 1-63
+industries/healthcare/tasks/R-H4/task.json
+  s_c5c43ca3782c7b::t_522098035efeac 1-425
+industries/healthcare/tasks/R-M1/exp_db_state.json
+  s_c5c43ca3782c7b::t_ecb96aadb5869d 1-189
+industries/healthcare/tasks/R-M1/solution/oracle.json
+  s_c5c43ca3782c7b::t_9575fb9562d146 1-42
+industries/healthcare/tasks/R-M1/task.json
+  s_c5c43ca3782c7b::t_1758655f61ab77 1-361
+industries/healthcare/tasks/R-M2/exp_db_state.json
+  s_c5c43ca3782c7b::t_4607e3a7e3584b 1-180
+industries/healthcare/tasks/R-M2/solution/oracle.json
+  s_c5c43ca3782c7b::t_5ece6e31718c40 1-30
+industries/healthcare/tasks/R-M2/task.json
+  s_c5c43ca3782c7b::t_a5dbe67327208a 1-301
+industries/healthcare/tasks/R-M3/exp_db_state.json
+  s_c5c43ca3782c7b::t_045151ba7ba57a 1-182
+industries/healthcare/tasks/R-M3/solution/oracle.json
+  s_c5c43ca3782c7b::t_8153f6cbf95c68 1-30
+industries/healthcare/tasks/R-M3/task.json
+  s_c5c43ca3782c7b::t_33057a59227323 1-306
+industries/healthcare/tasks/R-M4/exp_db_state.json
+  s_c5c43ca3782c7b::t_18e30744de8a00 1-182
+industries/healthcare/tasks/R-M4/solution/oracle.json
+  s_c5c43ca3782c7b::t_3c69650a8fc30b 1-30
+industries/healthcare/tasks/R-M4/task.json
+  s_c5c43ca3782c7b::t_32af15e09a9f99 1-318
+industries/healthcare/tool_server.py
+  s_c5c43ca3782c7b::t_9023a90b8f794a 1-1353
+industries/healthcare/tools.json
+  s_c5c43ca3782c7b::t_430382b2ff4850 1-1726
+industries/legal/README.md
+  s_c5c43ca3782c7b::t_7ab02fc5e04aca 1-78
+industries/legal/agent_blueprint.json
+  s_c5c43ca3782c7b::t_0988125c2136af 1-183
+industries/legal/agent_blueprint.mmd
+  s_c5c43ca3782c7b::t_184258ba98ae16 1-18
+industries/legal/db/schema.sql
+  s_c5c43ca3782c7b::t_fa0a87bcdf2d8b 1-135
+industries/legal/db/seed.sql
+  s_c5c43ca3782c7b::t_25d2cc050119ff 1-77
+industries/legal/requirements.txt
+  s_c5c43ca3782c7b::t_439b1a98d8e741 1-4
+industries/legal/system-prompts/client_services.md
+  s_c5c43ca3782c7b::t_41c4cae6470b4b 1-164
+industries/legal/system-prompts/intake.md
+  s_c5c43ca3782c7b::t_762ba7cb0bd0c8 1-178
+industries/legal/system-prompts/reception.md
+  s_c5c43ca3782c7b::t_f19e40c81c8f26 1-187
+industries/legal/system-prompts/scheduling.md
+  s_c5c43ca3782c7b::t_787e5844f26eef 1-173
+industries/legal/system-prompts/screening.md
+  s_c5c43ca3782c7b::t_e8b90ccccbc209 1-183
+industries/legal/tasks/C1-E1-BG/solution/oracle.json
+  s_c5c43ca3782c7b::t_be354cda331697 1-21
+industries/legal/tasks/C1-E1-BG/task.json
+  s_c5c43ca3782c7b::t_e78f3d4ab1b710 1-119
+industries/legal/tasks/C1-E1-SIG/solution/oracle.json
+  s_c5c43ca3782c7b::t_de2bb4cefb770a 1-21
+industries/legal/tasks/C1-E1-SIG/task.json
+  s_c5c43ca3782c7b::t_ec36fff6b456d8 1-119
+industries/legal/tasks/C1-E1/solution/oracle.json
+  s_c5c43ca3782c7b::t_9705c40ac21f07 1-21
+industries/legal/tasks/C1-E1/task.json
+  s_c5c43ca3782c7b::t_9ea9d9b1c9c04d 1-119
+industries/legal/tasks/C1-E2/solution/oracle.json
+  s_c5c43ca3782c7b::t_54b936436b266e 1-20
+industries/legal/tasks/C1-E2/task.json
+  s_c5c43ca3782c7b::t_d8ec21bafaafba 1-110
+industries/legal/tasks/C1-H1/solution/oracle.json
+  s_c5c43ca3782c7b::t_32839c804bd8ad 1-21
+industries/legal/tasks/C1-H1/task.json
+  s_c5c43ca3782c7b::t_620570fc62cda1 1-156
+industries/legal/tasks/C1-H2/solution/oracle.json
+  s_c5c43ca3782c7b::t_1c5ed3349f1954 1-70
+industries/legal/tasks/C1-H2/task.json
+  s_c5c43ca3782c7b::t_b3198fcf9b3abc 1-244
+industries/legal/tasks/C1-H3/solution/oracle.json
+  s_c5c43ca3782c7b::t_02ec59d547f2d8 1-69
+industries/legal/tasks/C1-H3/task.json
+  s_c5c43ca3782c7b::t_cf642487f6c9f2 1-270
+industries/legal/tasks/C1-H4/solution/oracle.json
+  s_c5c43ca3782c7b::t_566fec237bbedf 1-20
+industries/legal/tasks/C1-H4/task.json
+  s_c5c43ca3782c7b::t_b282e32f0023d7 1-159
+industries/legal/tasks/C1-M1/solution/oracle.json
+  s_c5c43ca3782c7b::t_c036d004d53fea 1-25
+industries/legal/tasks/C1-M1/task.json
+  s_c5c43ca3782c7b::t_baa822d862ef2e 1-116
+industries/legal/tasks/C1-M2/solution/oracle.json
+  s_c5c43ca3782c7b::t_a793ede30ae600 1-13
+industries/legal/tasks/C1-M2/task.json
+  s_c5c43ca3782c7b::t_d4a1bc7647adbb 1-132
+industries/legal/tasks/C1-M3/solution/oracle.json
+  s_c5c43ca3782c7b::t_cc23d024939a4b 1-21
+industries/legal/tasks/C1-M3/task.json
+  s_c5c43ca3782c7b::t_226a97e80d087d 1-164
+industries/legal/tasks/C1-M4/solution/oracle.json
+  s_c5c43ca3782c7b::t_8da3fcc1a3f3f7 1-47
+industries/legal/tasks/C1-M4/task.json
+  s_c5c43ca3782c7b::t_381f629d8b0087 1-181
+industries/legal/tasks/C2-E1-BG/solution/oracle.json
+  s_c5c43ca3782c7b::t_847f9af4388747 1-32
+industries/legal/tasks/C2-E1-BG/task.json
+  s_c5c43ca3782c7b::t_81f0b8f7f4920f 1-124
+industries/legal/tasks/C2-E1-SIG/solution/oracle.json
+  s_c5c43ca3782c7b::t_638be2f01b806c 1-32
+industries/legal/tasks/C2-E1-SIG/task.json
+  s_c5c43ca3782c7b::t_474cfbe929bc45 1-124
+industries/legal/tasks/C2-E1/solution/oracle.json
+  s_c5c43ca3782c7b::t_9c43802d7d74b0 1-32
+industries/legal/tasks/C2-E1/task.json
+  s_c5c43ca3782c7b::t_d36cfdb48a5599 1-124
+industries/legal/tasks/C2-E2/solution/oracle.json
+  s_c5c43ca3782c7b::t_75aa95e79536d3 1-20
+industries/legal/tasks/C2-E2/task.json
+  s_c5c43ca3782c7b::t_153686792993ab 1-97
+industries/legal/tasks/C2-H1/solution/oracle.json
+  s_c5c43ca3782c7b::t_15de2e431bb862 1-48
+industries/legal/tasks/C2-H1/task.json
+  s_c5c43ca3782c7b::t_6458b8c3d23d41 1-215
+industries/legal/tasks/C2-H2/solution/oracle.json
+  s_c5c43ca3782c7b::t_b9cbd9dcf725e2 1-48
+industries/legal/tasks/C2-H2/task.json
+  s_c5c43ca3782c7b::t_ce30ab6ee95956 1-220
+industries/legal/tasks/C2-H3/solution/oracle.json
+  s_c5c43ca3782c7b::t_ff516f2b60262c 1-13
+industries/legal/tasks/C2-H3/task.json
+  s_c5c43ca3782c7b::t_91124074e281cb 1-132
+industries/legal/tasks/C2-H4/solution/oracle.json
+  s_c5c43ca3782c7b::t_e0dcfc74299426 1-20
+industries/legal/tasks/C2-H4/task.json
+  s_c5c43ca3782c7b::t_9771cd86140a63 1-153
+industries/legal/tasks/C2-M1/solution/oracle.json
+  s_c5c43ca3782c7b::t_833e9864e25b7e 1-32
+industries/legal/tasks/C2-M1/task.json
+  s_c5c43ca3782c7b::t_09329837b23898 1-151
+industries/legal/tasks/C2-M2/solution/oracle.json
+  s_c5c43ca3782c7b::t_6e5ff732afc6c3 1-26
+industries/legal/tasks/C2-M2/task.json
+  s_c5c43ca3782c7b::t_eaf95054ecf6d9 1-141
+industries/legal/tasks/C2-M3/solution/oracle.json
+  s_c5c43ca3782c7b::t_845c16d2677fcb 1-13
+industries/legal/tasks/C2-M3/task.json
+  s_c5c43ca3782c7b::t_aad22a528c831d 1-118
+industries/legal/tasks/C2-M4/solution/oracle.json
+  s_c5c43ca3782c7b::t_86f0992637011e 1-26
+industries/legal/tasks/C2-M4/task.json
+  s_c5c43ca3782c7b::t_cf8016bc9cdf85 1-148
+industries/legal/tasks/C3-E1-BG/solution/oracle.json
+  s_c5c43ca3782c7b::t_53da23e22a4c7f 1-26
+industries/legal/tasks/C3-E1-BG/task.json
+  s_c5c43ca3782c7b::t_0fce05f129e0ca 1-114
+industries/legal/tasks/C3-E1-SIG/solution/oracle.json
+  s_c5c43ca3782c7b::t_7a158a5c7a118e 1-26
+industries/legal/tasks/C3-E1-SIG/task.json
+  s_c5c43ca3782c7b::t_ccf344cea95c82 1-114
+industries/legal/tasks/C3-E1/solution/oracle.json
+  s_c5c43ca3782c7b::t_246536fa12f481 1-26
+industries/legal/tasks/C3-E1/task.json
+  s_c5c43ca3782c7b::t_05974bb01c2288 1-114
+industries/legal/tasks/C3-E2/solution/oracle.json
+  s_c5c43ca3782c7b::t_a9a3612f25839f 1-26
+industries/legal/tasks/C3-E2/task.json
+  s_c5c43ca3782c7b::t_03909fc85732d2 1-128
+industries/legal/tasks/C3-H1/solution/oracle.json
+  s_c5c43ca3782c7b::t_a0c147fbc7edba 1-69
+industries/legal/tasks/C3-H1/task.json
+  s_c5c43ca3782c7b::t_1f58f06c0ba846 1-232
+industries/legal/tasks/C3-H2/solution/oracle.json
+  s_c5c43ca3782c7b::t_7fd6d29c6beadc 1-53
+industries/legal/tasks/C3-H2/task.json
+  s_c5c43ca3782c7b::t_1893f8a090f914 1-198
+industries/legal/tasks/C3-H3/solution/oracle.json
+  s_c5c43ca3782c7b::t_eb299db57d6bb6 1-69
+industries/legal/tasks/C3-H3/task.json
+  s_c5c43ca3782c7b::t_f9d69e21a073d5 1-254
+industries/legal/tasks/C3-H4/solution/oracle.json
+  s_c5c43ca3782c7b::t_78fb7f2631078f 1-69
+industries/legal/tasks/C3-H4/task.json
+  s_c5c43ca3782c7b::t_b4081c5f7006e7 1-247
+industries/legal/tasks/C3-M1/solution/oracle.json
+  s_c5c43ca3782c7b::t_be7e3407e21a01 1-45
+industries/legal/tasks/C3-M1/task.json
+  s_c5c43ca3782c7b::t_7d9a94528097fc 1-159
+industries/legal/tasks/C3-M2/solution/oracle.json
+  s_c5c43ca3782c7b::t_98e8013c6c3ff3 1-45
+industries/legal/tasks/C3-M2/task.json
+  s_c5c43ca3782c7b::t_5a174889e6657e 1-159
+industries/legal/tasks/C3-M3/solution/oracle.json
+  s_c5c43ca3782c7b::t_31945e159345d2 1-45
+industries/legal/tasks/C3-M3/task.json
+  s_c5c43ca3782c7b::t_fcd579a5fcdfa4 1-172
+industries/legal/tasks/C3-M4/solution/oracle.json
+  s_c5c43ca3782c7b::t_2418294db5a72c 1-38
+industries/legal/tasks/C3-M4/task.json
+  s_c5c43ca3782c7b::t_009540f94f1fdb 1-154
+industries/legal/tasks/C4-E1-BG/solution/oracle.json
+  s_c5c43ca3782c7b::t_39f2982bca8e9f 1-36
+industries/legal/tasks/C4-E1-BG/task.json
+  s_c5c43ca3782c7b::t_bb354db062131d 1-226
+industries/legal/tasks/C4-E1-SIG/solution/oracle.json
+  s_c5c43ca3782c7b::t_6a60114974fcea 1-36
+industries/legal/tasks/C4-E1-SIG/task.json
+  s_c5c43ca3782c7b::t_4926c7b8ca653f 1-226
+industries/legal/tasks/C4-E1/solution/oracle.json
+  s_c5c43ca3782c7b::t_557cebf5da3958 1-36
+industries/legal/tasks/C4-E1/task.json
+  s_c5c43ca3782c7b::t_856cc05c2cd547 1-226
+industries/legal/tasks/C4-E2/solution/oracle.json
+  s_c5c43ca3782c7b::t_d011f3ae0b1dff 1-36
+industries/legal/tasks/C4-E2/task.json
+  s_c5c43ca3782c7b::t_84b57e2c6a33bf 1-191
+industries/legal/tasks/C4-H1/solution/oracle.json
+  s_c5c43ca3782c7b::t_444a44715f303d 1-75
+industries/legal/tasks/C4-H1/task.json
+  s_c5c43ca3782c7b::t_198af643822e00 1-277
+industries/legal/tasks/C4-H2/solution/oracle.json
+  s_c5c43ca3782c7b::t_7725ea8dcc74eb 1-69
+industries/legal/tasks/C4-H2/task.json
+  s_c5c43ca3782c7b::t_0a40c96ba73ab1 1-303
+industries/legal/tasks/C4-H3/solution/oracle.json
+  s_c5c43ca3782c7b::t_cea024d7c8abc5 1-75
+industries/legal/tasks/C4-H3/task.json
+  s_c5c43ca3782c7b::t_5353c46f4d5f01 1-264
+industries/legal/tasks/C4-H4/solution/oracle.json
+  s_c5c43ca3782c7b::t_799caa2e317196 1-75
+industries/legal/tasks/C4-H4/task.json
+  s_c5c43ca3782c7b::t_668a62c647fb86 1-291
+industries/legal/tasks/C4-M1/solution/oracle.json
+  s_c5c43ca3782c7b::t_009052b2281311 1-56
+industries/legal/tasks/C4-M1/task.json
+  s_c5c43ca3782c7b::t_22ac083a71c42c 1-250
+industries/legal/tasks/C4-M2/solution/oracle.json
+  s_c5c43ca3782c7b::t_71cfa2bc6e5ac9 1-56
+industries/legal/tasks/C4-M2/task.json
+  s_c5c43ca3782c7b::t_2dffc1a0f65f6f 1-245
+industries/legal/tasks/C4-M3/solution/oracle.json
+  s_c5c43ca3782c7b::t_7eaced577b5836 1-56
+industries/legal/tasks/C4-M3/task.json
+  s_c5c43ca3782c7b::t_f67f748a59edd9 1-245
+industries/legal/tasks/C4-M4/solution/oracle.json
+  s_c5c43ca3782c7b::t_cca48622b41314 1-54
+industries/legal/tasks/C4-M4/task.json
+  s_c5c43ca3782c7b::t_9ee4a87a77aa78 1-254
+industries/legal/tasks/C5-E1-BG/solution/oracle.json
+  s_c5c43ca3782c7b::t_540b31b1a28ec9 1-34
+industries/legal/tasks/C5-E1-BG/task.json
+  s_c5c43ca3782c7b::t_fb2674fb41d5d0 1-234
+industries/legal/tasks/C5-E1-SIG/solution/oracle.json
+  s_c5c43ca3782c7b::t_38c995adb67a11 1-34
+industries/legal/tasks/C5-E1-SIG/task.json
+  s_c5c43ca3782c7b::t_981703361f5834 1-234
+industries/legal/tasks/C5-E1/solution/oracle.json
+  s_c5c43ca3782c7b::t_f4dc7865352c7c 1-34
+industries/legal/tasks/C5-E1/task.json
+  s_c5c43ca3782c7b::t_c854c70709b012 1-234
+industries/legal/tasks/C5-E2/solution/oracle.json
+  s_c5c43ca3782c7b::t_3bca8cb2f043b0 1-30
+industries/legal/tasks/C5-E2/task.json
+  s_c5c43ca3782c7b::t_4e7190282face8 1-216
+industries/legal/tasks/C5-H1/solution/oracle.json
+  s_c5c43ca3782c7b::t_5e8f1ba0dd746a 1-94
+industries/legal/tasks/C5-H1/task.json
+  s_c5c43ca3782c7b::t_4920a1e65293b3 1-308
+industries/legal/tasks/C5-H2/solution/oracle.json
+  s_c5c43ca3782c7b::t_7500b39aac3892 1-97
+industries/legal/tasks/C5-H2/task.json
+  s_c5c43ca3782c7b::t_0a211d14676e7e 1-392
+industries/legal/tasks/C5-H3/solution/oracle.json
+  s_c5c43ca3782c7b::t_1d2b1f49d71cec 1-94
+industries/legal/tasks/C5-H3/task.json
+  s_c5c43ca3782c7b::t_8ea38c67b98504 1-301
+industries/legal/tasks/C5-H4/solution/oracle.json
+  s_c5c43ca3782c7b::t_e964136b802bce 1-94
+industries/legal/tasks/C5-H4/task.json
+  s_c5c43ca3782c7b::t_3e5c74a8ee1600 1-332
+industries/legal/tasks/C5-M1/solution/oracle.json
+  s_c5c43ca3782c7b::t_7f6e9c89426671 1-54
+industries/legal/tasks/C5-M1/task.json
+  s_c5c43ca3782c7b::t_cbe62bde56c184 1-267
+industries/legal/tasks/C5-M2/solution/oracle.json
+  s_c5c43ca3782c7b::t_e205f7e4417875 1-53
+industries/legal/tasks/C5-M2/task.json
+  s_c5c43ca3782c7b::t_94551bca353732 1-274
+industries/legal/tasks/C5-M3/solution/oracle.json
+  s_c5c43ca3782c7b::t_4e75bed3ade9e9 1-53
+industries/legal/tasks/C5-M3/task.json
+  s_c5c43ca3782c7b::t_edd948c6adbf3c 1-303
+industries/legal/tasks/C5-M4/solution/oracle.json
+  s_c5c43ca3782c7b::t_363af7922e0a4e 1-53
+industries/legal/tasks/C5-M4/task.json
+  s_c5c43ca3782c7b::t_9f044e104ce24b 1-265
+industries/legal/tasks/R-E1-BG/solution/oracle.json
+  s_c5c43ca3782c7b::t_3ff0627a6274c8 1-20
+industries/legal/tasks/R-E1-BG/task.json
+  s_c5c43ca3782c7b::t_55b0c519ee9cba 1-128
+industries/legal/tasks/R-E1-SIG/solution/oracle.json
+  s_c5c43ca3782c7b::t_f6154653ba6922 1-20
+industries/legal/tasks/R-E1-SIG/task.json
+  s_c5c43ca3782c7b::t_03e05431c38d02 1-128
+industries/legal/tasks/R-E1/solution/oracle.json
+  s_c5c43ca3782c7b::t_f3b17db16ed320 1-20
+industries/legal/tasks/R-E1/task.json
+  s_c5c43ca3782c7b::t_b70e510cb7d26f 1-128
+industries/legal/tasks/R-E2/solution/oracle.json
+  s_c5c43ca3782c7b::t_0e62ca315d7d76 1-20
+industries/legal/tasks/R-E2/task.json
+  s_c5c43ca3782c7b::t_2e534544bf77c7 1-133
+industries/legal/tasks/R-H1/solution/oracle.json
+  s_c5c43ca3782c7b::t_938db2a32635c3 1-13
+industries/legal/tasks/R-H1/task.json
+  s_c5c43ca3782c7b::t_4622c7c62074fb 1-132
+industries/legal/tasks/R-H2/solution/oracle.json
+  s_c5c43ca3782c7b::t_0f000eb7f0331a 1-27
+industries/legal/tasks/R-H2/task.json
+  s_c5c43ca3782c7b::t_9281f004a47bc0 1-158
+industries/legal/tasks/R-H3/solution/oracle.json
+  s_c5c43ca3782c7b::t_4bbc9cc20517ff 1-69
+industries/legal/tasks/R-H3/task.json
+  s_c5c43ca3782c7b::t_f71cc5cd7e33c2 1-277
+industries/legal/tasks/R-H4/solution/oracle.json
+  s_c5c43ca3782c7b::t_cc878ada07cab6 1-43
+industries/legal/tasks/R-H4/task.json
+  s_c5c43ca3782c7b::t_2817482277100d 1-202
+industries/legal/tasks/R-M1/solution/oracle.json
+  s_c5c43ca3782c7b::t_87ba9f382718bd 1-63
+industries/legal/tasks/R-M1/task.json
+  s_c5c43ca3782c7b::t_ab951d048e07db 1-217
+industries/legal/tasks/R-M2/solution/oracle.json
+  s_c5c43ca3782c7b::t_ab5f4c2dd9169a 1-63
+industries/legal/tasks/R-M2/task.json
+  s_c5c43ca3782c7b::t_ea81883a0b99cf 1-217
+industries/legal/tasks/R-M3/solution/oracle.json
+  s_c5c43ca3782c7b::t_39281d462e8f62 1-21
+industries/legal/tasks/R-M3/task.json
+  s_c5c43ca3782c7b::t_71f2232fc7dd2d 1-163
+industries/legal/tasks/R-M4/solution/oracle.json
+  s_c5c43ca3782c7b::t_32f32fff136c11 1-37
+industries/legal/tasks/R-M4/task.json
+  s_c5c43ca3782c7b::t_a34eb9bd0e0bc9 1-181
+industries/legal/tool_server.py
+  s_c5c43ca3782c7b::t_7dec8f7b26e759 1-875
+industries/legal/tools.json
+  s_c5c43ca3782c7b::t_1e1f33370b0d64 1-1033
+runtime/db_service.py
+  s_c5c43ca3782c7b::t_02461e062ac17e 1-203
+runtime/provider_bind.py
+  s_c5c43ca3782c7b::t_192007f320f941 1-48
+runtime/snapshot.py
+  s_c5c43ca3782c7b::t_c021d2f1a1c97a 1-187
+runtime/tools_http.py
+  s_c5c43ca3782c7b::t_f83f5bc5e7113c 1-17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "20be5ae708267a3ce6d90852d0bc5182745843de",
+  "prompts": {},
+  "sessions": {
+    "s_c5c43ca3782c7b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b96dcb85-4fba-465d-abbc-7393d1679670",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "farazmsiddiqi <farazs27@gmail.com>"
+    }
+  }
+}
