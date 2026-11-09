@@ -1,0 +1,249 @@
+.gitignore
+  s_3e231bfa20c080::t_e8f052df135b12 1-20
+configs/gemini25-flash.yaml
+  s_3e231bfa20c080::t_d09f00d9cff6ef 1-26
+configs/gpt41.yaml
+  s_3e231bfa20c080::t_8d19501baccc3b 1-20
+configs/gpt5-mini.yaml
+  s_3e231bfa20c080::t_32f497001f291d 1-22
+configs/gpt61sol.yaml
+  s_3e231bfa20c080::t_c504aebc6e2fc3 1-28
+configs/haiku55.yaml
+  s_3e231bfa20c080::t_1fc70f110de416 1-23
+configs/phonellm-alpha-1.yaml
+  s_3e231bfa20c080::t_8966a85a192a6f 1-25
+configs/phonellm-max-alpha-2.yaml
+  s_3e231bfa20c080::t_c23a7188bf4193 1-23
+configs/phonellm-mini-alpha-2.yaml
+  s_3e231bfa20c080::t_98d4e3e3730c99 1-25
+configs/tell1.yaml
+  s_3e231bfa20c080::t_a60c1e3ed96a44 1-23
+configs/users/sol.yaml
+  s_3e231bfa20c080::t_df6207085f5315 1-16
+configs/users/stt-simulated-gpt-6.1-sol.yaml
+  s_3e231bfa20c080::t_0617c6164ea6b7 1-18
+industries/customer-support/agent_blueprint.json
+  s_3e231bfa20c080::t_f55a041b117a2c 1-122
+industries/customer-support/db/schema.sql
+  s_3e231bfa20c080::t_b35039ba759b06 1-230
+industries/customer-support/db/seed.sql
+  s_3e231bfa20c080::t_23a508d3f447e1 1-406
+industries/customer-support/system-prompts/fraud.md
+  s_3e231bfa20c080::t_31812dfe4a422d 1-238
+industries/customer-support/system-prompts/membership.md
+  s_3e231bfa20c080::t_6b28643e3b0458 1-207
+industries/customer-support/system-prompts/orders.md
+  s_3e231bfa20c080::t_236eb1ab19bf3b 1-221
+industries/customer-support/system-prompts/reception.md
+  s_3e231bfa20c080::t_a771105149a9ac 1-217
+industries/customer-support/system-prompts/returns.md
+  s_3e231bfa20c080::t_4024e294a016fa 1-224
+industries/customer-support/system-prompts/service.md
+  s_3e231bfa20c080::t_20063184a07e6c 1-225
+industries/customer-support/system-prompts/verification.md
+  s_3e231bfa20c080::t_7f7c57fd74c984 1-219
+industries/customer-support/tasks/cs-2ayp/task.json
+  s_3e231bfa20c080::t_e1032a69f20a19 1-3305
+industries/customer-support/tasks/cs-6kbn/task.json
+  s_3e231bfa20c080::t_949eb1e29b2fea 1-3233
+industries/customer-support/tasks/cs-hppk/task.json
+  s_3e231bfa20c080::t_aaa71874a18960 1-3289
+industries/customer-support/tool_server.py
+  s_3e231bfa20c080::t_34ac3d10b208d1 1-1824
+industries/customer-support/tools.json
+  s_3e231bfa20c080::t_a6fbaf004e6e64 1-1428
+industries/healthcare/agent_blueprint.json
+  s_3e231bfa20c080::t_4712426ff10f94 1-326
+industries/healthcare/db/schema.sql
+  s_3e231bfa20c080::t_31057b5fe0004c 1-79
+industries/healthcare/db/seed.sql
+  s_3e231bfa20c080::t_6413cbf4eab734 1-150
+industries/healthcare/system-prompts/billing.md
+  s_3e231bfa20c080::t_b2a8aff70b640c 1-170
+industries/healthcare/system-prompts/clinical.md
+  s_3e231bfa20c080::t_f2715b91a94558 1-196
+industries/healthcare/system-prompts/cosmetic.md
+  s_3e231bfa20c080::t_f562ef9df3bc1e 1-184
+industries/healthcare/system-prompts/coverage.md
+  s_3e231bfa20c080::t_03e4aee411463f 1-181
+industries/healthcare/system-prompts/identity.md
+  s_3e231bfa20c080::t_621a59f947a8fa 1-177
+industries/healthcare/system-prompts/reception.md
+  s_3e231bfa20c080::t_7b8f5ae1676397 1-185
+industries/healthcare/system-prompts/scheduling.md
+  s_3e231bfa20c080::t_baec26f5f3a45f 1-227
+industries/healthcare/tasks/hc-bk4p/task.json
+  s_3e231bfa20c080::t_8b1c0eed1fd6ca 1-1212
+industries/healthcare/tasks/hc-n33q/task.json
+  s_3e231bfa20c080::t_56105a868502d8 1-1200
+industries/healthcare/tasks/hc-tgcr/task.json
+  s_3e231bfa20c080::t_392de7be955139 1-1196
+industries/healthcare/tool_server.py
+  s_3e231bfa20c080::t_7c0e0195ee8002 1-1345
+industries/healthcare/tools.json
+  s_3e231bfa20c080::t_6f9d7ff7f623fe 1-1726
+industries/legal/agent_blueprint.json
+  s_3e231bfa20c080::t_9b8c9d5b085851 1-183
+industries/legal/db/schema.sql
+  s_3e231bfa20c080::t_05137f4ccc29cd 1-135
+industries/legal/db/seed.sql
+  s_3e231bfa20c080::t_783185312d254d 1-196
+industries/legal/system-prompts/client_services.md
+  s_3e231bfa20c080::t_a6f9380fa47ad9 1-164
+industries/legal/system-prompts/intake.md
+  s_3e231bfa20c080::t_b31696e891b2ac 1-178
+industries/legal/system-prompts/reception.md
+  s_3e231bfa20c080::t_00f5d039fc58af 1-187
+industries/legal/system-prompts/scheduling.md
+  s_3e231bfa20c080::t_ef09d01c0877a3 1-173
+industries/legal/system-prompts/screening.md
+  s_3e231bfa20c080::t_0c1e769b0ca173 1-183
+industries/legal/tasks/lg-7qq4/task.json
+  s_3e231bfa20c080::t_9b43d6970b7d3a 1-518
+industries/legal/tasks/lg-abq3/task.json
+  s_3e231bfa20c080::t_3097880b9a4695 1-371
+industries/legal/tasks/lg-xskw/task.json
+  s_3e231bfa20c080::t_62be4fa08c2450 1-320
+industries/legal/tool_server.py
+  s_3e231bfa20c080::t_92f5d30cf764b8 1-868
+industries/legal/tools.json
+  s_3e231bfa20c080::t_fa094ed9a9d154 1-1033
+pyproject.toml
+  s_3e231bfa20c080::t_e7adc27267076a 1-38
+resources_servers/micol/README.md
+  s_3e231bfa20c080::t_be310ce6773d92 1-23
+resources_servers/micol/app.py
+  s_3e231bfa20c080::t_a47bf638daed7b 1-200
+resources_servers/micol/configs/micol.yaml
+  s_3e231bfa20c080::t_d20a2b990e78fd 1-59
+resources_servers/micol/data/customer-support.jsonl
+  s_3e231bfa20c080::t_9bcbbf981b5018 1-3
+resources_servers/micol/data/example.jsonl
+  s_3e231bfa20c080::t_b2631253c3e826 1-3
+resources_servers/micol/data/healthcare.jsonl
+  s_3e231bfa20c080::t_165427f9e04550 1-3
+resources_servers/micol/data/legal.jsonl
+  s_3e231bfa20c080::t_2818f2f5f4d1da 1-3
+resources_servers/micol/requirements.txt
+  s_3e231bfa20c080::t_664950a959291f 1-2
+responses_api_agents/micol/README.md
+  s_3e231bfa20c080::t_759eeeeb3080cd 1-15
+responses_api_agents/micol/app.py
+  s_3e231bfa20c080::t_9c09b41bb18ba6 1-228
+responses_api_agents/micol/requirements.txt
+  s_3e231bfa20c080::t_41516ee13d02ed 1-2
+responses_api_models/chat_passthrough/app.py
+  s_3e231bfa20c080::t_15a606c34c6016 1-55
+responses_api_models/chat_passthrough/requirements.txt
+  s_3e231bfa20c080::t_458b828b49d28a 1
+responses_api_models/retell_playground/app.py
+  s_3e231bfa20c080::t_d89e99f2afc335 1-172
+responses_api_models/retell_playground/requirements.txt
+  s_3e231bfa20c080::t_5bc92b946cf15e 1-2
+scripts/setup.sh
+  s_3e231bfa20c080::t_ef75bcd9904042 1-12
+src/micol/asr_profiles/stt-simulated-gpt-6.1-sol.md
+  s_3e231bfa20c080::t_e623e357a83a0e 1-284
+src/micol/asr_profiles/stt-simulated-gpt-6.1-sol.stats.json
+  s_3e231bfa20c080::t_c8925d684d2216 1-18
+src/micol/bench.py
+  s_3e231bfa20c080::t_55b11613fd597d 1-111
+src/micol/channel.py
+  s_3e231bfa20c080::t_932fe056cd792b 1-210
+src/micol/cli.py
+  s_3e231bfa20c080::t_284891c2e913be 1-270
+src/micol/console/api.py
+  s_3e231bfa20c080::t_76dd63ba9ccdbe 1-286
+src/micol/console/runs.py
+  s_3e231bfa20c080::t_23ccb7a6cc8f7b 1-358
+src/micol/console/views.py
+  s_3e231bfa20c080::t_1e0828e0ddc9fb 1-244
+src/micol/db_service.py
+  s_3e231bfa20c080::t_3ad5178e6ffc63 1-198
+src/micol/env.py
+  s_3e231bfa20c080::t_af9407e06de0bd 1-454
+src/micol/grader.py
+  s_3e231bfa20c080::t_1fee401cf548ce 1-832
+src/micol/latency.py
+  s_3e231bfa20c080::t_cd88f73fbb48c7 1-144
+src/micol/llm.py
+  s_3e231bfa20c080::t_ed06e7331fcb11 1-160
+src/micol/loop.py
+  s_3e231bfa20c080::t_7f1c121a7f602b 1-118
+src/micol/report.py
+  s_3e231bfa20c080::t_f8eccda5e975bd 1-289
+src/micol/usersim.py
+  s_3e231bfa20c080::t_956f873d160445 1-228
+src/micol/verify.py
+  s_3e231bfa20c080::t_8b38bc096b7766 1-107
+tests/test_console.py
+  s_3e231bfa20c080::t_844506a0785a42 1-57
+tests/test_freeze.py
+  s_3e231bfa20c080::t_cbda74dd296db8 1-57
+tests/test_responses_api.py
+  s_3e231bfa20c080::t_51c073912a8109 1-47
+tests/test_reward.py
+  s_3e231bfa20c080::t_69e171f4ba1dd2 1-65
+tests/test_smoke.py
+  s_3e231bfa20c080::t_829b3b40995f21 1-232
+ui/index.html
+  s_3e231bfa20c080::t_2f7154fc7c5be6 1-12
+ui/package-lock.json
+  s_3e231bfa20c080::t_562b4088e6a406 1-2599
+ui/package.json
+  s_3e231bfa20c080::t_db8b45672cbd4a 1-29
+ui/src/App.tsx
+  s_3e231bfa20c080::t_eae80fddd3a8fd 1-89
+ui/src/api.ts
+  s_3e231bfa20c080::t_9369d51f6b3e06 1-263
+ui/src/components/Grading.tsx
+  s_3e231bfa20c080::t_594843be637849 1-272
+ui/src/components/TaskBrief.tsx
+  s_3e231bfa20c080::t_6625267faac8d4 1-93
+ui/src/components/Timeline.tsx
+  s_3e231bfa20c080::t_32ebdc843c73fc 1-116
+ui/src/components/shared.tsx
+  s_3e231bfa20c080::t_eee564fe955df0 1-155
+ui/src/components/ui/primitives.tsx
+  s_3e231bfa20c080::t_6ae740b201dc07 1-98
+ui/src/index.css
+  s_3e231bfa20c080::t_61dd2efd1e5024 1-78
+ui/src/lib/utils.ts
+  s_3e231bfa20c080::t_aeab209fbcd617 1-27
+ui/src/main.tsx
+  s_3e231bfa20c080::t_a224fafef16a35 1-10
+ui/src/pages/ComparePage.tsx
+  s_3e231bfa20c080::t_565829cfb884f9 1-100
+ui/src/pages/NewRunPage.tsx
+  s_3e231bfa20c080::t_5df7e484bf2113 1-197
+ui/src/pages/RolloutPage.tsx
+  s_3e231bfa20c080::t_b99b4e1f3ce4c0 1-127
+ui/src/pages/RunPage.tsx
+  s_3e231bfa20c080::t_736eb977abd88d 1-286
+ui/src/pages/RunsPage.tsx
+  s_3e231bfa20c080::t_b53419fa1fed2d 1-138
+ui/src/pages/TasksPage.tsx
+  s_3e231bfa20c080::t_af7f6bceccf372 1-167
+ui/tsconfig.json
+  s_3e231bfa20c080::t_72336125ae8f27 1-19
+ui/vite.config.ts
+  s_3e231bfa20c080::t_3a50442455277d 1-11
+uv.lock
+  s_3e231bfa20c080::t_ecd060fdd3ffab 1-4088
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "c8be72a966064a1f845fc2f3b8db810923104aa2",
+  "prompts": {},
+  "sessions": {
+    "s_3e231bfa20c080": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dde7917c-719f-4eeb-89bd-22cffded9996",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Yash Savalia <yashsavalia1@gmail.com>"
+    }
+  }
+}
