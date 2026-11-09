@@ -1,0 +1,191 @@
+.gitignore
+  s_3e231bfa20c080::t_ad9e7889c8c310 1-20
+configs/gemini25-flash.yaml
+  s_3e231bfa20c080::t_2645f96cb80c61 1-26
+configs/gpt41.yaml
+  s_3e231bfa20c080::t_458900c8ddc054 1-20
+configs/gpt5-mini.yaml
+  s_3e231bfa20c080::t_c2695c18adf784 1-22
+configs/gpt61sol.yaml
+  s_3e231bfa20c080::t_5c50c821570379 1-28
+configs/haiku55.yaml
+  s_3e231bfa20c080::t_e2749ae27f1e97 1-23
+configs/phonellm-alpha-1.yaml
+  s_3e231bfa20c080::t_70648a7b416bbe 1-25
+configs/phonellm-max-alpha-2.yaml
+  s_3e231bfa20c080::t_9edb268cccc0ea 1-23
+configs/phonellm-mini-alpha-2.yaml
+  s_3e231bfa20c080::t_b808eb7f04c6b2 1-25
+configs/tell1.yaml
+  s_3e231bfa20c080::t_d711e02c0066dc 1-23
+configs/users/sol.yaml
+  s_3e231bfa20c080::t_81313c15f955e5 1-16
+configs/users/stt-simulated-gpt-6.1-sol.yaml
+  s_3e231bfa20c080::t_b95ce479bc214e 1-18
+industries/customer-support/db/seed.sql
+  s_3e231bfa20c080::t_73dc4543d5ba08 181-406
+industries/customer-support/tasks/cs-2ayp/task.json
+  s_3e231bfa20c080::t_ab8e5c5b61c440 2-3,81-87,91-94,113-123,212-216,378-881,1096-2724,2736-2809,2811,2820-2825,2827-2828,2834-2839,2841-2842,2848-2853,2855-2856,2862-2867,2876-2881,2887,2890-2895,2900,2904-2907,2909-2937,2946-2951,2954-2968,2974-3007,3010,3016-3019,3021-3022,3030-3035,3039,3044-3063,3072-3073,3086-3148,3176-3205,3218-3247,3277-3300
+industries/customer-support/tasks/cs-6kbn/task.json
+  s_3e231bfa20c080::t_065780b08c2749 2-3,64-67,154-158,321-824,1037,1039-1050,1053-2666,2679-2752,2754,2763-2768,2770-2771,2777-2782,2784-2785,2791-2796,2798-2799,2805-2810,2819-2824,2830,2833-2838,2843,2847-2850,2852-2880,2889-2894,2897-2911,2917-2950,2953,2959-2962,2964-2965,2973-2978,2982,2987-3006,3015-3016,3029-3091,3119-3148,3161-3190,3199-3222
+industries/customer-support/tasks/cs-hppk/task.json
+  s_3e231bfa20c080::t_cac489e3da9aa6 2-3,46-49,56-59,205-208,371-874,1087,1089-1100,1103-1973,1987-2802,2804,2813-2818,2820-2821,2827-2832,2834-2835,2841-2846,2848-2849,2855-2860,2869-2874,2880,2883-2888,2893,2897-2900,2902-2930,2939-2944,2947-2961,2967-3000,3003,3009-3012,3014-3015,3023-3028,3032,3037-3056,3065-3066,3079-3141,3169-3198,3211-3240,3249-3272
+industries/customer-support/tool_server.py
+  s_3e231bfa20c080::t_6c22f48eae68ca 58,234,376,830
+industries/healthcare/db/seed.sql
+  s_3e231bfa20c080::t_925ea03b3df2bd 1,81-150
+industries/healthcare/tasks/hc-bk4p/task.json
+  s_3e231bfa20c080::t_79d0d2322a5acc 2-3,255-258,266-279,294-517,532-559,574-615,630-741,755-838,935-1198
+industries/healthcare/tasks/hc-n33q/task.json
+  s_3e231bfa20c080::t_a9800c15c75d9d 2-3,232-235,243-256,271-494,509-536,551-592,607-718,732-815,915-1178
+industries/healthcare/tasks/hc-tgcr/task.json
+  s_3e231bfa20c080::t_c1c99225e4a966 2-3,225-228,236-249,264-487,502-529,544-585,600-711,725-808,908-1171
+industries/healthcare/tool_server.py
+  s_3e231bfa20c080::t_73f0f1d195cd08 29,773
+industries/legal/db/seed.sql
+  s_3e231bfa20c080::t_4bd1f13386fc42 78-196
+industries/legal/tasks/lg-7qq4/task.json
+  s_3e231bfa20c080::t_3801058aa40e3d 2-3,39-46,75-77,83-84,95-97,103-104,108-111,116-117,121-124,129-130,134-137,321-324,358-452,466
+industries/legal/tasks/lg-abq3/task.json
+  s_3e231bfa20c080::t_4691043caeac69 2-3,37-43,205-208,241-335,371
+industries/legal/tasks/lg-xskw/task.json
+  s_3e231bfa20c080::t_31174162e0b065 2-3,36-37,57-58,62-65,159-162,196-290,304
+industries/legal/tool_server.py
+  s_3e231bfa20c080::t_d0019fb8a8a3a2 35,824
+pyproject.toml
+  s_3e231bfa20c080::t_372d574ba39d84 1-38
+resources_servers/micol/README.md
+  s_3e231bfa20c080::t_75d309b4705fa7 1-23
+resources_servers/micol/app.py
+  s_3e231bfa20c080::t_fe177d6c40f6f5 1-200
+resources_servers/micol/configs/micol.yaml
+  s_3e231bfa20c080::t_8e82045c03e417 1-59
+resources_servers/micol/data/customer-support.jsonl
+  s_3e231bfa20c080::t_fc04c724a47b95 1-3
+resources_servers/micol/data/example.jsonl
+  s_3e231bfa20c080::t_032d6d775483c0 1-3
+resources_servers/micol/data/healthcare.jsonl
+  s_3e231bfa20c080::t_fb466030486b98 1-3
+resources_servers/micol/data/legal.jsonl
+  s_3e231bfa20c080::t_0ac458940d7648 1-3
+resources_servers/micol/requirements.txt
+  s_3e231bfa20c080::t_955e4c388634e0 1-2
+responses_api_agents/micol/README.md
+  s_3e231bfa20c080::t_97210cecd354e4 1-15
+responses_api_agents/micol/app.py
+  s_3e231bfa20c080::t_d96a19fff24cbf 1-228
+responses_api_agents/micol/requirements.txt
+  s_3e231bfa20c080::t_e63dd7514f5b01 1-2
+responses_api_models/chat_passthrough/app.py
+  s_3e231bfa20c080::t_6e453dfc83cd0d 1,3-7,12,14,16,18-42
+responses_api_models/chat_passthrough/requirements.txt
+  s_3e231bfa20c080::t_d7bd400ed9479b 1
+responses_api_models/retell_playground/app.py
+  s_3e231bfa20c080::t_675271baeafcf0 1-172
+responses_api_models/retell_playground/requirements.txt
+  s_3e231bfa20c080::t_f070be77deb980 1-2
+scripts/setup.sh
+  s_3e231bfa20c080::t_e1a6a84ec5cd3e 1-12
+src/micol/asr_profiles/stt-simulated-gpt-6.1-sol.md
+  s_3e231bfa20c080::t_b28207753b7b56 1-284
+src/micol/asr_profiles/stt-simulated-gpt-6.1-sol.stats.json
+  s_3e231bfa20c080::t_7e03b1ef75a6c0 1-18
+src/micol/bench.py
+  s_3e231bfa20c080::t_6921183785229a 1,7-9,13-14,16,19-23,26-28,30-40,43-45,47-111
+src/micol/channel.py
+  s_3e231bfa20c080::t_5ef40e6329efc4 1-210
+src/micol/cli.py
+  s_3e231bfa20c080::t_9147f674276088 1-267
+src/micol/console/api.py
+  s_3e231bfa20c080::t_83afa6703e0ea3 1-286
+src/micol/console/runs.py
+  s_3e231bfa20c080::t_0b8d51468c67b1 1-358
+src/micol/console/views.py
+  s_3e231bfa20c080::t_ef1622396c56f2 1-43,45-70,72-243
+src/micol/db_service.py
+  s_3e231bfa20c080::t_c9f9411ace114f 25,56,59-63,66,73,92,104,156,161,165,183
+src/micol/env.py
+  s_3e231bfa20c080::t_696271517a5b66 1-454
+src/micol/grader.py
+  s_3e231bfa20c080::t_440f0c9ed9535b 1-832
+src/micol/latency.py
+  s_3e231bfa20c080::t_02a4f4e7d70b44 1-81,83-137
+src/micol/llm.py
+  s_3e231bfa20c080::t_5f9eea09d44e90 1,3-5,10,12,16-59,61-98,100-105,109-140,143-160
+src/micol/loop.py
+  s_3e231bfa20c080::t_08a14b56c9ad6a 1-48,50-118
+src/micol/report.py
+  s_3e231bfa20c080::t_7f32249aa8df26 1-54,56-172,174-184,186-289
+src/micol/usersim.py
+  s_3e231bfa20c080::t_b580216ff2b3fd 1-228
+src/micol/verify.py
+  s_3e231bfa20c080::t_f55d576ffe9f65 1-49,51-95,97-106
+tests/test_console.py
+  s_3e231bfa20c080::t_76957a0d889dc9 1-57
+tests/test_freeze.py
+  s_3e231bfa20c080::t_bfdac71e1f5bad 1-57
+tests/test_responses_api.py
+  s_3e231bfa20c080::t_34b01039bc3539 1-47
+tests/test_reward.py
+  s_3e231bfa20c080::t_ce9e6110234c38 1,5-23,26-30,33-36,39-58,61-63,65
+tests/test_smoke.py
+  s_3e231bfa20c080::t_503ec52fc6b54e 1-232
+ui/index.html
+  s_3e231bfa20c080::t_ab7a5cef5323b2 1-12
+ui/package-lock.json
+  s_3e231bfa20c080::t_9f9e05b273bdaa 2-1644,1646-1667,1669-2596
+ui/package.json
+  s_3e231bfa20c080::t_8d1477bfc1fde2 2-28
+ui/src/App.tsx
+  s_3e231bfa20c080::t_6a13bd1a5941ba 1-88
+ui/src/api.ts
+  s_3e231bfa20c080::t_ab632e0def996e 1-109,111-200,202-255,257-259,261-263
+ui/src/components/Grading.tsx
+  s_3e231bfa20c080::t_c8661b2e16caf2 1-272
+ui/src/components/TaskBrief.tsx
+  s_3e231bfa20c080::t_b4802456b2663f 1-93
+ui/src/components/Timeline.tsx
+  s_3e231bfa20c080::t_62db697b5ae470 1-69,71-83,85-115
+ui/src/components/shared.tsx
+  s_3e231bfa20c080::t_09671dc5432c3b 1-155
+ui/src/components/ui/primitives.tsx
+  s_3e231bfa20c080::t_fc7da9fa446185 1-15,17,19-38,41-97
+ui/src/index.css
+  s_3e231bfa20c080::t_9ef184fc534165 1-77
+ui/src/lib/utils.ts
+  s_3e231bfa20c080::t_48b5cf35cc7baf 1-2,4-6,8,10-17,19-23,25-27
+ui/src/main.tsx
+  s_3e231bfa20c080::t_20874ca597feba 1-9
+ui/src/pages/ComparePage.tsx
+  s_3e231bfa20c080::t_b2c60da75a93e7 1-100
+ui/src/pages/NewRunPage.tsx
+  s_3e231bfa20c080::t_935cbb1c7eb456 1-197
+ui/src/pages/RolloutPage.tsx
+  s_3e231bfa20c080::t_28b79f80be73a6 1-34,36-126
+ui/src/pages/RunPage.tsx
+  s_3e231bfa20c080::t_5010444e4aa864 1-286
+ui/src/pages/RunsPage.tsx
+  s_3e231bfa20c080::t_4ed3a52d8784d9 1-19,21-138
+ui/src/pages/TasksPage.tsx
+  s_3e231bfa20c080::t_c4b2f180c55327 1-167
+ui/tsconfig.json
+  s_3e231bfa20c080::t_0fab186f31f9c9 2-16,18
+ui/vite.config.ts
+  s_3e231bfa20c080::t_c0bc8d39e23cc9 1-11
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "4b07a93055c81b15f5c05c08fd6f635c9aa41396",
+  "prompts": {},
+  "sessions": {
+    "s_3e231bfa20c080": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dde7917c-719f-4eeb-89bd-22cffded9996",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Yash Savalia <yashsavalia1@gmail.com>"
+    }
+  }
+}
