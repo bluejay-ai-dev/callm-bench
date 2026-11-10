@@ -1,0 +1,29 @@
+LICENSE
+  s_3e231bfa20c080::t_1f34c97021c781 1-21
+README.md
+  s_3e231bfa20c080::t_61f2981484ac4d 185-188
+configs/users/sol.yaml
+  s_3e231bfa20c080::t_4cf28d689d3c2a 3
+src/micol/asr_profiles/stt-simulated-gpt-6.1-sol.stats.json
+  s_3e231bfa20c080::t_77aefc7c18196e 2,18
+src/micol/cli.py
+  s_3e231bfa20c080::t_59f51f9ee9dba3 183,250
+src/micol/latency.py
+  s_3e231bfa20c080::t_17005c8882ed4d 18,46-47,63-77,96-99
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "9c19a966312669891795d7bc6dbbb5f752ea1ce8",
+  "prompts": {},
+  "sessions": {
+    "s_3e231bfa20c080": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dde7917c-719f-4eeb-89bd-22cffded9996",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Yash Savalia <yashsavalia1@gmail.com>"
+    }
+  }
+}
