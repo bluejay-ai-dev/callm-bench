@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Any
 
 from . import bench
-from .llm import tool_decl
+from .llm import responses_request, tool_decl
 
 SENTENCE_END = re.compile(r"[.!?](\s|$)")
 MESSAGE_KEYS = ("role", "content", "tool_calls", "tool_call_id", "name")
@@ -43,6 +43,8 @@ def requests_from_run(run_dir: Path) -> list[dict[str, Any]]:
     return out
 
 
+# "responses" for models that take tools with reasoning only on /v1/responses (gpt-6.1-sol).
+API = "chat_completions"
 # The user turn chat_passthrough appends to a system-only request (configs' opening_user_message).
 OPENING: str | None = None
 
@@ -58,6 +60,21 @@ def time_call(client: Any, model: str, req: dict[str, Any], extra: dict[str, Any
     t0 = time.perf_counter()
     first = first_text = first_sentence = None
     text, out_tokens = "", None
+    if API == "responses":
+        for event in client.responses.create(model=model, stream=True, extra_body=extra or None,
+                                             **responses_request(_clean(req["messages"]), req.get("tools") or [])):
+            now = time.perf_counter() - t0
+            if event.type == "response.output_item.added" and event.item.type == "function_call" and first is None:
+                first = now
+            elif event.type == "response.output_text.delta":
+                first = now if first is None else first
+                first_text = now if first_text is None else first_text
+                text += event.delta
+                if first_sentence is None and SENTENCE_END.search(text):
+                    first_sentence = now
+            elif event.type == "response.completed" and event.response.usage:
+                out_tokens = event.response.usage.output_tokens
+        return _timing(req, t0, first, first_text, first_sentence, text, out_tokens)
     stream = client.chat.completions.create(
         model=model, messages=_clean(req["messages"]), tools=req.get("tools") or None,
         stream=True, stream_options={"include_usage": True}, extra_body=extra or None)
@@ -76,6 +93,10 @@ def time_call(client: Any, model: str, req: dict[str, Any], extra: dict[str, Any
                 first_text = now
             if first_sentence is None and SENTENCE_END.search(text):
                 first_sentence = now
+    return _timing(req, t0, first, first_text, first_sentence, text, out_tokens)
+
+
+def _timing(req, t0, first, first_text, first_sentence, text, out_tokens) -> dict[str, Any]:
     end = time.perf_counter() - t0
     if first_sentence is None and text.strip():
         first_sentence = end  # a reply with no sentence break is one sentence

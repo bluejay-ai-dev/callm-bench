@@ -180,7 +180,7 @@ def cmd_latency(args) -> int:
     from . import latency
     from .latency import run
 
-    latency.OPENING = args.opening
+    latency.OPENING, latency.API = args.opening, args.api
     client = OpenAI(base_url=args.base_url or None, api_key=os.environ.get(args.api_key_env))
     extra = json.loads(args.extra) if args.extra else None
     summary = run(Path(__file__).resolve().parents[2] / "runs" / args.run, client, args.model, warmup=args.warmup, limit=args.limit, extra=extra)
@@ -247,6 +247,7 @@ def main(argv: list[str] | None = None) -> int:
     lat_p.add_argument("--api-key-env", default="OPENAI_API_KEY")
     lat_p.add_argument("--warmup", type=int, default=2)
     lat_p.add_argument("--limit", type=int, help="time at most this many calls")
+    lat_p.add_argument("--api", choices=["chat_completions", "responses"], default="chat_completions")
     lat_p.add_argument("--opening", help="user turn to append to system-only requests (the config's opening_user_message)")
     lat_p.add_argument("--extra", help="JSON of extra request fields, e.g. '{\"reasoning_effort\": \"none\"}'")
     lat_p.set_defaults(fn=cmd_latency)

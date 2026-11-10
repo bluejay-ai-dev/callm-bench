@@ -182,3 +182,7 @@ leaves to the agent; the oracle sends it, the grader ignores it.
 - The sample tasks are for evaluation. Train on tasks generated from the same industry packs.
 - Verification recomputes from the trace and database (no model calls), so Gym's reverification
   works.
+
+## License
+
+MIT. See [LICENSE](LICENSE).

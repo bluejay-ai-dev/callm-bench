@@ -1,5 +1,5 @@
 {
- "source": "asr/data/real_stats.json, phone-stt (5,289 real caller turns)",
+ "source": "phone-stt: 5,289 caller turns from MIVAS voice calls (what the caller said vs what the agent's recognizer transcribed)",
  "rate_exact": 0.7748,
  "rate_minor": 0.1195,
  "rate_major": 0.0577,

@@ -1,6 +1,6 @@
 # gpt-6.1-sol as the caller simulator, clean channel: the caller's words reach the agent verbatim.
 # Layer it on any model config:
-#   gym env start "+config_paths=[configs/gpt52.yaml,configs/users/sol.yaml]"
+#   gym env start "+config_paths=[configs/gpt41.yaml,configs/users/sol.yaml]"
 # It only takes its default temperature, so per-task caller temperatures are not sent.
 user_model:
   responses_api_models:
