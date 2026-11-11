@@ -1821,7 +1821,7 @@ wheels = [
 ]
 
 [[package]]
-name = "micol-gym"
+name = "micol-bench"
 version = "0.2.0"
 source = { editable = "." }
 dependencies = [

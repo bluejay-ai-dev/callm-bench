@@ -1,4 +1,4 @@
-# MICOL Gym
+# MICOL Bench
 
 **MICOL (Multi-Industry Conversational LLMs)** is a Bluejay Labs benchmark for the LLMs that
 power phone agents. This repo is its environment, packaged for
@@ -18,7 +18,7 @@ Bluejay's voice-agent benchmark. This repo ships **9 sample tasks** (3 per indus
 ## Folder structure
 
 ```
-micol-gym/
+micol-bench/
 ├── industries/                 one folder per industry
 │   └── <industry>/
 │       ├── agent_blueprint.json  the multi-agent graph: agents, entry agent, tool ownership, handoff tools

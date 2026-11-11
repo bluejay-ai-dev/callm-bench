@@ -1,5 +1,5 @@
 [project]
-name = "micol-gym"
+name = "micol-bench"
 version = "0.2.0"
 description = "MICOL Bench as a NeMo Gym environment: multi-agent front desks, scripted caller, deterministic verifier"
 requires-python = ">=3.13.14"
