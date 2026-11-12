@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from micol.llm import parse_response, responses_request
-from micol.loop import assistant_message
+from callm.llm import parse_response, responses_request
+from callm.loop import assistant_message
 from nemo_gym.openai_utils import NeMoGymResponseCreateParamsNonStreaming
 
 TOOL = {"type": "function", "function": {"name": "lookup", "description": "d", "parameters": {"type": "object", "properties": {}}}}
@@ -37,7 +37,7 @@ def test_opening_call_has_input():
 
 def test_chat_tool_call_provider_state_round_trips():
     # Gemini 3 rejects a follow-up turn unless each tool call carries its thought_signature back.
-    from micol.llm import parse_message
+    from callm.llm import parse_message
     sig = {"google": {"thought_signature": "SIG"}}
     reply = parse_message({"role": "assistant", "content": None, "tool_calls": [
         {"id": "c1", "type": "function", "function": {"name": "lookup", "arguments": "{}"}, "extra_content": sig}]})

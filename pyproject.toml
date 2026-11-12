@@ -1,7 +1,7 @@
 [project]
-name = "micol-bench"
+name = "callm-bench"
 version = "0.2.0"
-description = "MICOL Bench as a NeMo Gym environment: multi-agent front desks, scripted caller, deterministic verifier"
+description = "CALLM Bench as a NeMo Gym environment: multi-agent front desks, scripted caller, deterministic verifier"
 requires-python = ">=3.13.14"
 dependencies = [
     "httpx>=0.27",
@@ -13,7 +13,7 @@ dependencies = [
 ]
 
 [project.scripts]
-micol = "micol.cli:main"
+callm = "callm.cli:main"
 
 [dependency-groups]
 dev = ["pytest>=8"]
@@ -27,7 +27,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/micol"]
+packages = ["src/callm"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -35,4 +35,4 @@ testpaths = ["tests"]
 [tool.basedpyright]
 venvPath = "."
 venv = ".venv"
-include = ["src", "industries", "tests", "resources_servers/micol/app.py", "responses_api_agents/micol/app.py", "responses_api_models/chat_passthrough/app.py"]
+include = ["src", "industries", "tests", "resources_servers/callm/app.py", "responses_api_agents/callm/app.py", "responses_api_models/chat_passthrough/app.py"]

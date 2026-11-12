@@ -1,4 +1,4 @@
-// Typed client for the `micol ui` backend (src/micol/console/api.py).
+// Typed client for the `callm ui` backend (src/callm/console/api.py).
 
 export type RunStatus = "queued" | "starting" | "running" | "done" | "failed" | "cancelled" | "interrupted";
 

@@ -1,7 +1,7 @@
 # gpt-4.1 (OpenAI) as the model under test; caller pinned to gpt-5.2 unless a configs/users/ file is layered.
 # Needs OPENAI_API_KEY.
 config_paths:
-  - resources_servers/micol/configs/micol.yaml
+  - resources_servers/callm/configs/callm.yaml
 
 policy_model:
   responses_api_models:

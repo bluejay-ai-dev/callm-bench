@@ -1,14 +1,14 @@
-"""`micol` CLI: local episodes, the oracle, re-scoring, and NeMo Gym datasets.
+"""`callm` CLI: local episodes, the oracle, re-scoring, and NeMo Gym datasets.
 
-  micol run     --industry healthcare --task hc-tgcr [--out episodes]
-  micol oracle  --industry healthcare [--task hc-tgcr | --all]
-  micol verify  episodes/hc-tgcr [--reward-dir DIR]
-  micol dataset --industry healthcare [--out resources_servers/micol/data/healthcare.jsonl]
-  micol ui      [--port 8765]   web console over runs, tasks, and rollouts
+  callm run     --industry healthcare --task hc-tgcr [--out episodes]
+  callm oracle  --industry healthcare [--task hc-tgcr | --all]
+  callm verify  episodes/hc-tgcr [--reward-dir DIR]
+  callm dataset --industry healthcare [--out resources_servers/callm/data/healthcare.jsonl]
+  callm ui      [--port 8765]   web console over runs, tasks, and rollouts
 
 `run` needs no NeMo Gym. Models are OpenAI-compatible chat endpoints, wired per role:
-  MICOL_AGENT_MODEL / MICOL_AGENT_BASE_URL / MICOL_AGENT_API_KEY   model under test
-  MICOL_USER_MODEL  / MICOL_USER_BASE_URL  / MICOL_USER_API_KEY    caller simulator
+  CALLM_AGENT_MODEL / CALLM_AGENT_BASE_URL / CALLM_AGENT_API_KEY   model under test
+  CALLM_USER_MODEL  / CALLM_USER_BASE_URL  / CALLM_USER_API_KEY    caller simulator
 Unset role vars fall back to OPENAI_BASE_URL / OPENAI_API_KEY; both models default to gpt-5.2.
 """
 
@@ -31,9 +31,9 @@ from .usersim import temperature
 
 def _llm(role: str, *, temp: float | None = None) -> OpenAIChat:
     return OpenAIChat(
-        os.environ.get(f"MICOL_{role}_MODEL", "gpt-5.2"),
-        base_url=os.environ.get(f"MICOL_{role}_BASE_URL") or None,
-        api_key=os.environ.get(f"MICOL_{role}_API_KEY") or None,
+        os.environ.get(f"CALLM_{role}_MODEL", "gpt-5.2"),
+        base_url=os.environ.get(f"CALLM_{role}_BASE_URL") or None,
+        api_key=os.environ.get(f"CALLM_{role}_API_KEY") or None,
         temperature=temp,
     )
 
@@ -131,7 +131,7 @@ def cmd_verify(args) -> int:
 
 def cmd_freeze(args) -> int:
     """Write exp_db_state for a new task by replaying its answer key; non-zero if the key is broken."""
-    from micol.env import freeze
+    from callm.env import freeze
     servers = ToolServers()
     try:
         problems = freeze(args.industry, args.task, servers)
@@ -156,7 +156,7 @@ def cmd_dataset(args) -> int:
     name = f"{args.industry}-private" if args.private else args.industry
     if args.tag:
         name += f"-{args.tag.replace(':', '-')}"
-    out = Path(args.out or f"resources_servers/micol/data/{name}.jsonl")
+    out = Path(args.out or f"resources_servers/callm/data/{name}.jsonl")
     out.parent.mkdir(parents=True, exist_ok=True)
     with out.open("w") as f:
         for key in keys:
@@ -202,13 +202,13 @@ def cmd_report(args) -> int:
 def cmd_ui(args) -> int:
     import uvicorn
 
-    print(f"MICOL console on http://{args.host}:{args.port}")
-    uvicorn.run("micol.console.api:app", host=args.host, port=args.port, log_level="warning")
+    print(f"CALLM console on http://{args.host}:{args.port}")
+    uvicorn.run("callm.console.api:app", host=args.host, port=args.port, log_level="warning")
     return 0
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(prog="micol")
+    parser = argparse.ArgumentParser(prog="callm")
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     run_p = sub.add_parser("run", help="play text episodes locally (no NeMo Gym)")

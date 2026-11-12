@@ -1,4 +1,4 @@
-"""MICOL scoring: tool-call, handoff-path and final-database adherence.
+"""CALLM scoring: tool-call, handoff-path and final-database adherence.
 
 Pure functions over a call's tool trace and final database; no model calls.
 Combined pass is AND of the three checks.
@@ -11,7 +11,7 @@ import re
 from datetime import datetime
 from typing import Any
 
-from micol.bench import INDUSTRIES as INDUSTRY_ROOT
+from callm.bench import INDUSTRIES as INDUSTRY_ROOT
 
 
 HANDOFF_TOOLS = frozenset({

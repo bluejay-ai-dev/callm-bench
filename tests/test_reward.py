@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from micol.verify import (
+from callm.verify import (
     HANDOFF_BONUS_CAP,
     HANDOFF_GAMMA,
     handoff_reward,

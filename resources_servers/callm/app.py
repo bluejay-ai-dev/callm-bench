@@ -1,7 +1,7 @@
-"""MICOL resources server: the environment side of a MICOL episode.
+"""CALLM resources server: the environment side of a CALLM episode.
 
 One server hosts every configured industry. Per rollout (keyed by the Gym
-session cookie) it holds a `micol.env.Session`: a fresh seeded database on the
+session cookie) it holds a `callm.env.Session`: a fresh seeded database on the
 industry tool server, the multi-agent DAG position, and the caller simulator.
 
 Routes
@@ -25,10 +25,10 @@ from typing import Any, Callable, Literal
 from fastapi import Body, FastAPI, HTTPException, Request
 from pydantic import BaseModel, ConfigDict, Field
 
-from micol import bench
-from micol.env import Session, ToolServers
-from micol.llm import OpenAIChat
-from micol.usersim import temperature
+from callm import bench
+from callm.env import Session, ToolServers
+from callm.llm import OpenAIChat
+from callm.usersim import temperature
 from nemo_gym.base_resources_server import (
     BaseResourcesServerConfig,
     BaseSeedSessionRequest,
@@ -45,20 +45,20 @@ _SERVERS = ToolServers()
 _SESSIONS: dict[str, Session] = {}
 # Caller replies and tool calls block; asyncio's default pool (cpu+4 threads) caps
 # concurrent rollouts well below what Gym dispatches.
-_POOL = ThreadPoolExecutor(max_workers=64, thread_name_prefix="micol")
+_POOL = ThreadPoolExecutor(max_workers=64, thread_name_prefix="callm")
 
 
 async def _blocking(fn: Callable[..., Any], *args: Any) -> Any:
     return await asyncio.get_running_loop().run_in_executor(_POOL, partial(fn, *args))
 
 
-class MicolResourcesServerConfig(BaseResourcesServerConfig):
+class CallmResourcesServerConfig(BaseResourcesServerConfig):
     user_model_server: ModelServerRef
     industries: list[str] = Field(default_factory=lambda: ["healthcare", "legal", "customer-support"])
     reward: Literal["conjunctive", "shaped"] = "conjunctive"
     # false for caller models that only take their default temperature (gpt-6-astra with reasoning)
     user_temperature: bool = True
-    # recognizer profile name in src/micol/asr_profiles/; '' = caller text reaches the agent verbatim
+    # recognizer profile name in src/callm/asr_profiles/; '' = caller text reaches the agent verbatim
     asr_profile: str = ""
     # draw each caller turn's recognizer result from the profile's real rates (see usersim.draw)
     asr_draws: bool = True
@@ -66,7 +66,7 @@ class MicolResourcesServerConfig(BaseResourcesServerConfig):
     channel_seed: int = 0
 
 
-class MicolSeedSessionRequest(BaseSeedSessionRequest):
+class CallmSeedSessionRequest(BaseSeedSessionRequest):
     model_config = ConfigDict(extra="allow")
     industry: str
     case_key: str
@@ -76,13 +76,13 @@ class EndTurnRequest(BaseModel):
     agent_text: str = ""
 
 
-class MicolVerifyRequest(BaseVerifyRequest):
+class CallmVerifyRequest(BaseVerifyRequest):
     model_config = ConfigDict(extra="allow")
     industry: str
     case_key: str
 
 
-class MicolVerifyResponse(MicolVerifyRequest, BaseVerifyResponse):
+class CallmVerifyResponse(CallmVerifyRequest, BaseVerifyResponse):
     conjunctive: float
     shaped: float
     tool_reward: float
@@ -102,8 +102,8 @@ class MicolVerifyResponse(MicolVerifyRequest, BaseVerifyResponse):
 
 # Gym servers narrow `config` and add a FastAPI `request` param to route
 # handlers; pyright can't model either, so those overrides are ignored.
-class MicolResourcesServer(SimpleResourcesServer):
-    config: MicolResourcesServerConfig  # pyright: ignore[reportIncompatibleVariableOverride]
+class CallmResourcesServer(SimpleResourcesServer):
+    config: CallmResourcesServerConfig  # pyright: ignore[reportIncompatibleVariableOverride]
 
     def setup_webserver(self) -> FastAPI:
         app = super().setup_webserver()
@@ -127,18 +127,18 @@ class MicolResourcesServer(SimpleResourcesServer):
     def _session(self, request: Request) -> Session:
         session = _SESSIONS.get(request.session[SESSION_ID_KEY])
         if session is None:
-            raise HTTPException(status_code=404, detail="no MICOL session; call /seed_session first")
+            raise HTTPException(status_code=404, detail="no CALLM session; call /seed_session first")
         return session
 
     def _user_llm(self, task: dict[str, Any]) -> OpenAIChat:
         return OpenAIChat(
-            "micol-caller",  # the model server substitutes its configured model
+            "callm-caller",  # the model server substitutes its configured model
             base_url=f"{get_server_url(self.config.user_model_server.name)}/v1",
             api_key="unused",
             temperature=temperature(task) if self.config.user_temperature else None,
         )
 
-    async def seed_session(self, request: Request, body: MicolSeedSessionRequest) -> BaseSeedSessionResponse:  # pyright: ignore[reportIncompatibleMethodOverride]
+    async def seed_session(self, request: Request, body: CallmSeedSessionRequest) -> BaseSeedSessionResponse:  # pyright: ignore[reportIncompatibleMethodOverride]
         if body.industry not in self.config.industries:
             raise HTTPException(status_code=400, detail=f"industry {body.industry!r} not configured")
         session_id = request.session[SESSION_ID_KEY]
@@ -167,7 +167,7 @@ class MicolResourcesServer(SimpleResourcesServer):
     async def end_turn(self, request: Request, body: EndTurnRequest) -> dict[str, Any]:
         return await _blocking(self._session(request).end_turn, body.agent_text)
 
-    async def verify(self, request: Request, body: MicolVerifyRequest) -> MicolVerifyResponse:  # pyright: ignore[reportIncompatibleMethodOverride]
+    async def verify(self, request: Request, body: CallmVerifyRequest) -> CallmVerifyResponse:  # pyright: ignore[reportIncompatibleMethodOverride]
         session = self._session(request)
         try:
             result, scored = await _blocking(session.score)
@@ -175,7 +175,7 @@ class MicolResourcesServer(SimpleResourcesServer):
             session.close()
             _SESSIONS.pop(request.session[SESSION_ID_KEY], None)
         reward = scored["conjunctive"] if self.config.reward == "conjunctive" else scored["shaped"]
-        return MicolVerifyResponse(
+        return CallmVerifyResponse(
             **body.model_dump(),
             reward=reward,
             conjunctive=scored["conjunctive"],
@@ -197,4 +197,4 @@ class MicolResourcesServer(SimpleResourcesServer):
 
 
 if __name__ == "__main__":
-    MicolResourcesServer.run_webserver()
+    CallmResourcesServer.run_webserver()

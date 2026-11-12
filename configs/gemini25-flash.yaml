@@ -4,7 +4,7 @@
 # The policy goes through responses_api_models/chat_passthrough: Gemini 3 tool calls carry a
 # thought_signature that must be sent back on the next turn, which Gym's openai_model strips.
 config_paths:
-  - resources_servers/micol/configs/micol.yaml
+  - resources_servers/callm/configs/callm.yaml
 
 policy_model:
   responses_api_models:

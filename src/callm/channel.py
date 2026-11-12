@@ -1,6 +1,6 @@
 """Said -> heard channel measurement shared by corpus analysis and GEPA scoring.
 
-`said` is what the caller spoke (SAID, or the digital human in voice MICOL), `heard` is what the
+`said` is what the caller spoke (SAID, or the digital human in voice CALLM), `heard` is what the
 agent's speech recognizer produced for it. Everything here is pure text; no network.
 """
 

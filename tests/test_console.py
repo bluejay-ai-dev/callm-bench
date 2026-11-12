@@ -8,7 +8,7 @@ from typing import Any
 import pytest
 from fastapi.testclient import TestClient
 
-from micol.console import api, runs
+from callm.console import api, runs
 
 
 @pytest.fixture()

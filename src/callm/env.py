@@ -1,7 +1,7 @@
-"""The MICOL environment: industry tool server, multi-agent DAG state, caller.
+"""The CALLM environment: industry tool server, multi-agent DAG state, caller.
 
 One ToolServer process serves many episodes — the pack's runtime scopes state
-per call via the X-Micol-Call-Id header (fresh seeded SQLite per call id), so
+per call via the X-Callm-Call-Id header (fresh seeded SQLite per call id), so
 each Session just mints a new call id.
 
 Tool execution mirrors the voice harnesses' contract exactly:
@@ -55,13 +55,13 @@ class ToolServer:
         return Path(self.data_dir.name) / "calls" / f"{call_id}.db"
 
     def start(self, timeout: float = 30.0) -> None:
-        self.data_dir = tempfile.TemporaryDirectory(prefix=f"micol-{self.industry}-")
+        self.data_dir = tempfile.TemporaryDirectory(prefix=f"callm-{self.industry}-")
         env = dict(os.environ)
         env["TOOL_SERVER_PORT"] = str(self.port)
-        env["MICOL_DB_PATH"] = str(Path(self.data_dir.name) / "industry.db")
+        env["CALLM_DB_PATH"] = str(Path(self.data_dir.name) / "industry.db")
         overlay = bench.variant_dir(self.industry, self.variant)
         if overlay is not None:
-            env["MICOL_VARIANT_DIR"] = str(overlay)
+            env["CALLM_VARIANT_DIR"] = str(overlay)
         self.proc = subprocess.Popen(
             [sys.executable, "tool_server.py"],
             cwd=self.industry_dir,
@@ -133,7 +133,7 @@ class Episode:
     def __init__(self, blueprint: dict[str, Any], server: ToolServer, call_id: str | None = None):
         self.bp = blueprint
         self.server = server
-        self.call_id = call_id or f"micol-{uuid.uuid4().hex[:16]}"
+        self.call_id = call_id or f"callm-{uuid.uuid4().hex[:16]}"
         self.agent = blueprint["start"]
         self.trace: list[dict[str, Any]] = []
         self.done = False
@@ -191,7 +191,7 @@ class Episode:
             resp = self._client.post(
                 f"{self.server.base}/tools/{name}",
                 json={"arguments": dict(args or {})},
-                headers={"X-Micol-Call-Id": self.call_id},
+                headers={"X-Callm-Call-Id": self.call_id},
             )
             result = resp.json()
             if spec.get("session"):
@@ -220,7 +220,7 @@ MAX_DROPPED_TURNS = 3  # consecutive recognizer drops before the caller's words 
 
 
 class Session:
-    """One MICOL episode seen from the environment: what the model under test
+    """One CALLM episode seen from the environment: what the model under test
     may see and do (active prompt, toolset), the caller it talks to, and every
     observable fact the verifier scores (trace, swaps, transcript, final DB).
     """

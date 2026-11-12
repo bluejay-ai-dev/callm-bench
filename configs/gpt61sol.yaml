@@ -4,11 +4,11 @@
 # gpt-6.1-sol takes function tools on chat completions only with reasoning off, so the
 # agent calls it through the Responses API instead.
 config_paths:
-  - resources_servers/micol/configs/micol.yaml
+  - resources_servers/callm/configs/callm.yaml
 
-micol_agent:
+callm_agent:
   responses_api_agents:
-    micol:
+    callm:
       policy_api: responses
 
 policy_model:

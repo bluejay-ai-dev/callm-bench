@@ -55,7 +55,7 @@ logger = logging.getLogger("customer_support.tool_server")
 
 INDUSTRY_DIR = Path(__file__).resolve().parent
 
-from micol.db_service import DBService
+from callm.db_service import DBService
 
 db = DBService.for_industry(INDUSTRY_DIR)
 

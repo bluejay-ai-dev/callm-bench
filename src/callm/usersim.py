@@ -1,4 +1,4 @@
-"""Digital-human-style user simulator built from a MICOL task.json.
+"""Digital-human-style user simulator built from a CALLM task.json.
 
 The task's `intent` is the persona brief, `traits` are hard facts, and
 `scripted_responses` become exact-reply rules — the same fields a Bluejay

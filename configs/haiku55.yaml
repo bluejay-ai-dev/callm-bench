@@ -1,7 +1,7 @@
 # Claude Haiku 5.5 (Anthropic, OpenAI-compatible endpoint) as the model under test.
 # Needs ANTHROPIC_API_KEY and OPENAI_API_KEY (caller).
 config_paths:
-  - resources_servers/micol/configs/micol.yaml
+  - resources_servers/callm/configs/callm.yaml
 
 policy_model:
   responses_api_models:
