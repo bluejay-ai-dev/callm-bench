@@ -1,0 +1,113 @@
+README.md
+  s_9e0f7e666814d1::t_d1a2b84601efd9 1,3,5,21,30,39,41-42,53,58,74,82,105,115,118,125,134-135,139-140,148-149,156,168
+configs/gemini25-flash.yaml
+  s_9e0f7e666814d1::t_ee7c7600777a34 7
+configs/gpt41.yaml
+  s_9e0f7e666814d1::t_07f94756950612 4
+configs/gpt5-mini.yaml
+  s_9e0f7e666814d1::t_7d8b3667db9596 4
+configs/gpt61sol.yaml
+  s_9e0f7e666814d1::t_cac25205846118 7,9,11
+configs/haiku55.yaml
+  s_9e0f7e666814d1::t_886333e4bfcf23 4
+configs/phonellm-alpha-1.yaml
+  s_9e0f7e666814d1::t_ac0611cba5d830 4
+configs/phonellm-max-alpha-2.yaml
+  s_9e0f7e666814d1::t_5214d615c10310 4
+configs/phonellm-mini-alpha-2.yaml
+  s_9e0f7e666814d1::t_5af478675625bf 4
+configs/tell1.yaml
+  s_9e0f7e666814d1::t_61a26c25974736 6
+configs/users/sol.yaml
+  s_9e0f7e666814d1::t_861044c0f544f6 13,15
+configs/users/stt-simulated-gpt-6.1-sol.yaml
+  s_9e0f7e666814d1::t_088ee71ae19032 2,14,16
+industries/customer-support/tool_server.py
+  s_9e0f7e666814d1::t_d6ff163ab1d442 58
+industries/healthcare/tool_server.py
+  s_9e0f7e666814d1::t_2af263b541e1b5 29
+industries/legal/tool_server.py
+  s_9e0f7e666814d1::t_53e6079b954f1d 35
+pyproject.toml
+  s_9e0f7e666814d1::t_66a99ea40d8f0f 2,4,16,30,38
+resources_servers/callm/README.md
+  s_9e0f7e666814d1::t_4946a47d7e47d0 1,3-4,15,19,22
+resources_servers/callm/app.py
+  s_9e0f7e666814d1::t_69c3e88f20a09a 1,4,28-31,48,55,61,69,79,85,105-106,130,135,141,170,178,200
+resources_servers/callm/configs/callm.yaml
+  s_9e0f7e666814d1::t_92e24b8348dcda 1,4,6,10,18,20,24,33-34,36,38,40,42,44,49,55
+responses_api_agents/callm/README.md
+  s_9e0f7e666814d1::t_726137dffb4068 1,3-5,15
+responses_api_agents/callm/app.py
+  s_9e0f7e666814d1::t_f8e0a0a2ffa3aa 1,4-5,21-22,31,41,50,56,63,90,138-139,142,144,167,186,208,216,228
+responses_api_models/retell_playground/app.py
+  s_9e0f7e666814d1::t_b4b147c889debe 4,8,12,37,74,118
+scripts/setup.sh
+  s_9e0f7e666814d1::t_adce47ffc9867f 8,12
+src/callm/bench.py
+  s_9e0f7e666814d1::t_00ef93e618681b 30,32
+src/callm/channel.py
+  s_9e0f7e666814d1::t_dfed9e94188b46 3
+src/callm/cli.py
+  s_9e0f7e666814d1::t_1db11488cf0592 1,3-7,10-11,34-36,134,159,205-206,211
+src/callm/console/api.py
+  s_9e0f7e666814d1::t_04d40f62512807 1,3,19-20,24,36
+src/callm/console/runs.py
+  s_9e0f7e666814d1::t_d397a5c67522a2 26-27,263,311
+src/callm/console/views.py
+  s_9e0f7e666814d1::t_97a6c8ff6e112f 9
+src/callm/db_service.py
+  s_9e0f7e666814d1::t_bf7ae4bc9e53d2 25,56,59,63,66,156,161,165
+src/callm/env.py
+  s_9e0f7e666814d1::t_85f4588031f4e0 1,4,58,61,64,136,194,223
+src/callm/grader.py
+  s_9e0f7e666814d1::t_58ba75402d4fb2 1,14
+src/callm/loop.py
+  s_9e0f7e666814d1::t_1691ccdd802a52 1
+src/callm/usersim.py
+  s_9e0f7e666814d1::t_1413cc0eacabf3 1
+src/callm/verify.py
+  s_9e0f7e666814d1::t_0c0d9dbf92cd21 1,100
+tests/test_console.py
+  s_9e0f7e666814d1::t_8411abb56a6c79 11
+tests/test_freeze.py
+  s_9e0f7e666814d1::t_4520943e986fe2 10-12
+tests/test_responses_api.py
+  s_9e0f7e666814d1::t_fae453815be896 5-6,40
+tests/test_reward.py
+  s_9e0f7e666814d1::t_0124db026c3151 5
+tests/test_smoke.py
+  s_9e0f7e666814d1::t_466b75bbdb0bd3 15-18,201,212,221
+ui/index.html
+  s_9e0f7e666814d1::t_7c79bf33679912 6
+ui/package-lock.json
+  s_9e0f7e666814d1::t_5c1d80b2dbe66a 2,8
+ui/package.json
+  s_9e0f7e666814d1::t_40cca779da95d3 2
+ui/src/App.tsx
+  s_9e0f7e666814d1::t_7c6bd669952630 66
+ui/src/api.ts
+  s_9e0f7e666814d1::t_fbee1e18aee7b9 1
+ui/src/components/Grading.tsx
+  s_9e0f7e666814d1::t_b497e8b0074900 22
+ui/vite.config.ts
+  s_9e0f7e666814d1::t_1dc515f22d06ba 6
+uv.lock
+  s_9e0f7e666814d1::t_0ffd61925ef26b 1824
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "4df4809185c895df56b035a676643b7c2d5f99c3",
+  "prompts": {},
+  "sessions": {
+    "s_9e0f7e666814d1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4bc1fc16-183f-4a67-b045-8963bf7ac621",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Yash Savalia <yashsavalia1@gmail.com>"
+    }
+  }
+}
