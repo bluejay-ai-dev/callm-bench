@@ -22,7 +22,7 @@ from pathlib import Path
 from typing import Iterator
 
 _CALL_ID_OK = re.compile(r"^[A-Za-z0-9_-]{1,64}$")
-_call_id: ContextVar[str] = ContextVar("micol_call_id", default="")
+_call_id: ContextVar[str] = ContextVar("callm_call_id", default="")
 
 
 class CallIdError(ValueError):
@@ -53,17 +53,17 @@ class DBService:
         *,
         shared: bool | None = None,
     ) -> DBService:
-        """Wire schema/seed from an industry pack and data_dir from MICOL_DB_PATH."""
+        """Wire schema/seed from an industry pack and data_dir from CALLM_DB_PATH."""
         industry_dir = Path(industry_dir)
         db_dir = industry_dir / "db"
-        overlay = os.environ.get("MICOL_VARIANT_DIR", "").strip()
+        overlay = os.environ.get("CALLM_VARIANT_DIR", "").strip()
         seed_path = Path(overlay) / "db" / "seed.sql" if overlay else db_dir / "seed.sql"
         if not seed_path.is_file():
             seed_path = db_dir / "seed.sql"
-        env_path = os.environ.get("MICOL_DB_PATH", "").strip()
+        env_path = os.environ.get("CALLM_DB_PATH", "").strip()
         data_dir = Path(env_path).parent if env_path else db_dir
         if shared is None:
-            shared = os.environ.get("MICOL_DB_SHARED", "").strip().lower() in {
+            shared = os.environ.get("CALLM_DB_SHARED", "").strip().lower() in {
                 "1",
                 "true",
                 "yes",
@@ -153,16 +153,16 @@ class DBService:
             conn.close()
 
     async def http_middleware(self, request, call_next):
-        """Scope X-Micol-Call-Id (or ?call_id=) for the request. /health is global."""
+        """Scope X-Callm-Call-Id (or ?call_id=) for the request. /health is global."""
         from starlette.responses import JSONResponse
 
         if request.url.path.rstrip("/") == "/health":
             return await call_next(request)
-        raw = request.headers.get("x-micol-call-id") or request.query_params.get("call_id")
+        raw = request.headers.get("x-callm-call-id") or request.query_params.get("call_id")
         if not raw:
             if self.shared:
                 return await call_next(request)
-            return JSONResponse({"detail": "missing X-Micol-Call-Id"}, status_code=400)
+            return JSONResponse({"detail": "missing X-Callm-Call-Id"}, status_code=400)
         try:
             with self.scope(raw):
                 return await call_next(request)

@@ -23,8 +23,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from micol import bench, verify
-from micol.env import Session, ToolServers, oracle_replay
+from callm import bench, verify
+from callm.env import Session, ToolServers, oracle_replay
 
 REPO = bench.REPO_ROOT
 RUNS = REPO / "runs"
@@ -260,7 +260,7 @@ class Queue:
         self.cancel = threading.Event()
         self._child: subprocess.Popen[bytes] | None = None
         self._cv = threading.Condition()
-        threading.Thread(target=self._loop, name="micol-runs", daemon=True).start()
+        threading.Thread(target=self._loop, name="callm-runs", daemon=True).start()
 
     def submit(self, run_id: str) -> None:
         with self._cv:
@@ -308,7 +308,7 @@ class Queue:
         update_meta(run_id, status="running")
         with (d / "eval.log").open("wb") as log:
             self._child = subprocess.Popen(
-                [str(BIN / "gym"), "eval", "run", "--no-serve", "+agent_name=micol_agent",
+                [str(BIN / "gym"), "eval", "run", "--no-serve", "+agent_name=callm_agent",
                  f"+input_jsonl_fpath=runs/{run_id}/input.jsonl",
                  f"+output_jsonl_fpath=runs/{run_id}/rollouts.jsonl",
                  "+limit=null", f"+num_samples_in_parallel={int(meta['concurrency'])}",

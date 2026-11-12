@@ -12,10 +12,10 @@ import copy
 
 import pytest
 
-from micol import bench, verify
-from micol.env import Session, ToolServers, oracle_replay
-from micol.llm import FakeChat
-from micol.loop import ChatPolicy, LocalEnv, run_episode
+from callm import bench, verify
+from callm.env import Session, ToolServers, oracle_replay
+from callm.llm import FakeChat
+from callm.loop import ChatPolicy, LocalEnv, run_episode
 
 INDUSTRY = "legal"
 CASE = "lg-xskw"  # Conflict unclear, Harlow Properties
@@ -198,7 +198,7 @@ def test_asr_channel_delivers_heard_segments(servers):
 
 
 def test_recognizer_draws_match_profile_rates_and_repeat():
-    from micol.usersim import draw, load_rates
+    from callm.usersim import draw, load_rates
     rates = load_rates("stt-simulated-gpt-6.1-sol")
     draws = [draw(rates, f"0|legal|lg-x|{i}") for i in range(40000)]
     share = lambda o: sum(d["outcome"] == o for d in draws) / len(draws)  # noqa: E731
@@ -209,7 +209,7 @@ def test_recognizer_draws_match_profile_rates_and_repeat():
 
 
 def test_enforce_applies_mechanical_draws():
-    from micol.usersim import enforce
+    from callm.usersim import enforce
     base = {"outcome": "minor", "split": False, "final_punctuation": True, "lowercase": False}
     assert enforce("Hello there.", dict(base, outcome="none")) == ""
     assert enforce("Hi. || I need help.", base) == "Hi. I need help."
@@ -218,7 +218,7 @@ def test_enforce_applies_mechanical_draws():
 
 
 def test_session_hands_the_caller_its_draw(servers):
-    from micol.usersim import draw, draw_line, enforce, load_rates
+    from callm.usersim import draw, draw_line, enforce, load_rates
     caller = FakeChat([{"content": "SAID: Caroline Delaney.\nHEARD: Caroline Delaney."}])
     session = Session(INDUSTRY, CASE, servers.get(INDUSTRY), caller, asr_profile="stt-simulated-gpt-6.1-sol",
                       attempt=3, channel_seed=5)

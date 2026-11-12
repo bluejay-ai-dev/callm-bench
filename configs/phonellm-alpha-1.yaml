@@ -1,7 +1,7 @@
 # PhoneLLM Alpha 1 (Pipecat, open weights pipecat-ai/phonellm-alpha-1) as the model under test, served by any
 # OpenAI-compatible endpoint (vLLM). Needs PHONELLM_BASE_URL, PHONELLM_API_KEY and OPENAI_API_KEY (caller). Pipecat runs it at temperature 0, thinking off.
 config_paths:
-  - resources_servers/micol/configs/micol.yaml
+  - resources_servers/callm/configs/callm.yaml
 
 policy_model:
   responses_api_models:

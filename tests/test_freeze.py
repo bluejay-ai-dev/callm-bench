@@ -7,9 +7,9 @@ import shutil
 
 import pytest
 
-from micol import bench
-from micol.env import ToolServers, freeze
-from micol.llm import add_usage, new_usage
+from callm import bench
+from callm.env import ToolServers, freeze
+from callm.llm import add_usage, new_usage
 
 INDUSTRY, SOURCE, DRAFT = "legal", "lg-xskw", "lg-zzzz"
 

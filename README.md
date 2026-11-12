@@ -1,8 +1,8 @@
-# MICOL Bench
+# CALLM Bench
 
-**MICOL (Multi-Industry Conversational LLMs)** is a Bluejay Labs benchmark for the LLMs that
+**CALLM (Conversational AI LLMs)** is a Bluejay Labs benchmark for the LLMs that
 power phone agents. This repo is its environment, packaged for
-[NeMo Gym](https://github.com/NVIDIA-NeMo/Gym): the same code scores the MICOL Bench
+[NeMo Gym](https://github.com/NVIDIA-NeMo/Gym): the same code scores the CALLM Bench
 leaderboard and serves as an RL environment.
 
 The model under test runs a multi-agent front desk (healthcare, legal, customer support) over
@@ -18,7 +18,7 @@ Bluejay's voice-agent benchmark. This repo ships **9 sample tasks** (3 per indus
 ## Folder structure
 
 ```
-micol-bench/
+callm-bench/
 ├── industries/                 one folder per industry
 │   └── <industry>/
 │       ├── agent_blueprint.json  the multi-agent graph: agents, entry agent, tool ownership, handoff tools
@@ -27,7 +27,7 @@ micol-bench/
 │       ├── tool_server.py        FastAPI server that executes tools against a per-call SQLite DB
 │       ├── db/                   schema.sql + seed.sql (every call starts from this seed)
 │       └── tasks/<case>/task.json  caller brief + expected tool calls, handoff path, final DB
-├── src/micol/                  the environment's logic, framework-free
+├── src/callm/                  the environment's logic, framework-free
 │   ├── bench.py                loads industry packs and tasks
 │   ├── env.py                  ToolServer, Episode (DAG + tool scoping), Session (one call), oracle_replay
 │   ├── usersim.py              caller simulator: persona from the task, SAID/HEARD, recognizer draws
@@ -36,10 +36,10 @@ micol-bench/
 │   ├── grader.py, verify.py    the three checks, conjunctive verdict, shaped RL reward
 │   ├── report.py               task, channel, and LLM metrics for a run
 │   ├── latency.py              streamed replay of a run's requests: TTFT, TPOT, tokens/s
-│   └── console/                backend for `micol ui`
+│   └── console/                backend for `callm ui`
 ├── ui/                         the console's web UI (Vite + React)
-├── resources_servers/micol/    Gym resources server = the environment (tools, DAG, caller, verifier)
-├── responses_api_agents/micol/ Gym agent server = drives the model under test
+├── resources_servers/callm/    Gym resources server = the environment (tools, DAG, caller, verifier)
+├── responses_api_agents/callm/ Gym agent server = drives the model under test
 ├── responses_api_models/       chat_passthrough (any OpenAI-compatible chat endpoint), retell_playground
 ├── configs/                    one config per model on the leaderboard; configs/users/ = callers
 └── tests/                      offline: scripted models through the real tool server + verifier
@@ -50,12 +50,12 @@ A dataset row is just `{industry, case_key}`; the environment loads everything e
 
 ## The simulated phone line
 
-A real phone agent never sees what the caller said, only what speech-to-text produced. MICOL
+A real phone agent never sees what the caller said, only what speech-to-text produced. CALLM
 puts that gap into a text benchmark without any audio:
 
 - Each caller turn, the simulator writes two lines: `SAID:` (what the caller actually said) and
   `HEARD:` (what a phone recognizer would transcribe). Only `HEARD` reaches the model under test.
-- The recognizer's behavior lives in a profile, `src/micol/asr_profiles/stt-simulated-gpt-6.1-sol.md`,
+- The recognizer's behavior lives in a profile, `src/callm/asr_profiles/stt-simulated-gpt-6.1-sol.md`,
   calibrated against 5,289 real caller turns from phone calls. Its measured target rates sit next
   to it in `.stats.json`.
 - Before each turn the environment rolls a **recognizer draw** from those real rates (seeded by
@@ -71,7 +71,7 @@ comparison.
 
 ## How one rollout runs
 
-| Gym concept | MICOL |
+| Gym concept | CALLM |
 |---|---|
 | model server (`policy_model`) | the model under test |
 | model server (`user_model`) | the caller simulator, pinned, never trained |
@@ -79,7 +79,7 @@ comparison.
 | agent server | the turn loop driving the policy through one call |
 | dataset row | one task (`industry`, `case_key`) |
 | rollout | one phone call |
-| `/verify` reward | the MICOL verdict |
+| `/verify` reward | the CALLM verdict |
 
 ```
 agent server                                resources server (session = this rollout)
@@ -102,7 +102,7 @@ each call's tokens under the prompt that was actually active.
 
 `/verify` returns:
 
-- `conjunctive`: the MICOL metric. 1.0 only if tool adherence AND handoff adherence AND
+- `conjunctive`: the CALLM metric. 1.0 only if tool adherence AND handoff adherence AND
   final-DB adherence all pass.
 - `shaped`: partial credit for RL, the mean of `tool_reward`, `state_reward`, and `handoff_reward`.
 - `reward`: what Gym reads. `conjunctive` by default; set `reward: shaped` on the resources
@@ -112,17 +112,17 @@ Each rollout also carries `components` (per-check detail), `trace` (every tool c
 agent that made it), `transcript` (with `said`, `heard`, and the draw for every caller turn),
 `final_state`, and a record per model call (latency, tokens, served model, finish reason).
 
-`micol report --run <id>` turns a run into the leaderboard metrics: pass@1 and pass^k, results
+`callm report --run <id>` turns a run into the leaderboard metrics: pass@1 and pass^k, results
 by category and difficulty, how the realized channel compares to the profile's targets, how
 often a misheard value was written to the database, clarification and read-back rates, and LLM
-metrics (tokens, cache hits, errors, tool-call validity, cost). `micol latency --run <id>`
+metrics (tokens, cache hits, errors, tool-call validity, cost). `callm latency --run <id>`
 replays the run's requests streamed, one at a time, for TTFT, time to first sentence, TPOT,
 and tokens/s.
 
 ## Run it
 
 ```bash
-uv sync                                    # installs micol + nemo-gym (gives the `gym` CLI)
+uv sync                                    # installs callm + nemo-gym (gives the `gym` CLI)
 export OPENAI_API_KEY=...                  # model under test and caller in these configs
 export RAY_ENABLE_UV_RUN_RUNTIME_ENV=0     # Ray's uv hook breaks on per-server venvs
 source .venv/bin/activate
@@ -131,13 +131,13 @@ gym env start "+config_paths=[configs/gpt41.yaml,configs/users/stt-simulated-gpt
     "++skip_venv_if_present=true"
 
 # in another shell, same env:
-gym eval run --no-serve +agent_name=micol_agent \
-    +input_jsonl_fpath=resources_servers/micol/data/example.jsonl \
+gym eval run --no-serve +agent_name=callm_agent \
+    +input_jsonl_fpath=resources_servers/callm/data/example.jsonl \
     +output_jsonl_fpath=results/example_rollouts.jsonl +limit=null
 ```
 
-Datasets: `resources_servers/micol/data/{healthcare,legal,customer-support}.jsonl`, or write
-your own with `micol dataset --industry <industry>`.
+Datasets: `resources_servers/callm/data/{healthcare,legal,customer-support}.jsonl`, or write
+your own with `callm dataset --industry <industry>`.
 
 **Other models.** Every model on the leaderboard has a config in `configs/`. Hosted APIs read
 their usual key (`OPENAI_API_KEY`, `GEMINI_API_KEY`, `ANTHROPIC_API_KEY`, `RETELL_API_KEY`).
@@ -145,15 +145,15 @@ The PhoneLLM configs point at any OpenAI-compatible server for the open weights
 (`PHONELLM_BASE_URL`, `PHONELLM_API_KEY`). For training, make `policy_model` your `vllm_model`
 server so tokens and log-probs are captured, and leave `user_model` pinned.
 
-**Without Gym.** `micol run --industry healthcare --task hc-tgcr` plays a call locally through
-the same loop (per-role models via `MICOL_AGENT_*` / `MICOL_USER_*`).
+**Without Gym.** `callm run --industry healthcare --task hc-tgcr` plays a call locally through
+the same loop (per-role models via `CALLM_AGENT_*` / `CALLM_USER_*`).
 
 ## Console
 
 ```bash
 (cd ui && npm install && npm run build)    # once, and after UI changes
 echo "OPENAI_API_KEY=..." >> .env          # the console reads the repo's .env (gitignored)
-micol ui                                   # http://127.0.0.1:8765
+callm ui                                   # http://127.0.0.1:8765
 ```
 
 Start runs (any config, any caller, k attempts per task), watch them live, and open any call as
@@ -165,7 +165,7 @@ grade (expected vs actual calls, handoff path, and final database).
 
 ```bash
 uv run pytest                               # offline: scripted models, real tool server + verifier
-micol oracle --industry healthcare --all    # replay each answer key, no model; expect 1.0
+callm oracle --industry healthcare --all    # replay each answer key, no model; expect 1.0
 ```
 
 The oracle replays a task's expected tool calls with no model and no caller and checks that they

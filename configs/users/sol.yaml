@@ -10,7 +10,7 @@ user_model:
       openai_api_key: ${oc.env:OPENAI_API_KEY}
       openai_model: gpt-6.1-sol
 
-micol_resources_server:
+callm_resources_server:
   resources_servers:
-    micol:
+    callm:
       user_temperature: false

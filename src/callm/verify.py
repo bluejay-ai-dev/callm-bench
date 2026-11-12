@@ -1,4 +1,4 @@
-"""Conjunctive MICOL verdict plus the shaped RL reward for one episode (checks in grader.py)."""
+"""Conjunctive CALLM verdict plus the shaped RL reward for one episode (checks in grader.py)."""
 
 from __future__ import annotations
 
@@ -97,7 +97,7 @@ def score(industry: str, task: dict[str, Any], episode_result: dict[str, Any]) -
 
 
 def reward_file(scored: dict[str, Any]) -> dict[str, float]:
-    """Flat numeric reward record. `reward` is the MICOL metric (conjunctive)."""
+    """Flat numeric reward record. `reward` is the CALLM metric (conjunctive)."""
     return {
         "reward": scored["conjunctive"],
         "shaped": scored["shaped"],

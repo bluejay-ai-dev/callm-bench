@@ -3,7 +3,7 @@
 # Retell serves Tell-1 at about 10 QPS today, so requests are capped at 8 in flight.
 # The playground returns no stream and no token usage: Tell-1 gets round-trip latency only.
 config_paths:
-  - resources_servers/micol/configs/micol.yaml
+  - resources_servers/callm/configs/callm.yaml
 
 policy_model:
   responses_api_models:

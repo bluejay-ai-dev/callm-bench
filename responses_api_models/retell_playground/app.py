@@ -1,15 +1,15 @@
 """Gym model server that serves Retell's Tell-1 (or any Retell LLM model) as chat completions.
 
 Retell exposes Tell-1 only through `POST /agent-playground-completion/{agent_id}`: stateless,
-full history in, new messages out, tools run by Retell. To keep MICOL semantics identical to
+full history in, new messages out, tools run by Retell. To keep CALLM semantics identical to
 every other model:
 
 - Each distinct (system prompt, toolset) gets its own Retell LLM + agent, created on first use
-  and remembered in `agents.json` next to this file. The prompt is the exact MICOL prompt the
+  and remembered in `agents.json` next to this file. The prompt is the exact CALLM prompt the
   environment served; handbook presets are all off, per Retell's guidance.
 - Every tool is mocked (`tool_mocks`, match any input) and set not to speak after execution, so
   Retell never reaches a real tool. The reply is cut at the first tool call and returned as an
-  OpenAI `tool_calls` message; the MICOL environment runs the tool against its own per-call
+  OpenAI `tool_calls` message; the CALLM environment runs the tool against its own per-call
   SQLite and sends the real result back in the next request's history.
 - A handoff is an ordinary tool call here, so the next request carries the new agent's prompt
   and maps to that agent's Retell agent, with the history unchanged.
@@ -34,7 +34,7 @@ HANDBOOK_OFF = {k: False for k in (
     "default_personality", "conversational_personality", "natural_filler_words", "high_empathy",
     "echo_verification", "nato_phonetic_alphabet", "speech_normalization", "smart_matching",
     "ai_disclosure", "scope_boundaries")}
-UNUSED_TOOL_URL = "https://micol.invalid/tools/"  # never called: every tool is mocked
+UNUSED_TOOL_URL = "https://callm.invalid/tools/"  # never called: every tool is mocked
 
 
 class RetellPlaygroundConfig(SimpleModelServerConfig):
@@ -71,7 +71,7 @@ def first_turn(new: list[dict[str, Any]]) -> tuple[str, list[dict[str, Any]]]:
             calls.append({"id": m["tool_call_id"], "type": "function",
                           "function": {"name": m["name"], "arguments": m.get("arguments") or "{}"}})
         elif calls:
-            break  # a mocked result or text after the call: Retell went past what MICOL has run
+            break  # a mocked result or text after the call: Retell went past what CALLM has run
         elif role == "agent" and m.get("content"):
             text.append(m["content"].strip())
     return " ".join(t for t in text if t), calls
@@ -115,7 +115,7 @@ class RetellPlaygroundServer(SimpleModelServer):
                 } for fn in ((t.get("function") or t) for t in tools)],
             })
             agent = await self._post("/create-agent", {
-                "agent_name": f"micol-phonebench-{key[:10]}", "voice_id": self.config.voice_id,
+                "agent_name": f"callm-phonebench-{key[:10]}", "voice_id": self.config.voice_id,
                 "response_engine": {"type": "retell-llm", "llm_id": llm["llm_id"]},
                 "handbook_config": HANDBOOK_OFF,
             })

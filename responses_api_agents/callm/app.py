@@ -1,8 +1,8 @@
-"""MICOL agent server: drives the model under test through one MICOL call.
+"""CALLM agent server: drives the model under test through one CALLM call.
 
 Thin by design. Everything the environment owns (prompts, toolsets, handoffs,
-tool execution, the caller, scoring) lives in the `micol` resources server;
-this server only runs the shared turn loop (`micol.loop.run_episode`) with the
+tool execution, the caller, scoring) lives in the `callm` resources server;
+this server only runs the shared turn loop (`callm.loop.run_episode`) with the
 policy behind `model_server` and the environment behind HTTP.
 
 Policy calls go through `url_path_for_run`, so a training model server captures
@@ -18,8 +18,8 @@ from typing import Any, Literal
 from fastapi import Body, Request
 from pydantic import ConfigDict
 
-from micol.llm import add_usage, new_usage, parse_message, parse_response, responses_request
-from micol.loop import run_episode
+from callm.llm import add_usage, new_usage, parse_message, parse_response, responses_request
+from callm.loop import run_episode
 from nemo_gym.base_resources_server import BaseRunRequest, BaseVerifyResponse
 from nemo_gym.base_responses_api_agent import BaseResponsesAPIAgentConfig, SimpleResponsesAPIAgent
 from nemo_gym.config_types import ModelServerRef, ResourcesServerRef
@@ -28,7 +28,7 @@ from nemo_gym.rollout_collection import NG_FAILURE_CLASS_KEY
 from nemo_gym.server_utils import get_response_json, raise_for_status
 from responses_api_models.vllm_model.app import VLLMConverter, split_responses_input_output_items
 
-FAILURE_CLASS = "micol_agent_error"
+FAILURE_CLASS = "callm_agent_error"
 HISTORY_KEYS = ("role", "content", "tool_calls", "tool_call_id")
 
 
@@ -38,7 +38,7 @@ def slim_calls(calls: list[dict[str, Any]], swaps: list[dict[str, Any]]) -> list
     return [{**{k: v for k, v in c.items() if k != "system"}, "swap": index.get(c.get("system"))} for c in calls]
 
 
-class MicolAgentConfig(BaseResponsesAPIAgentConfig):
+class CallmAgentConfig(BaseResponsesAPIAgentConfig):
     resources_server: ResourcesServerRef
     model_server: ModelServerRef
     max_exchanges: int = 30
@@ -47,20 +47,20 @@ class MicolAgentConfig(BaseResponsesAPIAgentConfig):
     policy_api: Literal["chat_completions", "responses"] = "chat_completions"
 
 
-class MicolRunRequest(BaseRunRequest):
+class CallmRunRequest(BaseRunRequest):
     model_config = ConfigDict(extra="allow")
     industry: str
     case_key: str
 
 
-class MicolVerifyResponse(BaseVerifyResponse):
+class CallmVerifyResponse(BaseVerifyResponse):
     model_config = ConfigDict(extra="allow")
 
 
 class _HttpEnv:
     """Loop env port over the resources server, bound to one session cookie jar."""
 
-    def __init__(self, agent: "MicolAgent", cookies: Any):
+    def __init__(self, agent: "CallmAgent", cookies: Any):
         self.agent = agent
         self.cookies = cookies
 
@@ -87,7 +87,7 @@ class _HttpEnv:
 class _ServerPolicy:
     """Loop policy port over the Gym model server: chat completions or the Responses API."""
 
-    def __init__(self, agent: "MicolAgent", body: MicolRunRequest, params: dict[str, Any]):
+    def __init__(self, agent: "CallmAgent", body: CallmRunRequest, params: dict[str, Any]):
         self.agent = agent
         self.body = body
         self.api = agent.config.policy_api
@@ -135,13 +135,13 @@ class _ServerPolicy:
         return parsed
 
 
-class MicolAgent(SimpleResponsesAPIAgent):
-    config: MicolAgentConfig  # pyright: ignore[reportIncompatibleVariableOverride]
+class CallmAgent(SimpleResponsesAPIAgent):
+    config: CallmAgentConfig  # pyright: ignore[reportIncompatibleVariableOverride]
 
     async def responses(self, body: NeMoGymResponseCreateParamsNonStreaming = Body()) -> NeMoGymResponse:
-        raise NotImplementedError("MICOL episodes run through /run")
+        raise NotImplementedError("CALLM episodes run through /run")
 
-    async def run(self, request: Request, body: MicolRunRequest) -> MicolVerifyResponse:  # pyright: ignore[reportIncompatibleMethodOverride]
+    async def run(self, request: Request, body: CallmRunRequest) -> CallmVerifyResponse:  # pyright: ignore[reportIncompatibleMethodOverride]
         params = body.responses_create_params.model_dump(exclude_unset=True)
         seed = await self.server_client.post(
             server_name=self.config.resources_server.name,
@@ -164,7 +164,7 @@ class MicolAgent(SimpleResponsesAPIAgent):
                 await env._post("/verify", body.model_dump(mode="json") | {"response": self._response(body, params, [])})
             except Exception:  # noqa: BLE001
                 pass
-            return MicolVerifyResponse.model_validate(
+            return CallmVerifyResponse.model_validate(
                 body.model_dump(mode="json")
                 | {
                     "reward": 0.0,
@@ -183,7 +183,7 @@ class MicolAgent(SimpleResponsesAPIAgent):
         result["usage"] = {"policy": policy.usage, **(result.get("usage") or {})}
         result["policy_calls"] = slim_calls(policy.calls, result.get("system_prompt_swaps") or [])
         result["policy_history"] = [{k: m[k] for k in HISTORY_KEYS if m.get(k) is not None} for m in history]
-        return MicolVerifyResponse.model_validate(result)
+        return CallmVerifyResponse.model_validate(result)
 
     @staticmethod
     def _items(history: list[dict[str, Any]]) -> tuple[list[Any], list[Any]]:
@@ -205,7 +205,7 @@ class MicolAgent(SimpleResponsesAPIAgent):
         input_items, _ = self._items(history)
         return {"input": system0 + list(params.get("input") or []) + input_items, "model": params.get("model") or ""}
 
-    def _response(self, body: MicolRunRequest, params: dict[str, Any], history: list[dict[str, Any]]) -> dict[str, Any]:
+    def _response(self, body: CallmRunRequest, params: dict[str, Any], history: list[dict[str, Any]]) -> dict[str, Any]:
         _, output_items = self._items(history)
         if not output_items:
             output_items = [{
@@ -213,7 +213,7 @@ class MicolAgent(SimpleResponsesAPIAgent):
                 "content": [{"type": "output_text", "text": "", "annotations": []}],
             }]
         return json.loads(json.dumps({
-            "id": f"micol-{body.industry}-{body.case_key}",
+            "id": f"callm-{body.industry}-{body.case_key}",
             "created_at": int(time()),
             "object": "response",
             "model": params.get("model") or "",
@@ -225,4 +225,4 @@ class MicolAgent(SimpleResponsesAPIAgent):
 
 
 if __name__ == "__main__":
-    MicolAgent.run_webserver()
+    CallmAgent.run_webserver()

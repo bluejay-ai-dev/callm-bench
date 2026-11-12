@@ -1,6 +1,6 @@
-"""MICOL console: HTTP API over runs, tasks, and the Gym stack, plus the built UI at /.
+"""CALLM console: HTTP API over runs, tasks, and the Gym stack, plus the built UI at /.
 
-    micol ui            # http://127.0.0.1:8765
+    callm ui            # http://127.0.0.1:8765
 """
 
 from __future__ import annotations
@@ -16,12 +16,12 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
-from micol import bench
-from micol.console import runs, views
+from callm import bench
+from callm.console import runs, views
 
 INDUSTRIES = ("healthcare", "legal", "customer-support")
 UI_DIST = bench.REPO_ROOT / "ui" / "dist"
-EXAMPLE = bench.REPO_ROOT / "resources_servers" / "micol" / "data" / "example.jsonl"
+EXAMPLE = bench.REPO_ROOT / "resources_servers" / "callm" / "data" / "example.jsonl"
 
 
 @asynccontextmanager
@@ -33,7 +33,7 @@ async def lifespan(_: FastAPI):
     runs.TOOL_SERVERS.stop_all()
 
 
-app = FastAPI(title="MICOL console", lifespan=lifespan)
+app = FastAPI(title="CALLM console", lifespan=lifespan)
 
 
 def _run_or_404(run_id: str) -> dict[str, Any]:

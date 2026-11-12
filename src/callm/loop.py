@@ -1,4 +1,4 @@
-"""The one MICOL turn loop, shared by local runs and the NeMo Gym agent server.
+"""The one CALLM turn loop, shared by local runs and the NeMo Gym agent server.
 
 Two-party conversation, tau2-bench shape: the model under test speaks first (a
 front desk greets), may call tools mid-turn, then the caller replies. The loop

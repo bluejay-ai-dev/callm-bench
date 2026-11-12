@@ -1,7 +1,7 @@
-# micol resources server
+# callm resources server
 
-The MICOL environment. One server hosts every configured industry; per rollout it holds a
-`micol.env.Session` keyed by the Gym session cookie: a fresh seeded database on the
+The CALLM environment. One server hosts every configured industry; per rollout it holds a
+`callm.env.Session` keyed by the Gym session cookie: a fresh seeded database on the
 industry's tool server, the position in the multi-agent graph, and the caller simulator.
 
 | Route | Body | Returns |
@@ -12,12 +12,12 @@ industry's tool server, the position in the multi-agent graph, and the caller si
 | `/end_turn` | `{agent_text}` | caller reply `{text, hangup, done}` |
 | `/verify` | row + `response` | `reward`, `conjunctive`, `shaped`, components, trace, transcript, swaps, final DB |
 
-Config (`configs/micol.yaml`):
+Config (`configs/callm.yaml`):
 
 - `user_model_server`: the caller simulator's model server. Never the policy.
 - `industries`: which packs to serve (default all three).
-- `reward`: `conjunctive` (default, the MICOL metric) or `shaped` (partial credit).
+- `reward`: `conjunctive` (default, the CALLM metric) or `shaped` (partial credit).
 
 Data: `data/example.jsonl` (5 healthcare cases) and one file per industry, regenerated with
-`micol dataset --industry <name>`. Rows hold identifiers only; task content is read from
+`callm dataset --industry <name>`. Rows hold identifiers only; task content is read from
 `industries/` in this repo at run time. License: MIT.

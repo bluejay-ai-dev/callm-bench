@@ -19,7 +19,7 @@ export function Grading({ view }: { view: RolloutView }) {
           <span className={cn("text-lg font-semibold", overall ? "text-pass" : "text-fail")}>
             {overall ? "PASS" : "FAIL"}
           </span>
-          <span className="text-xs text-muted-foreground">MICOL score = tools AND handoffs AND final database</span>
+          <span className="text-xs text-muted-foreground">CALLM score = tools AND handoffs AND final database</span>
         </div>
         <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
           <Score label="Tool calls" ok={passed("tool_adherence")} sub={`reward ${fmt(g.scores.tool_reward)}`} />

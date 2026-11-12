@@ -63,7 +63,7 @@ export default function App() {
       <header className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-[1600px] items-center gap-3 px-6">
           <button onClick={() => go("#/")} className="text-sm font-semibold tracking-tight">
-            MICOL Console
+            CALLM Console
           </button>
           <nav className="ml-3 flex items-center gap-1">
             {nav("runs", "#/", <Play />, "Runs")}

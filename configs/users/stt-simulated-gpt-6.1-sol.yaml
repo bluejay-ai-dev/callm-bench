@@ -1,5 +1,5 @@
 # gpt-6.1-sol as the caller simulator with simulated phone STT: the caller writes SAID and HEARD
-# under the stt-simulated-gpt-6.1-sol profile (src/micol/asr_profiles/), tuned for gpt-6.1-sol on
+# under the stt-simulated-gpt-6.1-sol profile (src/callm/asr_profiles/), tuned for gpt-6.1-sol on
 # real caller transcripts. Recognizer draws are on, so each caller turn's outcome follows the
 # measured real rates. The agent only receives HEARD.
 #   gym env start "+config_paths=[configs/gpt41.yaml,configs/users/stt-simulated-gpt-6.1-sol.yaml]"
@@ -11,8 +11,8 @@ user_model:
       openai_api_key: ${oc.env:OPENAI_API_KEY}
       openai_model: gpt-6.1-sol
 
-micol_resources_server:
+callm_resources_server:
   resources_servers:
-    micol:
+    callm:
       user_temperature: false
       asr_profile: stt-simulated-gpt-6.1-sol

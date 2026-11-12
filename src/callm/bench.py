@@ -27,9 +27,9 @@ def industry_dir(industry: str) -> Path:
 def clock_line(industry: str) -> str:
     """The pack's pinned calendar (TODAY in its tool_server.py), appended to every agent prompt.
 
-    MICOL_TODAY=YYYY-MM-DD overrides; MICOL_TODAY=wall uses the real date.
+    CALLM_TODAY=YYYY-MM-DD overrides; CALLM_TODAY=wall uses the real date.
     """
-    override = os.environ.get("MICOL_TODAY", "").strip()
+    override = os.environ.get("CALLM_TODAY", "").strip()
     if override == "wall":
         d = date.today()
     elif override:

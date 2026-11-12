@@ -6,7 +6,7 @@ import json
 from functools import lru_cache
 from typing import Any
 
-from micol import bench, grader
+from callm import bench, grader
 
 
 def attempt(r: dict[str, Any]) -> int:
