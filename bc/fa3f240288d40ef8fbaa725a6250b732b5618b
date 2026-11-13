@@ -1,0 +1,19 @@
+README.md
+  s_9c3878d4f62664::t_037f9cbebdad1a 8-10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "bcfa3f240288d40ef8fbaa725a6250b732b5618b",
+  "prompts": {},
+  "sessions": {
+    "s_9c3878d4f62664": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4cb03502-56ed-48b4-9b43-3277bb299bdb",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "farazmsiddiqi <farazs27@gmail.com>"
+    }
+  }
+}
