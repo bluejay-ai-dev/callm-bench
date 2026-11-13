@@ -5,6 +5,9 @@ power phone agents. This repo is its environment, packaged for
 [NeMo Gym](https://github.com/NVIDIA-NeMo/Gym): the same code scores the CALLM Bench
 leaderboard and serves as an RL environment.
 
+A CALLM is a language model used in conversational AI systems whose median time to first
+token (TTFT) is under 1 second. CALLM Bench only benchmarks models that meet that bar.
+
 The model under test runs a multi-agent front desk (healthcare, legal, customer support) over
 text. A pinned simulator model plays the caller and, like a real phone line, the model only
 receives what a speech recognizer would have heard: dropped words, misheard names and digits,
