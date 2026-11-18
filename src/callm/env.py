@@ -138,7 +138,9 @@ class Episode:
         self.trace: list[dict[str, Any]] = []
         self.done = False
         self._t0 = time.monotonic()
-        self._client = httpx.Client(timeout=30.0)
+        # Drop idle connections before uvicorn does (its keep-alive is 5 s). Reusing one the server
+        # is closing fails the tool call with "Server disconnected without sending a response".
+        self._client = httpx.Client(timeout=30.0, limits=httpx.Limits(keepalive_expiry=1.0))
 
     def _tool_entry(self, name: str) -> dict[str, Any] | None:
         for t in self.bp["agents"][self.agent]["tools"]:
