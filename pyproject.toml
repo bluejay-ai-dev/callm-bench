@@ -2,7 +2,7 @@
 name = "callm-bench"
 version = "0.2.0"
 description = "CALLM Bench as a NeMo Gym environment: multi-agent front desks, scripted caller, deterministic verifier"
-requires-python = ">=3.13.14"
+requires-python = ">=3.13.14,<3.15"  # ray has no 3.15 wheels yet
 dependencies = [
     "httpx>=0.27",
     "openai>=1.40",
