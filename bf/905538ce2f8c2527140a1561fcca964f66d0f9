@@ -1,0 +1,25 @@
+.python-version
+  s_49d626c88d987b::t_0a41d15c073b13 1
+pyproject.toml
+  s_49d626c88d987b::t_340211b1c412b5 5
+src/callm/env.py
+  s_49d626c88d987b::t_88581984c4710d 141-143
+uv.lock
+  s_49d626c88d987b::t_62cbd178edda26 3,189,235-269
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "bf905538ce2f8c2527140a1561fcca964f66d0f9",
+  "prompts": {},
+  "sessions": {
+    "s_49d626c88d987b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "22c5cf72-3966-4cde-bb6d-eb3fe50fe768",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "farazmsiddiqi <farazs27@gmail.com>"
+    }
+  }
+}
